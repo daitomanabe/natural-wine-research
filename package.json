@@ -1,0 +1,31 @@
+{
+  "name": "natural-wine-research",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "dev:client": "vite",
+    "dev:server": "node --watch server/index.mjs",
+    "dev:full": "concurrently -k -n api,web -c blue,green \"npm:dev:server\" \"npm:dev:client\"",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start:server": "node server/index.mjs",
+    "collect:sources": "node scripts/collect-sources.mjs",
+    "import:catalog": "node scripts/import-catalog-json.mjs",
+    "import:labels": "node scripts/import-labels-json.mjs"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "multer": "^2.0.2",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "rss-parser": "^3.13.0",
+    "tesseract.js": "^6.0.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^5.0.0",
+    "concurrently": "^9.2.1",
+    "vite": "^7.1.3"
+  }
+}

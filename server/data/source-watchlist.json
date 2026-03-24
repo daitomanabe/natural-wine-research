@@ -1,0 +1,63 @@
+[
+  {
+    "id": "vivino",
+    "label": "Vivino",
+    "type": "market",
+    "coverage": "global",
+    "enabled": false,
+    "status": "planned",
+    "format": "json",
+    "endpoint": "",
+    "fieldMap": {
+      "name": ["name", "wine", "title"],
+      "producer": ["producer", "winery"],
+      "country": ["country", "country_code", "origin_country"],
+      "region": ["region", "zone"],
+      "color": ["color", "type"],
+      "grapes": ["grapes", "grape_variety"],
+      "so2": ["so2", "sulfur", "so2_total"],
+      "farming": ["farming", "intervention_style"]
+    }
+  },
+  {
+    "id": "wine-searcher",
+    "label": "Wine-Searcher",
+    "type": "market",
+    "coverage": "global",
+    "enabled": false,
+    "status": "planned",
+    "format": "json",
+    "endpoint": ""
+  },
+  {
+    "id": "producer-sites",
+    "label": "Producer Sites",
+    "type": "producer",
+    "coverage": "global",
+    "enabled": false,
+    "status": "planned",
+    "format": "json",
+    "endpoint": ""
+  },
+  {
+    "id": "japan-importers",
+    "label": "Japan Importers",
+    "type": "market",
+    "coverage": "jp",
+    "enabled": false,
+    "status": "planned",
+    "format": "json",
+    "endpoint": ""
+  },
+  {
+    "id": "sample-feed",
+    "label": "Local Sample Feed",
+    "type": "seed",
+    "coverage": "demo",
+    "enabled": true,
+    "status": "ready",
+    "format": "json",
+    "endpoint": "server/data/natural-wine-demo.json",
+    "limit": 20
+  }
+]
