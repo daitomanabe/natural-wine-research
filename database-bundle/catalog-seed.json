@@ -1,0 +1,1370 @@
+[
+  {
+    "id": "001",
+    "name": "Muscadet Sèvre et Maine sur Lie",
+    "producer": "Jo Landron",
+    "country": "FR",
+    "region": "Loire",
+    "grapes": [
+      "Melon de Bourgogne"
+    ],
+    "vintage": 2021,
+    "color": "white",
+    "so2": 18,
+    "farming": "biodynamic",
+    "intervention": 1,
+    "skinDays": 0,
+    "wholeCluster": 0,
+    "indigenousYeast": true,
+    "addedSo2": false,
+    "filtration": "none",
+    "price": 18,
+    "flavors": [
+      "mineral",
+      "citrus",
+      "saline",
+      "yeasty"
+    ],
+    "styles": [
+      "fresh",
+      "classic"
+    ]
+  },
+  {
+    "id": "002",
+    "name": "Dard & Ribo Crozes-Hermitage",
+    "producer": "Dard & Ribo",
+    "country": "FR",
+    "region": "Rhône",
+    "grapes": [
+      "Syrah"
+    ],
+    "vintage": 2020,
+    "color": "red",
+    "so2": 22,
+    "farming": "organic",
+    "intervention": 2,
+    "skinDays": 18,
+    "wholeCluster": 100,
+    "indigenousYeast": true,
+    "addedSo2": false,
+    "filtration": "none",
+    "price": 32,
+    "flavors": [
+      "pepper",
+      "olive",
+      "dark fruit",
+      "floral"
+    ],
+    "styles": [
+      "structured",
+      "earthy"
+    ]
+  },
+  {
+    "id": "003",
+    "name": "Poulsard Ouillé",
+    "producer": "Overnoy-Crinquand",
+    "country": "FR",
+    "region": "Jura",
+    "grapes": [
+      "Poulsard"
+    ],
+    "vintage": 2019,
+    "color": "red",
+    "so2": 0,
+    "farming": "biodynamic",
+    "intervention": 0,
+    "skinDays": 21,
+    "wholeCluster": 80,
+    "indigenousYeast": true,
+    "addedSo2": false,
+    "filtration": "none",
+    "price": 55,
+    "flavors": [
+      "cherry",
+      "earth",
+      "dried flower",
+      "funk"
+    ],
+    "styles": [
+      "ethereal",
+      "pale"
+    ]
+  },
+  {
+    "id": "004",
+    "name": "Radikon Ribolla Gialla",
+    "producer": "Radikon",
+    "country": "IT",
+    "region": "Friuli",
+    "grapes": [
+      "Ribolla Gialla"
+    ],
+    "vintage": 2016,
+    "color": "orange",
+    "so2": 10,
+    "farming": "organic",
+    "intervention": 1,
+    "skinDays": 180,
+    "wholeCluster": 0,
+    "indigenousYeast": true,
+    "addedSo2": false,
+    "filtration": "none",
+    "price": 65,
+    "flavors": [
+      "tannic",
+      "amber",
+      "walnut",
+      "dried apricot",
+      "oxidative"
+    ],
+    "styles": [
+      "amber",
+      "textured"
+    ]
+  },
+  {
+    "id": "005",
+    "name": "Clot de l'Origine",
+    "producer": "Marc Barriot",
+    "country": "FR",
+    "region": "Roussillon",
+    "grapes": [
+      "Grenache Noir",
+      "Carignan"
+    ],
+    "vintage": 2020,
+    "color": "red",
+    "so2": 28,
+    "farming": "biodynamic",
+    "intervention": 2,
+    "skinDays": 25,
+    "wholeCluster": 60,
+    "indigenousYeast": true,
+    "addedSo2": false,
+    "filtration": "none",
+    "price": 28,
+    "flavors": [
+      "garrigue",
+      "spice",
+      "plum",
+      "leather"
+    ],
+    "styles": [
+      "rustic",
+      "southern"
+    ]
+  },
+  {
+    "id": "006",
+    "name": "Pét-Nat Grolleau",
+    "producer": "La Grange Tiphaine",
+    "country": "FR",
+    "region": "Loire",
+    "grapes": [
+      "Grolleau"
+    ],
+    "vintage": 2022,
+    "color": "pétillant",
+    "so2": 5,
+    "farming": "biodynamic",
+    "intervention": 0,
+    "skinDays": 0,
+    "wholeCluster": 0,
+    "indigenousYeast": true,
+    "addedSo2": false,
+    "filtration": "none",
+    "price": 16,
+    "flavors": [
+      "strawberry",
+      "brioche",
+      "tart",
+      "light"
+    ],
+    "styles": [
+      "pétillant",
+      "casual"
+    ]
+  },
+  {
+    "id": "007",
+    "name": "Foradori Teroldego",
+    "producer": "Foradori",
+    "country": "IT",
+    "region": "Trentino",
+    "grapes": [
+      "Teroldego"
+    ],
+    "vintage": 2019,
+    "color": "red",
+    "so2": 30,
+    "farming": "biodynamic",
+    "intervention": 2,
+    "skinDays": 30,
+    "wholeCluster": 50,
+    "indigenousYeast": true,
+    "addedSo2": true,
+    "filtration": "light",
+    "price": 38,
+    "flavors": [
+      "violet",
+      "blueberry",
+      "alpine herb",
+      "mineral"
+    ],
+    "styles": [
+      "elegant",
+      "mountain"
+    ]
+  },
+  {
+    "id": "008",
+    "name": "Gut Oggau Theodora",
+    "producer": "Gut Oggau",
+    "country": "AT",
+    "region": "Burgenland",
+    "grapes": [
+      "Welschriesling",
+      "Weissburgunder"
+    ],
+    "vintage": 2021,
+    "color": "white",
+    "so2": 20,
+    "farming": "biodynamic",
+    "intervention": 1,
+    "skinDays": 0,
+    "wholeCluster": 0,
+    "indigenousYeast": true,
+    "addedSo2": false,
+    "filtration": "none",
+    "price": 25,
+    "flavors": [
+      "green apple",
+      "chamomile",
+      "saline",
+      "quince"
+    ],
+    "styles": [
+      "fresh",
+      "accessible"
+    ]
+  },
+  {
+    "id": "009",
+    "name": "Camillo Montori Trebbiano",
+    "producer": "Camillo Montori",
+    "country": "IT",
+    "region": "Abruzzo",
+    "grapes": [
+      "Trebbiano d'Abruzzo"
+    ],
+    "vintage": 2020,
+    "color": "white",
+    "so2": 35,
+    "farming": "organic",
+    "intervention": 3,
+    "skinDays": 0,
+    "wholeCluster": 0,
+    "indigenousYeast": false,
+    "addedSo2": true,
+    "filtration": "light",
+    "price": 14,
+    "flavors": [
+      "pear",
+      "almond",
+      "white flower",
+      "clean"
+    ],
+    "styles": [
+      "everyday",
+      "food-friendly"
+    ]
+  },
+  {
+    "id": "010",
+    "name": "Cornelissen Munjebel Bianco",
+    "producer": "Frank Cornelissen",
+    "country": "IT",
+    "region": "Sicily",
+    "grapes": [
+      "Carricante",
+      "Catarratto"
+    ],
+    "vintage": 2021,
+    "color": "white",
+    "so2": 8,
+    "farming": "biodynamic",
+    "intervention": 0,
+    "skinDays": 0,
+    "wholeCluster": 100,
+    "indigenousYeast": true,
+    "addedSo2": false,
+    "filtration": "none",
+    "price": 45,
+    "flavors": [
+      "volcanic",
+      "citrus peel",
+      "saline",
+      "flint"
+    ],
+    "styles": [
+      "Etna",
+      "minimalist"
+    ]
+  },
+  {
+    "id": "011",
+    "name": "Château Le Puy Emilien",
+    "producer": "Château Le Puy",
+    "country": "FR",
+    "region": "Bordeaux",
+    "grapes": [
+      "Merlot",
+      "Cabernet Franc"
+    ],
+    "vintage": 2018,
+    "color": "red",
+    "so2": 40,
+    "farming": "biodynamic",
+    "intervention": 3,
+    "skinDays": 20,
+    "wholeCluster": 0,
+    "indigenousYeast": true,
+    "addedSo2": true,
+    "filtration": "none",
+    "price": 52,
+    "flavors": [
+      "cassis",
+      "cedar",
+      "tobacco",
+      "earthy"
+    ],
+    "styles": [
+      "Bordeaux",
+      "age-worthy"
+    ]
+  },
+  {
+    "id": "012",
+    "name": "Pheasant's Tears Rkatsiteli",
+    "producer": "Pheasant's Tears",
+    "country": "GE",
+    "region": "Kakheti",
+    "grapes": [
+      "Rkatsiteli"
+    ],
+    "vintage": 2020,
+    "color": "orange",
+    "so2": 12,
+    "farming": "organic",
+    "intervention": 0,
+    "skinDays": 180,
+    "wholeCluster": 100,
+    "indigenousYeast": true,
+    "addedSo2": false,
+    "filtration": "none",
+    "price": 30,
+    "flavors": [
+      "dried fruit",
+      "tannin",
+      "walnut",
+      "tea",
+      "amber"
+    ],
+    "styles": [
+      "qvevri",
+      "Georgian"
+    ]
+  },
+  {
+    "id": "013",
+    "name": "La Stoppa Ageno",
+    "producer": "La Stoppa",
+    "country": "IT",
+    "region": "Emilia-Romagna",
+    "grapes": [
+      "Malvasia di Candia"
+    ],
+    "vintage": 2018,
+    "color": "orange",
+    "so2": 15,
+    "farming": "organic",
+    "intervention": 1,
+    "skinDays": 120,
+    "wholeCluster": 0,
+    "indigenousYeast": true,
+    "addedSo2": false,
+    "filtration": "none",
+    "price": 42,
+    "flavors": [
+      "tannic white",
+      "exotic spice",
+      "dried orange",
+      "honeyed"
+    ],
+    "styles": [
+      "amber",
+      "benchmark"
+    ]
+  },
+  {
+    "id": "014",
+    "name": "Donkey & Goat Ramato",
+    "producer": "Donkey & Goat",
+    "country": "US",
+    "region": "California",
+    "grapes": [
+      "Pinot Gris"
+    ],
+    "vintage": 2021,
+    "color": "orange",
+    "so2": 25,
+    "farming": "organic",
+    "intervention": 2,
+    "skinDays": 14,
+    "wholeCluster": 0,
+    "indigenousYeast": true,
+    "addedSo2": true,
+    "filtration": "light",
+    "price": 35,
+    "flavors": [
+      "copper",
+      "nectarine",
+      "ginger",
+      "spice"
+    ],
+    "styles": [
+      "Ramato",
+      "California"
+    ]
+  },
+  {
+    "id": "015",
+    "name": "Štoka Teran",
+    "producer": "Štoka",
+    "country": "SI",
+    "region": "Karst",
+    "grapes": [
+      "Teran"
+    ],
+    "vintage": 2019,
+    "color": "red",
+    "so2": 18,
+    "farming": "biodynamic",
+    "intervention": 1,
+    "skinDays": 28,
+    "wholeCluster": 70,
+    "indigenousYeast": true,
+    "addedSo2": false,
+    "filtration": "none",
+    "price": 28,
+    "flavors": [
+      "iron",
+      "cherry",
+      "herbal",
+      "rustic"
+    ],
+    "styles": [
+      "Slovenian",
+      "karst"
+    ]
+  },
+  {
+    "id": "016",
+    "name": "Clos Fantine Faugères",
+    "producer": "Domaine Fantine",
+    "country": "FR",
+    "region": "Languedoc",
+    "grapes": [
+      "Syrah",
+      "Grenache",
+      "Mourvèdre"
+    ],
+    "vintage": 2020,
+    "color": "red",
+    "so2": 30,
+    "farming": "organic",
+    "intervention": 2,
+    "skinDays": 20,
+    "wholeCluster": 30,
+    "indigenousYeast": true,
+    "addedSo2": true,
+    "filtration": "none",
+    "price": 22,
+    "flavors": [
+      "schist",
+      "dark berry",
+      "garrigue",
+      "smoke"
+    ],
+    "styles": [
+      "value",
+      "schist"
+    ]
+  },
+  {
+    "id": "017",
+    "name": "Cosimo Maria Masini Arrivederci",
+    "producer": "Cosimo Maria Masini",
+    "country": "IT",
+    "region": "Tuscany",
+    "grapes": [
+      "Sangiovese"
+    ],
+    "vintage": 2019,
+    "color": "red",
+    "so2": 20,
+    "farming": "biodynamic",
+    "intervention": 1,
+    "skinDays": 25,
+    "wholeCluster": 40,
+    "indigenousYeast": true,
+    "addedSo2": false,
+    "filtration": "none",
+    "price": 30,
+    "flavors": [
+      "cherry",
+      "dusty tannin",
+      "dried tomato",
+      "herb"
+    ],
+    "styles": [
+      "Tuscan",
+      "biodynamic"
+    ]
+  },
+  {
+    "id": "018",
+    "name": "Ganevat Julien en Billat",
+    "producer": "Domaine Ganevat",
+    "country": "FR",
+    "region": "Jura",
+    "grapes": [
+      "Chardonnay"
+    ],
+    "vintage": 2019,
+    "color": "white",
+    "so2": 12,
+    "farming": "biodynamic",
+    "intervention": 1,
+    "skinDays": 0,
+    "wholeCluster": 0,
+    "indigenousYeast": true,
+    "addedSo2": false,
+    "filtration": "none",
+    "price": 80,
+    "flavors": [
+      "oxidative",
+      "nutty",
+      "citrus zest",
+      "wax"
+    ],
+    "styles": [
+      "Jura",
+      "prestige"
+    ]
+  },
+  {
+    "id": "019",
+    "name": "Broc Cellars Love Red",
+    "producer": "Broc Cellars",
+    "country": "US",
+    "region": "California",
+    "grapes": [
+      "Carignan",
+      "Valdiguié"
+    ],
+    "vintage": 2022,
+    "color": "red",
+    "so2": 22,
+    "farming": "organic",
+    "intervention": 1,
+    "skinDays": 8,
+    "wholeCluster": 0,
+    "indigenousYeast": true,
+    "addedSo2": false,
+    "filtration": "none",
+    "price": 24,
+    "flavors": [
+      "candied cherry",
+      "fresh",
+      "low tannin",
+      "juicy"
+    ],
+    "styles": [
+      "carbonic",
+      "easy-drinking"
+    ]
+  },
+  {
+    "id": "020",
+    "name": "Lucy Margaux Field Blend",
+    "producer": "Lucy Margaux",
+    "country": "AU",
+    "region": "Adelaide Hills",
+    "grapes": [
+      "Chardonnay",
+      "Pinot Gris",
+      "Pinot Blanc"
+    ],
+    "vintage": 2021,
+    "color": "white",
+    "so2": 15,
+    "farming": "biodynamic",
+    "intervention": 1,
+    "skinDays": 3,
+    "wholeCluster": 0,
+    "indigenousYeast": true,
+    "addedSo2": false,
+    "filtration": "none",
+    "price": 35,
+    "flavors": [
+      "nectarine",
+      "beeswax",
+      "floral",
+      "textured"
+    ],
+    "styles": [
+      "Australian",
+      "field-blend"
+    ]
+  },
+  {
+    "id": "021",
+    "name": "Guttarolo Primitivo",
+    "producer": "Guttarolo",
+    "country": "IT",
+    "region": "Puglia",
+    "grapes": [
+      "Primitivo"
+    ],
+    "vintage": 2019,
+    "color": "red",
+    "so2": 25,
+    "farming": "organic",
+    "intervention": 2,
+    "skinDays": 15,
+    "wholeCluster": 0,
+    "indigenousYeast": true,
+    "addedSo2": true,
+    "filtration": "none",
+    "price": 20,
+    "flavors": [
+      "fig",
+      "dark plum",
+      "tobacco",
+      "warm spice"
+    ],
+    "styles": [
+      "southern Italian",
+      "rich"
+    ]
+  },
+  {
+    "id": "022",
+    "name": "Moric Blaufränkisch",
+    "producer": "Moric",
+    "country": "AT",
+    "region": "Burgenland",
+    "grapes": [
+      "Blaufränkisch"
+    ],
+    "vintage": 2019,
+    "color": "red",
+    "so2": 28,
+    "farming": "organic",
+    "intervention": 2,
+    "skinDays": 14,
+    "wholeCluster": 20,
+    "indigenousYeast": true,
+    "addedSo2": true,
+    "filtration": "light",
+    "price": 22,
+    "flavors": [
+      "dark cherry",
+      "pepper",
+      "iron",
+      "cool-climate"
+    ],
+    "styles": [
+      "Austrian",
+      "cool-climate"
+    ]
+  },
+  {
+    "id": "023",
+    "name": "Zull Grüner Veltliner",
+    "producer": "Weingut Zull",
+    "country": "AT",
+    "region": "Weinviertel",
+    "grapes": [
+      "Grüner Veltliner"
+    ],
+    "vintage": 2022,
+    "color": "white",
+    "so2": 38,
+    "farming": "lutte_raisonnée",
+    "intervention": 4,
+    "skinDays": 0,
+    "wholeCluster": 0,
+    "indigenousYeast": false,
+    "addedSo2": true,
+    "filtration": "filtered",
+    "price": 12,
+    "flavors": [
+      "white pepper",
+      "green herb",
+      "citrus",
+      "crisp"
+    ],
+    "styles": [
+      "classic",
+      "everyday"
+    ]
+  },
+  {
+    "id": "024",
+    "name": "Les Capriades Piège à Filles",
+    "producer": "Les Capriades",
+    "country": "FR",
+    "region": "Loire",
+    "grapes": [
+      "Pineau d'Aunis"
+    ],
+    "vintage": 2022,
+    "color": "pétillant",
+    "so2": 8,
+    "farming": "biodynamic",
+    "intervention": 0,
+    "skinDays": 0,
+    "wholeCluster": 0,
+    "indigenousYeast": true,
+    "addedSo2": false,
+    "filtration": "none",
+    "price": 18,
+    "flavors": [
+      "pepper",
+      "red berry",
+      "brioche",
+      "light"
+    ],
+    "styles": [
+      "pétillant",
+      "Loire"
+    ]
+  },
+  {
+    "id": "025",
+    "name": "Cantina Giardino Vino del Fico",
+    "producer": "Cantina Giardino",
+    "country": "IT",
+    "region": "Campania",
+    "grapes": [
+      "Aglianico"
+    ],
+    "vintage": 2018,
+    "color": "red",
+    "so2": 12,
+    "farming": "biodynamic",
+    "intervention": 0,
+    "skinDays": 40,
+    "wholeCluster": 100,
+    "indigenousYeast": true,
+    "addedSo2": false,
+    "filtration": "none",
+    "price": 50,
+    "flavors": [
+      "tar",
+      "volcanic ash",
+      "dark cherry",
+      "iron",
+      "austere"
+    ],
+    "styles": [
+      "southern Italian",
+      "ancient"
+    ]
+  },
+  {
+    "id": "026",
+    "name": "Werlitsch Vom Opok",
+    "producer": "Ewald Tscheppe",
+    "country": "AT",
+    "region": "Styria",
+    "grapes": [
+      "Sauvignon Blanc",
+      "Chardonnay"
+    ],
+    "vintage": 2020,
+    "color": "white",
+    "so2": 14,
+    "farming": "biodynamic",
+    "intervention": 1,
+    "skinDays": 0,
+    "wholeCluster": 0,
+    "indigenousYeast": true,
+    "addedSo2": false,
+    "filtration": "none",
+    "price": 40,
+    "flavors": [
+      "opok clay",
+      "mineral",
+      "herb",
+      "stony"
+    ],
+    "styles": [
+      "Styrian",
+      "biodynamic"
+    ]
+  },
+  {
+    "id": "027",
+    "name": "Comando G Vino de Pueblo",
+    "producer": "Comando G",
+    "country": "ES",
+    "region": "Madrid",
+    "grapes": [
+      "Garnacha"
+    ],
+    "vintage": 2020,
+    "color": "red",
+    "so2": 20,
+    "farming": "organic",
+    "intervention": 1,
+    "skinDays": 15,
+    "wholeCluster": 80,
+    "indigenousYeast": true,
+    "addedSo2": false,
+    "filtration": "none",
+    "price": 25,
+    "flavors": [
+      "raspberry",
+      "violet",
+      "granitic",
+      "fresh"
+    ],
+    "styles": [
+      "Spanish",
+      "Garnacha"
+    ]
+  },
+  {
+    "id": "028",
+    "name": "Nikolaihof Wachau Riesling",
+    "producer": "Nikolaihof",
+    "country": "AT",
+    "region": "Wachau",
+    "grapes": [
+      "Riesling"
+    ],
+    "vintage": 2017,
+    "color": "white",
+    "so2": 32,
+    "farming": "biodynamic",
+    "intervention": 3,
+    "skinDays": 0,
+    "wholeCluster": 0,
+    "indigenousYeast": true,
+    "addedSo2": true,
+    "filtration": "light",
+    "price": 48,
+    "flavors": [
+      "slate",
+      "petrol",
+      "lime",
+      "peach",
+      "precise"
+    ],
+    "styles": [
+      "Wachau",
+      "age-worthy"
+    ]
+  },
+  {
+    "id": "029",
+    "name": "Testalonga El Bandito Cortez",
+    "producer": "Testalonga",
+    "country": "ZA",
+    "region": "Swartland",
+    "grapes": [
+      "Chenin Blanc"
+    ],
+    "vintage": 2021,
+    "color": "white",
+    "so2": 16,
+    "farming": "organic",
+    "intervention": 1,
+    "skinDays": 0,
+    "wholeCluster": 0,
+    "indigenousYeast": true,
+    "addedSo2": false,
+    "filtration": "none",
+    "price": 28,
+    "flavors": [
+      "quince",
+      "lanolin",
+      "beeswax",
+      "oxidative"
+    ],
+    "styles": [
+      "South African",
+      "Chenin"
+    ]
+  },
+  {
+    "id": "030",
+    "name": "Denavolo Catavela",
+    "producer": "Giulio Armani",
+    "country": "IT",
+    "region": "Emilia-Romagna",
+    "grapes": [
+      "Malvasia di Candia",
+      "Ortrugo"
+    ],
+    "vintage": 2020,
+    "color": "orange",
+    "so2": 0,
+    "farming": "biodynamic",
+    "intervention": 0,
+    "skinDays": 90,
+    "wholeCluster": 100,
+    "indigenousYeast": true,
+    "addedSo2": false,
+    "filtration": "none",
+    "price": 38,
+    "flavors": [
+      "volatile",
+      "funky",
+      "tannic",
+      "exotic fruit"
+    ],
+    "styles": [
+      "extreme",
+      "zero-zero"
+    ]
+  },
+  {
+    "id": "031",
+    "name": "Matassa Blanc",
+    "producer": "Tom Lubbe",
+    "country": "FR",
+    "region": "Roussillon",
+    "grapes": [
+      "Grenache Gris",
+      "Grenache Blanc",
+      "Macabeu"
+    ],
+    "vintage": 2021,
+    "color": "white",
+    "so2": 18,
+    "farming": "biodynamic",
+    "intervention": 1,
+    "skinDays": 0,
+    "wholeCluster": 0,
+    "indigenousYeast": true,
+    "addedSo2": false,
+    "filtration": "none",
+    "price": 32,
+    "flavors": [
+      "apricot",
+      "floral",
+      "garrigue",
+      "rich"
+    ],
+    "styles": [
+      "Roussillon",
+      "Mediterranean"
+    ]
+  },
+  {
+    "id": "032",
+    "name": "Gravner Ribolla",
+    "producer": "Josko Gravner",
+    "country": "IT",
+    "region": "Friuli",
+    "grapes": [
+      "Ribolla Gialla"
+    ],
+    "vintage": 2014,
+    "color": "orange",
+    "so2": 25,
+    "farming": "biodynamic",
+    "intervention": 1,
+    "skinDays": 180,
+    "wholeCluster": 100,
+    "indigenousYeast": true,
+    "addedSo2": true,
+    "filtration": "none",
+    "price": 95,
+    "flavors": [
+      "amber",
+      "beeswax",
+      "dried fig",
+      "spice",
+      "profound"
+    ],
+    "styles": [
+      "icon",
+      "qvevri"
+    ]
+  },
+  {
+    "id": "033",
+    "name": "Bichi Krus Nebbiolo",
+    "producer": "Bichi",
+    "country": "MX",
+    "region": "Baja California",
+    "grapes": [
+      "Nebbiolo",
+      "Grenache"
+    ],
+    "vintage": 2020,
+    "color": "red",
+    "so2": 22,
+    "farming": "organic",
+    "intervention": 1,
+    "skinDays": 20,
+    "wholeCluster": 50,
+    "indigenousYeast": true,
+    "addedSo2": false,
+    "filtration": "none",
+    "price": 40,
+    "flavors": [
+      "dusty rose",
+      "cherry",
+      "tomato leaf",
+      "warm"
+    ],
+    "styles": [
+      "Mexican",
+      "Baja"
+    ]
+  },
+  {
+    "id": "034",
+    "name": "Hiyu Wine Farm Petnat",
+    "producer": "Hiyu Wine Farm",
+    "country": "US",
+    "region": "Oregon",
+    "grapes": [
+      "Pinot Gris",
+      "Riesling",
+      "Gewürztraminer"
+    ],
+    "vintage": 2022,
+    "color": "pétillant",
+    "so2": 10,
+    "farming": "biodynamic",
+    "intervention": 0,
+    "skinDays": 2,
+    "wholeCluster": 0,
+    "indigenousYeast": true,
+    "addedSo2": false,
+    "filtration": "none",
+    "price": 30,
+    "flavors": [
+      "rose",
+      "ginger",
+      "floral",
+      "crisp"
+    ],
+    "styles": [
+      "Oregon",
+      "biodynamic"
+    ]
+  },
+  {
+    "id": "035",
+    "name": "Domaine de l'Écu Gneiss",
+    "producer": "Guy Bossard",
+    "country": "FR",
+    "region": "Loire",
+    "grapes": [
+      "Melon de Bourgogne"
+    ],
+    "vintage": 2020,
+    "color": "white",
+    "so2": 14,
+    "farming": "biodynamic",
+    "intervention": 1,
+    "skinDays": 0,
+    "wholeCluster": 0,
+    "indigenousYeast": true,
+    "addedSo2": false,
+    "filtration": "none",
+    "price": 22,
+    "flavors": [
+      "gneiss mineral",
+      "lemon zest",
+      "marine",
+      "precise"
+    ],
+    "styles": [
+      "Loire",
+      "terroir"
+    ]
+  },
+  {
+    "id": "036",
+    "name": "Marjan Simčič Bela",
+    "producer": "Marjan Simčič",
+    "country": "SI",
+    "region": "Goriška Brda",
+    "grapes": [
+      "Rebula",
+      "Malvazija",
+      "Tocai Friulano"
+    ],
+    "vintage": 2020,
+    "color": "orange",
+    "so2": 30,
+    "farming": "organic",
+    "intervention": 2,
+    "skinDays": 21,
+    "wholeCluster": 30,
+    "indigenousYeast": true,
+    "addedSo2": true,
+    "filtration": "light",
+    "price": 28,
+    "flavors": [
+      "amber",
+      "dried apricot",
+      "walnut",
+      "structured"
+    ],
+    "styles": [
+      "Slovenian",
+      "Brda"
+    ]
+  },
+  {
+    "id": "037",
+    "name": "Barranco Oscuro Vigiri",
+    "producer": "Manuel Valenzuela",
+    "country": "ES",
+    "region": "Andalusia",
+    "grapes": [
+      "Vijiriega"
+    ],
+    "vintage": 2019,
+    "color": "white",
+    "so2": 16,
+    "farming": "biodynamic",
+    "intervention": 1,
+    "skinDays": 0,
+    "wholeCluster": 0,
+    "indigenousYeast": true,
+    "addedSo2": false,
+    "filtration": "none",
+    "price": 35,
+    "flavors": [
+      "almond",
+      "herb",
+      "floral",
+      "high-altitude"
+    ],
+    "styles": [
+      "Spanish",
+      "rare variety"
+    ]
+  },
+  {
+    "id": "038",
+    "name": "Enderle & Moll Liaison",
+    "producer": "Enderle & Moll",
+    "country": "DE",
+    "region": "Baden",
+    "grapes": [
+      "Pinot Noir"
+    ],
+    "vintage": 2020,
+    "color": "red",
+    "so2": 20,
+    "farming": "biodynamic",
+    "intervention": 1,
+    "skinDays": 12,
+    "wholeCluster": 100,
+    "indigenousYeast": true,
+    "addedSo2": false,
+    "filtration": "none",
+    "price": 28,
+    "flavors": [
+      "red cherry",
+      "forest floor",
+      "light",
+      "carbonic"
+    ],
+    "styles": [
+      "German",
+      "natural"
+    ]
+  },
+  {
+    "id": "039",
+    "name": "Vinos Ambiz Albillo Real",
+    "producer": "Fabio Bartolomei",
+    "country": "ES",
+    "region": "Madrid",
+    "grapes": [
+      "Albillo Real"
+    ],
+    "vintage": 2021,
+    "color": "white",
+    "so2": 0,
+    "farming": "organic",
+    "intervention": 0,
+    "skinDays": 7,
+    "wholeCluster": 100,
+    "indigenousYeast": true,
+    "addedSo2": false,
+    "filtration": "none",
+    "price": 22,
+    "flavors": [
+      "white peach",
+      "marzipan",
+      "herbal",
+      "textured"
+    ],
+    "styles": [
+      "Spanish",
+      "zero-zero"
+    ]
+  },
+  {
+    "id": "040",
+    "name": "Strohmeier Schilcher Frizzante",
+    "producer": "Franz Strohmeier",
+    "country": "AT",
+    "region": "Styria",
+    "grapes": [
+      "Blauer Wildbacher"
+    ],
+    "vintage": 2022,
+    "color": "rosé",
+    "so2": 8,
+    "farming": "biodynamic",
+    "intervention": 0,
+    "skinDays": 0,
+    "wholeCluster": 0,
+    "indigenousYeast": true,
+    "addedSo2": false,
+    "filtration": "none",
+    "price": 20,
+    "flavors": [
+      "raspberry",
+      "tart",
+      "cranberry",
+      "mineral"
+    ],
+    "styles": [
+      "Austrian",
+      "Schilcher"
+    ],
+    "aliases": [
+      "strohmeier frizzante",
+      "schilcher frizzante"
+    ]
+  },
+  {
+    "id": "041",
+    "name": "Cat-Silver N°5",
+    "producer": "Franz Strohmeier",
+    "country": "AT",
+    "region": "Styria",
+    "appellation": "Steiermark",
+    "grapes": [
+      "Sauvignon Blanc",
+      "Chardonnay",
+      "Weissburgunder",
+      "Bronner",
+      "Muscaris",
+      "Souvignier Gris"
+    ],
+    "vintage": 2024,
+    "color": "orange",
+    "so2": null,
+    "farming": "biodynamic",
+    "intervention": null,
+    "skinDays": null,
+    "wholeCluster": null,
+    "indigenousYeast": true,
+    "addedSo2": false,
+    "filtration": "none",
+    "price": 34,
+    "bottleMl": 750,
+    "abv": 12,
+    "closure": "crown cap",
+    "flavors": [
+      "citrus",
+      "floral",
+      "mineral",
+      "amber"
+    ],
+    "styles": [
+      "orange",
+      "skin-contact",
+      "TLZ"
+    ],
+    "aliases": [
+      "skin contact",
+      "franz strohmeier skin contact",
+      "cat silver",
+      "cat-silver",
+      "tlz cat-silver"
+    ],
+    "labelText": [
+      "franz strohmeier",
+      "skin contact"
+    ],
+    "notes": "Label-identifiable skin-contact bottling. Total SO₂ and intervention score are not confirmed in the current dataset."
+  },
+  {
+    "id": "042",
+    "name": "Le Cercle du Vin Blanc",
+    "producer": "Le Cercle du Vin",
+    "country": "FR",
+    "region": "Languedoc",
+    "appellation": "Vin de France",
+    "grapes": [
+      "Muscat Blanc",
+      "Sauvignon Blanc",
+      "Ugni Blanc"
+    ],
+    "vintage": null,
+    "color": "white",
+    "so2": null,
+    "farming": "unknown",
+    "intervention": null,
+    "skinDays": null,
+    "wholeCluster": null,
+    "indigenousYeast": null,
+    "addedSo2": null,
+    "filtration": "unknown",
+    "price": null,
+    "bottleMl": null,
+    "abv": null,
+    "closure": "screw cap",
+    "flavors": [
+      "floral",
+      "citrus",
+      "light-bodied"
+    ],
+    "styles": [
+      "white-blend",
+      "vin de france"
+    ],
+    "aliases": [
+      "le cercle du vin",
+      "cercle du vin blanc",
+      "fontcaude le cercle du vin",
+      "les domaines de fontcaude",
+      "laurent miquel"
+    ],
+    "labelText": [
+      "le cercle du vin",
+      "vin de france"
+    ],
+    "notes": "Record added to support label-based identification. Public sources disagree on the producer attribution, so this entry stays label-centric until verified."
+  }
+]

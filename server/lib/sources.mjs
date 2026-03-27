@@ -48,7 +48,7 @@ const COLOR_ALIAS = {
   orangewine: "orange",
   amber: "orange",
   amberwine: "orange",
-  amber-red: "orange",
+  "amber-red": "orange",
   amber_red: "orange",
   unknown: "unknown",
 };

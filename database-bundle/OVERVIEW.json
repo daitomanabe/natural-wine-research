@@ -1,0 +1,51 @@
+{
+  "generatedAt": "2026-03-27T09:53:34.045Z",
+  "database": {
+    "seedCount": 42,
+    "additionsCount": 0,
+    "unifiedCount": 42,
+    "inventoryCount": 0,
+    "linkedInventoryCount": 0,
+    "labelAssetCount": 0,
+    "catalogWithLinkCount": 42,
+    "combinedDataSize": 20238
+  },
+  "collections": [
+    {
+      "name": "catalogSeed",
+      "file": "catalog-seed.json"
+    },
+    {
+      "name": "catalogAdditions",
+      "file": "catalog-additions.json"
+    },
+    {
+      "name": "catalogUnified",
+      "file": "catalog-unified.json"
+    },
+    {
+      "name": "inventoryRaw",
+      "file": "inventory-raw.json"
+    },
+    {
+      "name": "inventoryMaterialized",
+      "file": "inventory-materialized.json"
+    },
+    {
+      "name": "labels",
+      "file": "labels.json"
+    },
+    {
+      "name": "sourceWatchlist",
+      "file": "source-watchlist.json"
+    },
+    {
+      "name": "combined",
+      "file": "bundle-combined.json"
+    }
+  ],
+  "sourceWatchlist": {
+    "total": 5,
+    "enabled": 1
+  }
+}

@@ -13,7 +13,8 @@
     "start:server": "node server/index.mjs",
     "collect:sources": "node scripts/collect-sources.mjs",
     "import:catalog": "node scripts/import-catalog-json.mjs",
-    "import:labels": "node scripts/import-labels-json.mjs"
+    "import:labels": "node scripts/import-labels-json.mjs",
+    "bundle:export": "node scripts/export-database-bundle.mjs"
   },
   "dependencies": {
     "express": "^5.1.0",
