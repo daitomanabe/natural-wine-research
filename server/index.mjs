@@ -2,8 +2,19 @@ import express from "express";
 import multer from "multer";
 import path from "node:path";
 import { addCatalogRecord, buildCatalogStats, listCatalog, mapCatalogById } from "./lib/catalog.mjs";
-import { buildContextSnapshot } from "./lib/context.mjs";
-import { addInventoryItem, listInventory, materializeInventory } from "./lib/inventory.mjs";
+import {
+  buildContextSnapshot,
+  buildLiveDjNotes,
+  getLiveContext,
+  setLiveContext,
+} from "./lib/context.mjs";
+import {
+  addInventoryItem,
+  addInventoryItems,
+  listInventory,
+  materializeInventory,
+  summarizeInventory,
+} from "./lib/inventory.mjs";
 import { addLabelRecord, listLabels } from "./lib/labels.mjs";
 import { analyzeUploadedImage } from "./lib/ocr.mjs";
 import { ROOT_DIR, UPLOADS_DIR } from "./lib/paths.mjs";
@@ -76,9 +87,19 @@ app.get("/api/inventory", async (_req, res) => {
   res.json(materializedInventory);
 });
 
+app.get("/api/inventory/summary", async (_req, res) => {
+  const inventory = await listInventory();
+  res.json(summarizeInventory(inventory));
+});
+
 app.get("/api/labels", async (_req, res) => {
   const labels = await listLabels();
   res.json(labels);
+});
+
+app.get("/api/context/live", async (_req, res) => {
+  const context = await getLiveContext();
+  res.json(context);
 });
 
 app.get("/api/stats", async (_req, res) => {
@@ -149,6 +170,23 @@ app.post("/api/inventory", async (req, res) => {
   res.status(201).json(created);
 });
 
+app.post("/api/inventory/import", async (req, res) => {
+  const items = Array.isArray(req.body?.items)
+    ? req.body.items
+    : Array.isArray(req.body)
+      ? req.body
+      : [];
+
+  const created = await addInventoryItems(items);
+  const { materializedInventory } = await getState();
+
+  res.status(201).json({
+    created,
+    createdCount: created.length,
+    catalogInventoryCount: materializedInventory.length,
+  });
+});
+
 app.post("/api/catalog", async (req, res) => {
   if (!req.body?.name || !req.body?.producer) {
     res.status(400).json({ error: "name and producer are required" });
@@ -211,6 +249,64 @@ app.post("/api/recommend/context", async (req, res) => {
     snapshot,
     profile,
   }));
+});
+
+app.post("/api/context/live", async (req, res) => {
+  try {
+    const context = await setLiveContext(req.body ?? {});
+    res.json(context);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "failed to save live context";
+    res.status(400).json({ error: message });
+  }
+});
+
+app.post("/api/recommend/live", async (req, res) => {
+  try {
+    const { catalog, materializedInventory } = await getState();
+    const persistedContext = await getLiveContext();
+    const body = req.body ?? {};
+    const merged = {
+      city: body.city || persistedContext.city || "Tokyo",
+      headlineTopic: body.headlineTopic || persistedContext.headlineTopic || "natural wine",
+      djNotes: [persistedContext.djNotes, body.djNotes]
+        .filter(Boolean)
+        .join(" · "),
+      colors: body.colors ?? persistedContext.colors ?? [],
+      track: {
+        ...persistedContext.track,
+        ...(body.track ?? {}),
+      },
+    };
+    const profile = {
+      colors: Array.isArray(merged.colors) ? merged.colors : splitCsv(merged.colors),
+      countries: Array.isArray(body.countries) ? body.countries : splitCsv(body.countries),
+      styles: Array.isArray(body.styles) ? body.styles : splitCsv(body.styles),
+      flavors: Array.isArray(body.flavors) ? body.flavors : splitCsv(body.flavors),
+      maxPrice: body.maxPrice ?? persistedContext.maxPrice,
+      minNaturalness: body.minNaturalness ?? null,
+      mood: body.mood || "",
+    };
+    const snapshot = await buildContextSnapshot({
+      city: merged.city,
+      headlineTopic: merged.headlineTopic,
+      djNotes: buildLiveDjNotes({ ...merged, track: merged.track }),
+    });
+
+    res.json({
+      ...buildContextRecommendations({
+        catalog,
+        inventory: materializedInventory,
+        snapshot,
+        profile,
+      }),
+      liveContext: merged,
+      source: "live-track",
+    });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "live recommendation failed";
+    res.status(500).json({ error: message });
+  }
 });
 
 app.use((_req, res) => {

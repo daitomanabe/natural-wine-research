@@ -85,6 +85,14 @@ a {
   backdrop-filter: blur(18px);
 }
 
+.view-mode-bar {
+  border-bottom: 1px solid #080c10;
+  padding: 10px 28px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
 .app-header {
   border-bottom: 1px solid #0a1018;
   padding: 20px 28px 16px;
@@ -236,6 +244,16 @@ h1 {
   flex-wrap: wrap;
 }
 
+.search-input-wrap {
+  display: grid;
+  gap: 6px;
+}
+
+.search-input-wrap input {
+  width: 340px;
+  max-width: 60vw;
+}
+
 .filter-chip,
 .clear-button,
 .action-button,
@@ -305,6 +323,33 @@ h1 {
   background: linear-gradient(180deg, rgba(10, 17, 26, 0.92), rgba(5, 10, 16, 0.95));
 }
 
+.kiosk-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 18px;
+}
+
+.kiosk-auto-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  margin-top: 4px;
+}
+
+.inline-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #3a5060;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+}
+
+.inline-toggle input {
+  width: auto;
+}
+
 .panel-head,
 .table-head {
   display: flex;
@@ -317,6 +362,12 @@ h1 {
 .micro-copy {
   font-size: 9px;
   color: #526875;
+}
+
+.inventory-location-grid {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 10px;
 }
 
 .two-column {

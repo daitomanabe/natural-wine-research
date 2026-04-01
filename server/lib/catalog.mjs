@@ -99,6 +99,20 @@ export function mapCatalogById(catalog) {
 }
 
 export function buildCatalogStats(catalog, inventory, labels) {
+  const inventoryQuantity = inventory.reduce((sum, item) => sum + (Number(item.quantity ?? 1) || 1), 0);
+  const locationCounts = new Map();
+  const linkedCatalogIds = new Set();
+
+  for (const item of inventory) {
+    const count = Number(item.quantity ?? 1) || 1;
+    const location = String(item.location || "Unknown").trim() || "Unknown";
+    const prev = locationCounts.get(location) || 0;
+    locationCounts.set(location, prev + count);
+    if (item.catalogWineId) {
+      linkedCatalogIds.add(item.catalogWineId);
+    }
+  }
+
   const inventoryLinked = inventory.filter((item) => item.catalogWineId).length;
   const plottable = catalog.filter((wine) => Number.isFinite(wine.so2) && Number.isFinite(wine.intervention)).length;
   const labelReady = catalog.filter((wine) => wine.aliases.length || wine.labelText.length).length;
@@ -106,7 +120,12 @@ export function buildCatalogStats(catalog, inventory, labels) {
   return {
     catalogCount: catalog.length,
     inventoryCount: inventory.length,
+    inventoryUnits: inventoryQuantity,
     inventoryLinked,
+    inventoryLocationCounts: [...locationCounts.entries()]
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 12),
+    uniqueWineInInventory: linkedCatalogIds.size,
     plottable,
     labelReady,
     labelAssets: labels.length,

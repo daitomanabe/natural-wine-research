@@ -64,11 +64,82 @@ const INITIAL_CONTEXT_FORM = {
   maxPrice: 45,
 };
 
+const KIOSK_REFRESH_OPTIONS = [20, 30, 45, 60];
+
+const INITIAL_LIVE_FORM = {
+  city: "Tokyo",
+  headlineTopic: "natural wine",
+  djNotes: "",
+  artist: "",
+  songTitle: "",
+  bpm: "",
+  energy: "",
+  trackGenres: "",
+  maxPrice: 45,
+};
+
+const APP_VIEWS = [
+  { id: "operations", label: "Cellar Operations" },
+  { id: "insights", label: "Catalog Insights" },
+  { id: "kiosk", label: "iPad Kiosk Recommendations" },
+];
+
+function textIncludes(haystack, query) {
+  return String(haystack ?? "").toLowerCase().includes(query);
+}
+
 function splitCsv(value) {
   return String(value ?? "")
     .split(",")
     .map((part) => part.trim())
     .filter(Boolean);
+}
+
+function parseInventoryCsvRows(text) {
+  const rows = [];
+  const lines = String(text || "")
+    .replace(/\r/g, "")
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean);
+
+  if (lines.length < 2) return rows;
+
+  const header = lines[0].split(",").map((cell) => cell.trim());
+  for (let i = 1; i < lines.length; i++) {
+    const line = lines[i];
+    if (!line) continue;
+    const values = [];
+    let current = "";
+    let inQuotes = false;
+
+    for (let index = 0; index < line.length; index += 1) {
+      const char = line[index];
+      if (char === '"') {
+        if (inQuotes && line[index + 1] === '"') {
+          current += '"';
+          index += 1;
+        } else {
+          inQuotes = !inQuotes;
+        }
+      } else if (char === "," && !inQuotes) {
+        values.push(current);
+        current = "";
+      } else {
+        current += char;
+      }
+    }
+    values.push(current);
+
+    const item = {};
+    for (let v = 0; v < header.length; v++) {
+      const key = header[v];
+      const value = values[v] ?? "";
+      item[key] = value.replace(/^"|"$/g, "").trim();
+    }
+    rows.push(item);
+  }
+  return rows;
 }
 
 function RecommendationColumn({ title, items, onSelect, emptyLabel }) {
@@ -154,19 +225,30 @@ export default function App() {
   const [catalog, setCatalog] = useState(SEED_DB);
   const [inventory, setInventory] = useState([]);
   const [stats, setStats] = useState(EMPTY_STATS);
+  const [viewMode, setViewMode] = useState("operations");
   const [selected, setSelected] = useState(null);
+  const [search, setSearch] = useState("");
+  const [sourceScope, setSourceScope] = useState("all");
+  const [genreFilter, setGenreFilter] = useState([]);
+  const [regionFilter, setRegionFilter] = useState([]);
   const [filterColor, setFilterColor] = useState(null);
   const [filterFarming, setFilterFarming] = useState(null);
   const [filterSo2Max, setFilterSo2Max] = useState(45);
   const [appError, setAppError] = useState("");
   const [statusMessage, setStatusMessage] = useState("");
   const [sourceRunning, setSourceRunning] = useState({});
+  const [liveContext, setLiveContext] = useState(null);
+  const [liveForm, setLiveForm] = useState(INITIAL_LIVE_FORM);
+  const [kioskAuto, setKioskAuto] = useState(true);
+  const [kioskInterval, setKioskInterval] = useState(30);
   const [isPending, startTransition] = useTransition();
 
   const [analysisFile, setAnalysisFile] = useState(null);
   const [analysisPreview, setAnalysisPreview] = useState("");
   const [analysisResult, setAnalysisResult] = useState(null);
   const [analysisSelectionId, setAnalysisSelectionId] = useState("");
+  const [inventoryImportText, setInventoryImportText] = useState("");
+  const [importFormat, setImportFormat] = useState("csv");
   const [inventoryForm, setInventoryForm] = useState(INITIAL_INVENTORY_FORM);
   const [catalogDraft, setCatalogDraft] = useState(INITIAL_CATALOG_DRAFT);
   const [labelDraft, setLabelDraft] = useState(INITIAL_LABEL_DRAFT);
@@ -195,11 +277,25 @@ export default function App() {
         getJson("/api/inventory"),
         getJson("/api/stats"),
       ]);
+      const liveData = await getJson("/api/context/live");
 
       startTransition(() => {
         setCatalog(catalogData);
         setInventory(inventoryData);
         setStats(statsData);
+        setLiveContext(liveData);
+        setLiveForm((current) => ({
+          ...current,
+          city: liveData.city || current.city,
+          headlineTopic: liveData.headlineTopic || current.headlineTopic,
+          djNotes: liveData.djNotes || current.djNotes,
+          maxPrice: Number.isFinite(Number(liveData.maxPrice)) ? Number(liveData.maxPrice) : current.maxPrice,
+          artist: liveData.track?.artist || current.artist,
+          songTitle: liveData.track?.title || current.songTitle,
+          bpm: liveData.track?.bpm ? String(liveData.track.bpm) : current.bpm,
+          energy: liveData.track?.energy ? String(liveData.track?.energy) : current.energy,
+          trackGenres: Array.isArray(liveData.track?.genres) ? liveData.track.genres.join(", ") : (current.trackGenres || ""),
+        }));
       });
       setAppError("");
     } catch (error) {
@@ -217,13 +313,72 @@ export default function App() {
     }
   }, [catalog, selected]);
 
+  const catalogSourceCounts = useMemo(() => {
+    const counts = {
+      all: catalog.length,
+      seed: 0,
+      custom: 0,
+      unknown: 0,
+    };
+
+    for (const wine of catalog) {
+      if (wine.source === "seed") counts.seed += 1;
+      else if (wine.source) counts.custom += 1;
+      else counts.unknown += 1;
+    }
+
+    return counts;
+  }, [catalog]);
+
+  const genreIndex = useMemo(() => {
+    const map = new Map();
+    catalog.forEach((wine) => {
+      const tags = [...(wine.styles ?? []), ...(wine.flavors ?? [])];
+      tags.forEach((tag) => {
+        const key = String(tag).toLowerCase();
+        if (!key) return;
+        map.set(key, (map.get(key) ?? 0) + 1);
+      });
+    });
+    return [...map.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+  }, [catalog]);
+
+  const availableRegions = useMemo(() => [...new Set(catalog.map((wine) => wine.region).filter(Boolean))].sort(), [catalog]);
+
   const filtered = useMemo(() => catalog.filter((wine) => {
+    const query = search.trim().toLowerCase();
+    const source = wine.source || "seed";
+
+    if (sourceScope !== "all") {
+      if (sourceScope === "seed" && source !== "seed") return false;
+      if (sourceScope === "custom" && source === "seed") return false;
+    }
     if (filterColor && wine.color !== filterColor) return false;
     if (filterFarming && wine.farming !== filterFarming) return false;
     if (filterSo2Max < 45 && !Number.isFinite(wine.so2)) return false;
     if (Number.isFinite(wine.so2) && wine.so2 > filterSo2Max) return false;
+    if (genreFilter.length > 0) {
+      const haystack = [...(wine.styles ?? []), ...(wine.flavors ?? [])].map((value) => String(value).toLowerCase());
+      if (!genreFilter.some((genre) => haystack.includes(genre))) return false;
+    }
+    if (regionFilter.length > 0 && !regionFilter.includes(wine.region)) return false;
+    if (query) {
+      const searchable = [
+        wine.name,
+        wine.producer,
+        wine.region,
+        wine.appellation,
+        wine.country,
+        ...(wine.grapes ?? []),
+        ...(wine.styles ?? []),
+        ...(wine.flavors ?? []),
+        ...(wine.aliases ?? []),
+      ].join(" ").toLowerCase();
+
+      if (!textIncludes(searchable, query)) return false;
+    }
     return true;
-  }), [catalog, filterColor, filterFarming, filterSo2Max]);
+  }), [catalog, filterColor, filterFarming, filterSo2Max, genreFilter, regionFilter, search, sourceScope]);
 
   const plottable = filtered.filter((wine) => Number.isFinite(wine.so2) && Number.isFinite(wine.intervention));
   const avgSo2Known = filtered.filter((wine) => Number.isFinite(wine.so2));
@@ -338,6 +493,47 @@ export default function App() {
     }
   }
 
+  async function handleBulkInventoryImport() {
+    if (!inventoryImportText.trim()) {
+      setAppError("No import payload provided.");
+      return;
+    }
+
+    try {
+      setAppError("");
+      setStatusMessage("Importing cellar inventory...");
+
+      const payload = importFormat === "json"
+        ? JSON.parse(inventoryImportText)
+        : parseInventoryCsvRows(inventoryImportText);
+
+      const items = Array.isArray(payload)
+        ? payload
+        : [];
+
+      if (!items.length) {
+        throw new Error("No valid items found. Paste CSV/JSON with one row per bottle.");
+      }
+
+      const normalized = items.map((entry) => ({
+        catalogWineId: entry.catalogWineId || entry.catalogId || "",
+        customLabel: entry.customLabel || entry.label || entry.name || "",
+        quantity: Number(entry.quantity ?? 1) || 1,
+        location: entry.location || "Cellar",
+        notes: entry.notes || "",
+        confidence: entry.confidence || "manual-import",
+      }));
+
+      const result = await postJson("/api/inventory/import", { items: normalized });
+      await refreshData();
+      setStatusMessage(`Inventory import complete. added ${result.createdCount || items.length} items.`);
+      setInventoryImportText("");
+    } catch (error) {
+      setAppError(error.message);
+      setStatusMessage("");
+    }
+  }
+
   async function handleRegisterCatalog() {
     try {
       const payload = {
@@ -398,6 +594,85 @@ export default function App() {
     }
   }
 
+  async function handleSaveLiveContext() {
+    setAppError("");
+    const payload = {
+      city: liveForm.city,
+      headlineTopic: liveForm.headlineTopic,
+      djNotes: liveForm.djNotes,
+      maxPrice: liveForm.maxPrice,
+      track: {
+        artist: liveForm.artist,
+        title: liveForm.songTitle,
+        bpm: liveForm.bpm ? Number(liveForm.bpm) : null,
+        energy: liveForm.energy ? Number(liveForm.energy) : null,
+        genres: splitCsv(liveForm.trackGenres),
+        mood: liveForm.djNotes,
+      },
+    };
+
+    const context = await postJson("/api/context/live", payload);
+    setLiveContext(context);
+    setStatusMessage("Live context saved for iPad kiosk recommendations.");
+  }
+
+  async function handleRunLiveRecommendations() {
+    setAppError("");
+    try {
+      const result = await postJson("/api/recommend/live", {
+        city: liveForm.city,
+        headlineTopic: liveForm.headlineTopic,
+        maxPrice: Number.isFinite(Number(liveForm.maxPrice)) ? Number(liveForm.maxPrice) : 45,
+        styles: [],
+        flavors: [],
+        colors: [],
+        djNotes: liveForm.djNotes,
+        track: {
+          artist: liveForm.artist,
+          title: liveForm.songTitle,
+          bpm: liveForm.bpm ? Number(liveForm.bpm) : null,
+          energy: liveForm.energy ? Number(liveForm.energy) : null,
+          genres: splitCsv(liveForm.trackGenres),
+        },
+      });
+
+      setContextRecommendations(result);
+      setStatusMessage("Live recommendation refreshed.");
+    } catch (error) {
+      setAppError(error.message);
+    }
+  }
+
+  useEffect(() => {
+    if (viewMode !== "kiosk") return;
+    if (!kioskAuto) return;
+
+    const timer = setInterval(() => {
+      void handleRunLiveRecommendations();
+    }, kioskInterval * 1000);
+
+    return () => clearInterval(timer);
+  }, [
+    kioskInterval,
+    kioskAuto,
+    viewMode,
+    liveForm.artist,
+    liveForm.songTitle,
+    liveForm.city,
+    liveForm.headlineTopic,
+    liveForm.djNotes,
+    liveForm.trackGenres,
+    liveForm.bpm,
+    liveForm.energy,
+    liveForm.maxPrice,
+  ]);
+
+  useEffect(() => {
+    if (viewMode === "kiosk") {
+      void handleRunLiveRecommendations();
+    }
+  }, [viewMode]);
+
   async function handleRunSource(sourceId) {
     if (!sourceId) return;
 
@@ -444,6 +719,231 @@ export default function App() {
   }
 
   const topInventory = inventory.slice(0, 6);
+  const isKiosk = viewMode === "kiosk";
+  const liveUpdatedAt = liveContext?.updatedAt
+    ? new Date(liveContext.updatedAt).toLocaleString("en-US")
+    : "Not saved";
+  const liveTrack = liveContext?.track ?? {};
+  const liveTrackGenres = Array.isArray(liveTrack.genres) ? liveTrack.genres.join(", ") : "";
+  const liveSnapshot = contextRecommendations?.snapshot ?? null;
+  const liveWeather = liveSnapshot?.weather ?? null;
+  const liveNews = liveSnapshot?.news ?? null;
+  const liveTags = liveSnapshot?.tags ?? [];
+
+  if (isKiosk) {
+    return (
+      <div className="app-shell">
+        <header className="app-header">
+          <div>
+            <div className="eyebrow">NATURAL WINE RESEARCH — KIOSK RECOMMENDATION HUB</div>
+            <h1>VIN NATUREL OS</h1>
+            <div className="subhead">DJ-CONTEXT RECOMMENDATIONS + INVENTORY AWARE DISPLAY</div>
+          </div>
+          <div className="stats-grid">
+          {[
+            ["GLOBAL CATALOG", `${stats.catalogCount}`],
+            ["CELLAR STOCK", `${stats.inventoryCount}`],
+            ["BOTTLES", `${stats.inventoryUnits ?? 0}`],
+            ["LABEL READY", `${stats.labelReady}`],
+            ["LIVE SOURCE", liveContext?.track?.title || "—"],
+          ].map(([label, value]) => (
+              <div key={label} className="stat-block">
+                <div className="stat-label">{label}</div>
+                <div className="stat-value">{value}</div>
+              </div>
+            ))}
+          </div>
+        </header>
+
+        <section className="view-mode-bar">
+          {APP_VIEWS.map((view) => (
+            <button
+              key={view.id}
+              type="button"
+              onClick={() => setViewMode(view.id)}
+              className={`filter-chip ${viewMode === view.id ? "chip-active" : ""}`}
+            >
+              {view.label}
+            </button>
+          ))}
+        </section>
+
+        {stats.sourceWatchlist?.length ? (
+          <section className="watchlist-panel">
+            <SourceWatchlist
+              sources={stats.sourceWatchlist}
+              onRun={handleRunSource}
+              onRunAll={handleRunAllSources}
+              runningIds={sourceRunning}
+            />
+          </section>
+        ) : null}
+
+        {appError ? <div className="app-banner error-banner">{appError}</div> : null}
+        {statusMessage ? <div className="app-banner status-banner">{statusMessage}</div> : null}
+        {isPending ? <div className="app-banner pending-banner">Refreshing interface…</div> : null}
+
+        <section className="module-panel">
+          <div className="panel-head">
+            <div className="section-label">LIVE DJ FEED / AUTOMATION ENGINE</div>
+            <div className="micro-copy">Saved: {liveUpdatedAt}</div>
+          </div>
+          <div className="kiosk-grid two-column">
+            <div className="result-panel">
+              <div className="form-grid triple-grid">
+                <label>
+                  <span>City</span>
+                  <input value={liveForm.city} onChange={(event) => setLiveForm((current) => ({ ...current, city: event.target.value }))} />
+                </label>
+                <label>
+                  <span>Headline topic</span>
+                  <input value={liveForm.headlineTopic} onChange={(event) => setLiveForm((current) => ({ ...current, headlineTopic: event.target.value }))} />
+                </label>
+                <label>
+                  <span>Max budget</span>
+                  <input
+                    type="number"
+                    min={0}
+                    value={liveForm.maxPrice}
+                    onChange={(event) => setLiveForm((current) => ({ ...current, maxPrice: Number(event.target.value) || 45 }))}
+                  />
+                </label>
+                <label>
+                  <span>Track artist</span>
+                  <input value={liveForm.artist} onChange={(event) => setLiveForm((current) => ({ ...current, artist: event.target.value }))} />
+                </label>
+                <label>
+                  <span>Track title</span>
+                  <input value={liveForm.songTitle} onChange={(event) => setLiveForm((current) => ({ ...current, songTitle: event.target.value }))} />
+                </label>
+                <label>
+                  <span>Track genres</span>
+                  <input value={liveForm.trackGenres} onChange={(event) => setLiveForm((current) => ({ ...current, trackGenres: event.target.value }))} />
+                </label>
+                <label>
+                  <span>BPM</span>
+                  <input type="number" min={0} value={liveForm.bpm} onChange={(event) => setLiveForm((current) => ({ ...current, bpm: event.target.value }))} />
+                </label>
+                <label>
+                  <span>Energy (0-1)</span>
+                  <input type="number" min={0} max={1} step={0.05} value={liveForm.energy} onChange={(event) => setLiveForm((current) => ({ ...current, energy: event.target.value }))} />
+                </label>
+                <label className="full-span">
+                  <span>DJ notes</span>
+                  <textarea value={liveForm.djNotes} onChange={(event) => setLiveForm((current) => ({ ...current, djNotes: event.target.value }))} />
+                </label>
+              </div>
+              <div className="inline-actions">
+                <button type="button" className="action-button" onClick={handleSaveLiveContext}>Save Live Context</button>
+                <button type="button" className="secondary-button" onClick={handleRunLiveRecommendations}>Run Live Recommendation</button>
+              </div>
+              <div className="kiosk-auto-row">
+                <label className="inline-toggle">
+                  <input type="checkbox" checked={kioskAuto} onChange={(event) => setKioskAuto(event.target.checked)} />
+                  <span>AUTO UPDATE</span>
+                </label>
+                <label>
+                  <span>Refresh interval</span>
+                  <select value={kioskInterval} onChange={(event) => setKioskInterval(Number(event.target.value))}>
+                    {KIOSK_REFRESH_OPTIONS.map((entry) => (
+                      <option key={entry} value={entry}>{entry} sec</option>
+                    ))}
+                  </select>
+                </label>
+              </div>
+            </div>
+
+            <div className="result-panel">
+              <div className="section-label">LIVE CONTEXT SNAPSHOT</div>
+              {liveSnapshot ? (
+                <>
+                  <div className="snapshot-row">
+                    <strong>Track</strong>
+                    <span>{liveContext?.track?.artist || "—"} · {liveContext?.track?.title || "—"}</span>
+                  </div>
+                  <div className="snapshot-row">
+                    <strong>Track metadata</strong>
+                    <span>
+                      {liveContext?.track?.bpm ? `BPM ${liveContext.track.bpm}` : "BPM N/A"}
+                      {" · "}
+                      {liveContext?.track?.energy ? `energy ${liveContext.track.energy}` : "energy N/A"}
+                      {" · "}
+                      {liveTrackGenres || "genres unknown"}
+                    </span>
+                  </div>
+                  {liveWeather ? (
+                    <div className="snapshot-row">
+                      <strong>WEATHER</strong>
+                      <span>{liveWeather.location} · {liveWeather.summary} · {liveWeather.temperature}°C</span>
+                    </div>
+                  ) : null}
+                  <div className="tag-row">
+                    {liveTags.map((tag) => (
+                      <span key={tag} className="tag-chip">{tag}</span>
+                    ))}
+                  </div>
+                  <div className="headline-list">
+                    {liveNews?.items?.slice(0, 4).map((item) => (
+                      <a key={item.link} href={item.link} target="_blank" rel="noreferrer">{item.title}</a>
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <div className="empty-card">Run live recommendation to produce a snapshot for the iPad kiosk.</div>
+              )}
+            </div>
+          </div>
+        </section>
+
+        <section className="workspace-grid">
+          <RecommendationColumn
+            title="GLOBAL CATALOG PICKS"
+            items={contextRecommendations?.catalog}
+            onSelect={setSelected}
+            emptyLabel="Save live context or press run to generate catalog suggestions."
+          />
+          <RecommendationColumn
+            title="CELLAR INVENTORY PICKS"
+            items={contextRecommendations?.inventory}
+            onSelect={setSelected}
+            emptyLabel="Link inventory items to catalog wines to prioritize cellar stock."
+          />
+        </section>
+
+        <section className="inventory-panel">
+          <div className="panel-head">
+            <div className="section-label">CELLAR STOCK SNAPSHOT</div>
+            <div className="micro-copy">
+              {stats.inventoryUnits || 0} bottles · {stats.inventoryLinked}/{stats.inventoryCount} linked to catalog
+            </div>
+          </div>
+          {stats.inventoryLocationCounts?.length ? (
+            <div className="inventory-location-grid">
+              {stats.inventoryLocationCounts.slice(0, 8).map(([location, count]) => (
+                <div key={location} className="micro-copy">
+                  <strong>{location}</strong>: {count} bottles
+                </div>
+              ))}
+            </div>
+          ) : null}
+          <div className="inventory-grid">
+            {topInventory.length ? topInventory.map((item) => (
+              <button key={item.id} type="button" className="inventory-card" onClick={() => item.wine && setSelected(item.wine)}>
+                {item.imagePath ? <img src={item.imagePath} alt={item.customLabel || item.wine?.name || "Inventory bottle"} className="inventory-image" /> : null}
+                <div className="inventory-body">
+                  <div className="inventory-title">{item.wine?.name || item.customLabel || "Unmatched bottle"}</div>
+                  <div className="inventory-subtitle">{item.wine?.producer || "Needs catalog match"}</div>
+                  <div className="inventory-meta">{item.location || "Unknown location"} · qty {item.quantity}</div>
+                </div>
+              </button>
+            )) : (
+              <div className="empty-card">No stock captured yet. Upload bottle labels in Operations mode.</div>
+            )}
+          </div>
+        </section>
+      </div>
+    );
+  }
 
   return (
     <div className="app-shell">
@@ -454,9 +954,10 @@ export default function App() {
           <div className="subhead">UNIFIED CATALOG + STOCK IMAGE RECOGNITION + CONTEXT RECOMMENDER</div>
         </div>
         <div className="stats-grid">
-          {[
-            ["CATALOG", `${stats.catalogCount}`],
-            ["INVENTORY", `${stats.inventoryCount}`],
+        {[
+            ["GLOBAL CATALOG", `${stats.catalogCount}`],
+            ["CELLAR STOCK", `${stats.inventoryCount}`],
+            ["BOTTLES", `${stats.inventoryUnits ?? 0}`],
             ["PLOTTABLE", `${stats.plottable}`],
             ["LABEL READY", `${stats.labelReady}`],
             ["LABEL ASSETS", `${stats.labelAssets}`],
@@ -471,6 +972,19 @@ export default function App() {
           ))}
         </div>
       </header>
+
+      <section className="view-mode-bar">
+        {APP_VIEWS.map((view) => (
+          <button
+            key={view.id}
+            type="button"
+            onClick={() => setViewMode(view.id)}
+            className={`filter-chip ${viewMode === view.id ? "chip-active" : ""}`}
+          >
+            {view.label}
+          </button>
+        ))}
+      </section>
 
       {stats.sourceWatchlist?.length ? (
         <section className="watchlist-panel">
@@ -489,6 +1003,71 @@ export default function App() {
 
       <section className="filter-bar">
         <div className="filter-label">VISUAL FILTER ↓</div>
+        <label className="search-input-wrap">
+          <span>SEARCH (name / producer / grape / region / tags)</span>
+          <input
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+            placeholder="Muscadet, Loirе, orange, minimal..."
+          />
+        </label>
+
+        <div className="chip-row">
+          <button type="button" className={`filter-chip ${sourceScope === "all" ? "chip-active" : ""}`} onClick={() => setSourceScope("all")}>
+            All ({catalogSourceCounts.all})
+          </button>
+          <button type="button" className={`filter-chip ${sourceScope === "seed" ? "chip-active" : ""}`} onClick={() => setSourceScope("seed")}>
+            Seed ({catalogSourceCounts.seed})
+          </button>
+          <button type="button" className={`filter-chip ${sourceScope === "custom" ? "chip-active" : ""}`} onClick={() => setSourceScope("custom")}>
+            Custom / Imported ({catalogSourceCounts.custom + catalogSourceCounts.unknown})
+          </button>
+        </div>
+
+        <div className="chip-row">
+          {genreIndex.slice(0, 10).map(([genre]) => (
+            <button
+              key={genre}
+              type="button"
+              className={`filter-chip ${genreFilter.includes(genre) ? "chip-active" : ""}`}
+              onClick={() => setGenreFilter((current) => (current.includes(genre)
+                ? current.filter((entry) => entry !== genre)
+                : [...current, genre]))}
+            >
+              {genre}
+            </button>
+          ))}
+        </div>
+
+        <div className="chip-row">
+          {availableRegions.slice(0, 10).map((region) => (
+            <button
+              key={region}
+              type="button"
+              className={`filter-chip ${regionFilter.includes(region) ? "chip-active" : ""}`}
+              onClick={() => setRegionFilter((current) => (current.includes(region)
+                ? current.filter((entry) => entry !== region)
+                : [...current, region]))}
+            >
+              {region}
+            </button>
+          ))}
+          <button
+            type="button"
+            className="secondary-button"
+            onClick={() => {
+              setSearch("");
+              setGenreFilter([]);
+              setRegionFilter([]);
+              setFilterColor(null);
+              setFilterFarming(null);
+              setFilterSo2Max(45);
+              setSourceScope("all");
+            }}
+          >
+            RESET FILTERS
+          </button>
+        </div>
 
         <div className="chip-row">
           {Object.entries(COLOR_MAP).map(([key, value]) => (
@@ -575,14 +1154,58 @@ export default function App() {
                 </label>
               </div>
 
-              <label>
-                <span>Inventory notes</span>
-                <textarea value={inventoryForm.notes} onChange={(event) => setInventoryForm((current) => ({ ...current, notes: event.target.value }))} />
-              </label>
+                <label>
+                  <span>Inventory notes</span>
+                  <textarea value={inventoryForm.notes} onChange={(event) => setInventoryForm((current) => ({ ...current, notes: event.target.value }))} />
+                </label>
 
-              <button type="button" className="action-button" disabled={!analysisFile} onClick={handleAnalyzeUpload}>
-                Run OCR + Match Catalog
-              </button>
+                <div className="result-panel">
+                  <div className="section-label">BULK INVENTORY IMPORT</div>
+                  <div className="chip-row">
+                    <button
+                      type="button"
+                      className={`filter-chip ${importFormat === "csv" ? "chip-active" : ""}`}
+                      onClick={() => setImportFormat("csv")}
+                    >
+                      CSV
+                    </button>
+                    <button
+                      type="button"
+                      className={`filter-chip ${importFormat === "json" ? "chip-active" : ""}`}
+                      onClick={() => setImportFormat("json")}
+                    >
+                      JSON
+                    </button>
+                  </div>
+                  <label className="full-span">
+                    <span>
+                      {importFormat === "csv"
+                        ? "Paste CSV rows (name,customLabel,quantity,location,catalogWineId,notes)"
+                        : "Paste JSON array of objects"}
+                    </span>
+                    <textarea
+                      value={inventoryImportText}
+                      onChange={(event) => setInventoryImportText(event.target.value)}
+                      placeholder={importFormat === "csv"
+                        ? "customLabel,quantity,location,catalogWineId,notes\nNatura 42,1,Main Cellar,,unmatched in stock"
+                        : '[{"customLabel":"Natura 42","quantity":2,"location":"Main Cellar","catalogWineId":"042","notes":"purchase in May"}]'}
+                      style={{ minHeight: 140 }}
+                    />
+                  </label>
+                <div className="inline-actions">
+                    <button type="button" className="secondary-button" onClick={handleBulkInventoryImport}>
+                      Import Inventory
+                    </button>
+                  </div>
+                </div>
+
+                <button type="button" className="secondary-button" onClick={() => setInventoryImportText("")}>
+                  Clear Import Text
+                </button>
+
+                <button type="button" className="action-button" disabled={!analysisFile} onClick={handleAnalyzeUpload}>
+                  Run OCR + Match Catalog
+                </button>
             </div>
 
             <div className="stack-col">
@@ -904,8 +1527,19 @@ export default function App() {
       <section className="inventory-panel">
         <div className="panel-head">
           <div className="section-label">3. INVENTORY SNAPSHOT</div>
-          <div className="micro-copy">{stats.inventoryLinked}/{stats.inventoryCount} linked to catalog</div>
+          <div className="micro-copy">
+            {stats.inventoryUnits || 0} bottles · {stats.inventoryLinked}/{stats.inventoryCount} linked to catalog
+          </div>
         </div>
+        {stats.inventoryLocationCounts?.length ? (
+          <div className="inventory-location-grid">
+            {stats.inventoryLocationCounts.slice(0, 8).map(([location, count]) => (
+              <div key={location} className="micro-copy">
+                <strong>{location}</strong>: {count} bottles
+              </div>
+            ))}
+          </div>
+        ) : null}
         <div className="inventory-grid">
           {topInventory.length ? topInventory.map((item) => (
             <button key={item.id} type="button" className="inventory-card" onClick={() => item.wine && setSelected(item.wine)}>

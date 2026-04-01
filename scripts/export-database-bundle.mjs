@@ -2,11 +2,16 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { DB as SEED_DB } from "../src/data/wines.js";
-import { listCatalog, mapCatalogById } from "../server/lib/catalog.mjs";
+import { buildCatalogStats, listCatalog, mapCatalogById } from "../server/lib/catalog.mjs";
 import { DATA_DIR } from "../server/lib/paths.mjs";
-import { listInventory, materializeInventory } from "../server/lib/inventory.mjs";
+import {
+  listInventory,
+  materializeInventory,
+  summarizeInventory,
+} from "../server/lib/inventory.mjs";
 import { listLabels } from "../server/lib/labels.mjs";
 import { listSources } from "../server/lib/sources.mjs";
+import { getLiveContext } from "../server/lib/context.mjs";
 import { readJson } from "../server/lib/storage.mjs";
 
 const ROOT_DIR = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
@@ -17,9 +22,12 @@ const DATA_DIR_FILES = {
   catalogUnified: "catalog-unified.json",
   inventoryRaw: "inventory-raw.json",
   inventoryMaterialized: "inventory-materialized.json",
+  inventorySummary: "inventory-summary.json",
+  liveContext: "live-context.json",
   labels: "labels.json",
   sourceWatchlist: "source-watchlist.json",
   combined: "bundle-combined.json",
+  catalogStats: "catalog-stats.json",
 };
 
 function formatDate(value) {
@@ -33,10 +41,8 @@ function formatDate(value) {
   });
 }
 
-function buildOverview({ catalog, additions, inventory, materializedInventory, labels, watchlist }) {
+function buildOverview({ catalog, additions, inventory, materializedInventory, labels, watchlist, liveContext, inventorySummary, catalogStats }) {
   const catalogMap = mapCatalogById(catalog);
-  const linkedInventory = materializedInventory.filter((item) => item.wine).length;
-
   return {
     generatedAt: new Date().toISOString(),
     database: {
@@ -44,16 +50,26 @@ function buildOverview({ catalog, additions, inventory, materializedInventory, l
       additionsCount: additions.length,
       unifiedCount: catalog.length,
       inventoryCount: inventory.length,
-      linkedInventoryCount: linkedInventory,
+      inventoryUnits: inventorySummary.totalQuantity,
+      linkedInventoryCount: materializedInventory.filter((item) => item.wine).length,
       labelAssetCount: labels.length,
+      linkedCatalogCount: catalogStats.inventoryLinked,
       catalogWithLinkCount: [...catalogMap.keys()].length,
+      catalogPlottableCount: catalogStats.plottable,
       combinedDataSize: JSON.stringify(catalog).length,
+    },
+    live: {
+      city: liveContext.city,
+      headlineTopic: liveContext.headlineTopic,
+      updatedAt: liveContext.updatedAt,
+      track: liveContext.track,
     },
     collections: Object.entries(DATA_DIR_FILES).map(([key, value]) => ({ name: key, file: `${value}` })),
     sourceWatchlist: {
       total: watchlist.length,
       enabled: watchlist.filter((item) => item.enabled !== false).length,
     },
+    inventorySummary,
   };
 }
 
@@ -69,7 +85,9 @@ Generated: ${formatDate(overview.generatedAt)}
 - Unified catalog total: \`${overview.database.unifiedCount}\`
 - Inventory records: \`${overview.database.inventoryCount}\`
 - Linked inventory records: \`${overview.database.linkedInventoryCount}\`
+- Inventory bottles (sum of quantities): \`${overview.database.inventoryUnits}\`
 - Label assets: \`${overview.database.labelAssetCount}\`
+- Live context loaded: \`${overview.live?.headlineTopic || "n/a"}\` @ \`${overview.live?.updatedAt || "n/a"}\`
 
 ## 2) Data Files Included
 
@@ -86,6 +104,9 @@ ${overview.collections.map((item) => `- \`${item.file}\``).join("\n")}
 - \`inventory-raw.json\` preserves manual inventory rows.
 - \`inventory-materialized.json\` includes resolved catalog joins for UI use.
 - \`catalog-seed.json\` and \`catalog-additions.json\` are useful for migration diffs.
+- \`inventory-summary.json\` stores bottle-count rollups by wine/location.
+- \`live-context.json\` stores last saved live kiosk context.
+- \`catalog-stats.json\` stores UI/build stats snapshot.
 - \`labels.json\` stores label OCR/visual metadata.
 - \`source-watchlist.json\` keeps planned and executable collection sources.
 `;
@@ -101,7 +122,10 @@ This folder contains all currently persisted data used by the current Natural Wi
 - merged catalog ('catalog-unified.json')
 - inventory records ('inventory-raw.json')
 - inventory with catalog joins ('inventory-materialized.json')
+- inventory summary with units/location grouping ('inventory-summary.json')
 - OCR/label metadata ('labels.json')
+- live kiosk context ('live-context.json')
+- build stats snapshot ('catalog-stats.json')
 - source watchlist used for collection ('source-watchlist.json')
 - one-file combined payload ('bundle-combined.json')
 - snapshot summary ('OVERVIEW.json' and 'OVERVIEW.md')
@@ -114,6 +138,7 @@ This folder contains all currently persisted data used by the current Natural Wi
    - \`catalog-unified.json\` for default catalog rendering
    - \`labels.json\` for OCR + label visuals
    - \`inventory-materialized.json\` for inventory enrichment
+   - \`live-context.json\` and \`inventory-summary.json\` for iPad kiosk defaults and inventory snapshots
 
 ## Data generation metadata
 
@@ -134,6 +159,9 @@ const inventory = await listInventory();
 const labels = await listLabels();
 const watchlist = await listSources();
 const materializedInventory = materializeInventory(inventory, mapCatalogById(catalog));
+const liveContext = await getLiveContext();
+const inventorySummary = summarizeInventory(inventory);
+const catalogStats = buildCatalogStats(catalog, materializedInventory, labels);
 const combined = {
   generatedAt: new Date().toISOString(),
   catalogSeed,
@@ -141,8 +169,11 @@ const combined = {
   catalog,
   inventory,
   materializedInventory,
+  inventorySummary,
   labels,
+  catalogStats,
   watchlist,
+  liveContext,
 };
 
 const overview = buildOverview({
@@ -152,6 +183,9 @@ const overview = buildOverview({
   materializedInventory,
   labels,
   watchlist,
+  liveContext,
+  inventorySummary,
+  catalogStats,
 });
 
 await fs.writeFile(
@@ -177,6 +211,21 @@ await fs.writeFile(
 await fs.writeFile(
   path.join(DATA_BUNDLE_DIR, DATA_DIR_FILES.inventoryMaterialized),
   JSON.stringify(materializedInventory, null, 2),
+  "utf8",
+);
+await fs.writeFile(
+  path.join(DATA_BUNDLE_DIR, DATA_DIR_FILES.inventorySummary),
+  JSON.stringify(inventorySummary, null, 2),
+  "utf8",
+);
+await fs.writeFile(
+  path.join(DATA_BUNDLE_DIR, DATA_DIR_FILES.liveContext),
+  JSON.stringify(liveContext, null, 2),
+  "utf8",
+);
+await fs.writeFile(
+  path.join(DATA_BUNDLE_DIR, DATA_DIR_FILES.catalogStats),
+  JSON.stringify(catalogStats, null, 2),
   "utf8",
 );
 await fs.writeFile(

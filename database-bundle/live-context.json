@@ -1,0 +1,19 @@
+{
+  "city": "Tokyo",
+  "headlineTopic": "natural wine",
+  "djNotes": "",
+  "track": {
+    "title": "",
+    "artist": "",
+    "bpm": null,
+    "energy": null,
+    "genres": [],
+    "mood": "",
+    "source": "dj-studio"
+  },
+  "maxPrice": 45,
+  "colors": [],
+  "moods": [],
+  "updatedAt": null,
+  "updatedBy": "system"
+}

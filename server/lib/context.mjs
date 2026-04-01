@@ -1,6 +1,114 @@
 import Parser from "rss-parser";
+import path from "node:path";
+import { DATA_DIR } from "./paths.mjs";
+import { readJson, writeJson } from "./storage.mjs";
 
 const parser = new Parser();
+const LIVE_CONTEXT_FILE = path.join(DATA_DIR, "live-context.json");
+
+const DEFAULT_TRACK = {
+  title: "",
+  artist: "",
+  bpm: null,
+  energy: null,
+  genres: [],
+  mood: "",
+  source: "dj-studio",
+};
+
+const DEFAULT_CONTEXT = {
+  city: "Tokyo",
+  headlineTopic: "natural wine",
+  djNotes: "",
+  track: DEFAULT_TRACK,
+  maxPrice: 45,
+  colors: [],
+  moods: [],
+  updatedAt: null,
+  updatedBy: "system",
+};
+
+function normalizeText(value) {
+  return String(value ?? "").trim();
+}
+
+function normalizeTrack(value) {
+  const track = value ?? {};
+  const genres = Array.isArray(track.genres) ? track.genres : String(track.genres ?? "").split(",").map((item) => item.trim()).filter(Boolean);
+  const bpm = Number(track.bpm);
+  const energy = Number(track.energy);
+
+  return {
+    title: normalizeText(track.title).slice(0, 140),
+    artist: normalizeText(track.artist).slice(0, 140),
+    bpm: Number.isFinite(bpm) ? bpm : null,
+    energy: Number.isFinite(energy) ? energy : null,
+    genres: genres.map((entry) => entry.toLowerCase()).filter(Boolean),
+    mood: normalizeText(track.mood).slice(0, 120),
+    source: normalizeText(track.source || track.platform || "dj-studio").slice(0, 80),
+  };
+}
+
+function normalizeContextInput(input) {
+  const payload = input ?? {};
+  const normalized = {
+    city: normalizeText(payload.city || payload.location || DEFAULT_CONTEXT.city),
+    headlineTopic: normalizeText(payload.headlineTopic || payload.topic || DEFAULT_CONTEXT.headlineTopic),
+    djNotes: normalizeText(payload.djNotes || payload.notes || ""),
+    maxPrice: Number(payload.maxPrice),
+    colors: Array.isArray(payload.colors) ? payload.colors : [],
+    moods: Array.isArray(payload.moods) ? payload.moods : [],
+    track: normalizeTrack(payload.track || payload),
+    updatedAt: new Date().toISOString(),
+    updatedBy: normalizeText(payload.updatedBy || "operator") || "operator",
+  };
+
+  return {
+    ...normalized,
+    maxPrice: Number.isFinite(normalized.maxPrice) ? normalized.maxPrice : DEFAULT_CONTEXT.maxPrice,
+    colors: normalized.colors.map((item) => normalizeText(item)).filter(Boolean),
+    moods: normalized.moods.map((item) => normalizeText(item)).filter(Boolean),
+  };
+}
+
+function buildTrackNotes(track) {
+  const safeTrack = normalizeTrack(track);
+  const parts = [];
+  if (safeTrack.artist) parts.push(safeTrack.artist);
+  if (safeTrack.title) parts.push(safeTrack.title);
+  if (safeTrack.mood) parts.push(safeTrack.mood);
+  if (safeTrack.genres.length) parts.push(safeTrack.genres.join(", "));
+  if (safeTrack.bpm) parts.push(`bpm ${safeTrack.bpm}`);
+  if (safeTrack.energy) parts.push(`energy ${safeTrack.energy}`);
+  return parts.join(" · ");
+}
+
+export async function getLiveContext() {
+  return readJson(LIVE_CONTEXT_FILE, { ...DEFAULT_CONTEXT });
+}
+
+export async function setLiveContext(payload) {
+  const context = normalizeContextInput(payload);
+  const existing = await getLiveContext();
+
+  await writeJson(LIVE_CONTEXT_FILE, {
+    ...existing,
+    ...context,
+    track: {
+      ...existing.track,
+      ...context.track,
+    },
+    updatedAt: context.updatedAt,
+  });
+
+  return getLiveContext();
+}
+
+export function buildLiveDjNotes(context) {
+  const trackNotes = buildTrackNotes(context?.track);
+  const baseNotes = [context?.djNotes, trackNotes, ...((context?.moods ?? []).map((mood) => `mood:${mood}`))].filter(Boolean);
+  return [...new Set(baseNotes)].join(" · ");
+}
 
 function weatherCodeLabel(code) {
   const map = {
@@ -136,6 +244,9 @@ export async function fetchNewsSnapshot(topic = "natural wine") {
 }
 
 export async function buildContextSnapshot(input) {
+  const context = input ?? {};
+  const trackNotes = buildLiveDjNotes(context);
+
   let weather;
   let news;
 
@@ -164,8 +275,8 @@ export async function buildContextSnapshot(input) {
   }
 
   const dj = {
-    notes: input.djNotes || "",
-    tags: djTags(input.djNotes),
+    notes: context.djNotes || trackNotes || "",
+    tags: djTags([input.djNotes, trackNotes].filter(Boolean).join(" · ")),
   };
 
   return {

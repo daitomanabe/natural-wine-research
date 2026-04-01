@@ -1,14 +1,31 @@
 {
-  "generatedAt": "2026-03-27T09:53:34.045Z",
+  "generatedAt": "2026-04-01T02:49:17.575Z",
   "database": {
     "seedCount": 42,
     "additionsCount": 0,
     "unifiedCount": 42,
     "inventoryCount": 0,
+    "inventoryUnits": 0,
     "linkedInventoryCount": 0,
     "labelAssetCount": 0,
+    "linkedCatalogCount": 0,
     "catalogWithLinkCount": 42,
+    "catalogPlottableCount": 40,
     "combinedDataSize": 20238
+  },
+  "live": {
+    "city": "Tokyo",
+    "headlineTopic": "natural wine",
+    "updatedAt": null,
+    "track": {
+      "title": "",
+      "artist": "",
+      "bpm": null,
+      "energy": null,
+      "genres": [],
+      "mood": "",
+      "source": "dj-studio"
+    }
   },
   "collections": [
     {
@@ -32,6 +49,14 @@
       "file": "inventory-materialized.json"
     },
     {
+      "name": "inventorySummary",
+      "file": "inventory-summary.json"
+    },
+    {
+      "name": "liveContext",
+      "file": "live-context.json"
+    },
+    {
       "name": "labels",
       "file": "labels.json"
     },
@@ -42,10 +67,21 @@
     {
       "name": "combined",
       "file": "bundle-combined.json"
+    },
+    {
+      "name": "catalogStats",
+      "file": "catalog-stats.json"
     }
   ],
   "sourceWatchlist": {
     "total": 5,
     "enabled": 1
+  },
+  "inventorySummary": {
+    "totalQuantity": 0,
+    "linkedCount": 0,
+    "uniqueWineCount": 0,
+    "byLocation": [],
+    "byWine": []
   }
 }

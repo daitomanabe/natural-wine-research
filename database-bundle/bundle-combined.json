@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-27T09:53:34.044Z",
+  "generatedAt": "2026-04-01T02:49:17.575Z",
   "catalogSeed": [
     {
       "id": "001",
@@ -2906,7 +2906,26 @@
   ],
   "inventory": [],
   "materializedInventory": [],
+  "inventorySummary": {
+    "totalQuantity": 0,
+    "linkedCount": 0,
+    "uniqueWineCount": 0,
+    "byLocation": [],
+    "byWine": []
+  },
   "labels": [],
+  "catalogStats": {
+    "catalogCount": 42,
+    "inventoryCount": 0,
+    "inventoryUnits": 0,
+    "inventoryLinked": 0,
+    "inventoryLocationCounts": [],
+    "uniqueWineInInventory": 0,
+    "plottable": 40,
+    "labelReady": 3,
+    "labelAssets": 0,
+    "countries": 11
+  },
   "watchlist": [
     {
       "id": "vivino",
@@ -2996,5 +3015,24 @@
       "endpoint": "server/data/natural-wine-demo.json",
       "limit": 20
     }
-  ]
+  ],
+  "liveContext": {
+    "city": "Tokyo",
+    "headlineTopic": "natural wine",
+    "djNotes": "",
+    "track": {
+      "title": "",
+      "artist": "",
+      "bpm": null,
+      "energy": null,
+      "genres": [],
+      "mood": "",
+      "source": "dj-studio"
+    },
+    "maxPrice": 45,
+    "colors": [],
+    "moods": [],
+    "updatedAt": null,
+    "updatedBy": "system"
+  }
 }

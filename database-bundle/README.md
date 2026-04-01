@@ -7,7 +7,10 @@ This folder contains all currently persisted data used by the current Natural Wi
 - merged catalog ('catalog-unified.json')
 - inventory records ('inventory-raw.json')
 - inventory with catalog joins ('inventory-materialized.json')
+- inventory summary with units/location grouping ('inventory-summary.json')
 - OCR/label metadata ('labels.json')
+- live kiosk context ('live-context.json')
+- build stats snapshot ('catalog-stats.json')
 - source watchlist used for collection ('source-watchlist.json')
 - one-file combined payload ('bundle-combined.json')
 - snapshot summary ('OVERVIEW.json' and 'OVERVIEW.md')
@@ -20,10 +23,11 @@ This folder contains all currently persisted data used by the current Natural Wi
    - `catalog-unified.json` for default catalog rendering
    - `labels.json` for OCR + label visuals
    - `inventory-materialized.json` for inventory enrichment
+   - `live-context.json` and `inventory-summary.json` for iPad kiosk defaults and inventory snapshots
 
 ## Data generation metadata
 
-- Generated at (UTC): `2026-03-27T09:53:34.045Z`
+- Generated at (UTC): `2026-04-01T02:49:17.575Z`
 - Seed count: `42`
 - Unified catalog count: `42`
 - Inventory count: `0`

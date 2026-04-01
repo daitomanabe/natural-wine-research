@@ -102,20 +102,71 @@ function topResults(records, profile, limit = 6) {
     .slice(0, limit);
 }
 
-export function buildManualRecommendations({ catalog, inventory, profile }) {
+function stockMap(inventory = []) {
+  const map = new Map();
+  for (const item of inventory) {
+    if (!item?.wine?.id) continue;
+    const id = item.wine.id;
+    const existing = map.get(id) || {
+      wineId: id,
+      wine: item.wine,
+      quantity: 0,
+      items: [],
+      lastSeenAt: item.matchedAt || item.createdAt || "",
+      locations: new Set(),
+    };
+
+    const quantity = Number(item.quantity ?? 1) || 1;
+    existing.quantity += quantity;
+    existing.items.push(item);
+    if (item.location) existing.locations.add(item.location);
+    if (item.matchedAt || item.createdAt) existing.lastSeenAt = item.matchedAt || item.createdAt;
+    map.set(id, existing);
+  }
+
+  return new Map([...map.entries()].map(([id, value]) => [
+    id,
+    {
+      ...value,
+      locations: [...value.locations],
+    },
+  ]));
+}
+
+function boostByInventory(result, inventoryLookup) {
+  const entry = inventoryLookup.get(result.wine.id);
+  if (!entry) return result;
+  const stockBoost = Math.min(2.5, Math.log2(entry.quantity + 1));
+
   return {
-    catalog: topResults(catalog, profile),
-    inventory: topResults(
-      inventory.filter((item) => item.wine),
-      profile,
-    ).map((result) => ({
-      ...result,
-      inventoryItem: inventory.find((item) => item.wine?.id === result.wine.id) ?? null,
+    ...result,
+    score: result.score + stockBoost,
+    reasons: [...result.reasons, `stock +${entry.quantity}x`],
+    inventoryItem: {
+      ...entry,
+      quantity: entry.quantity,
+      locations: entry.locations,
+      inventoryEntries: entry.items.length,
+      inventoryItem: entry.items[0],
+    },
+  };
+}
+
+export function buildManualRecommendations({ catalog, inventory, profile }) {
+  const inventoryByWine = stockMap(inventory.filter((item) => item?.wine));
+
+  return {
+    catalog: topResults(catalog, profile).map((result) => boostByInventory(result, inventoryByWine)),
+    inventory: topResults([...inventoryByWine.values()].map((entry) => entry.wine), profile).map((result) => ({
+      ...boostByInventory(result, inventoryByWine),
+      inventoryItem: inventoryByWine.get(result.wine.id) ?? null,
     })),
   };
 }
 
 export function buildContextRecommendations({ catalog, inventory, snapshot, profile }) {
+  const inventoryByWine = stockMap(inventory.filter((item) => item?.wine));
+
   const mergedProfile = {
     ...profile,
     contextTags: snapshot.tags,
@@ -123,13 +174,10 @@ export function buildContextRecommendations({ catalog, inventory, snapshot, prof
 
   return {
     snapshot,
-    catalog: topResults(catalog, mergedProfile),
-    inventory: topResults(
-      inventory.filter((item) => item.wine),
-      mergedProfile,
-    ).map((result) => ({
-      ...result,
-      inventoryItem: inventory.find((item) => item.wine?.id === result.wine.id) ?? null,
+    catalog: topResults(catalog, mergedProfile).map((result) => boostByInventory(result, inventoryByWine)),
+    inventory: topResults([...inventoryByWine.values()].map((entry) => entry.wine), mergedProfile).map((result) => ({
+      ...boostByInventory(result, inventoryByWine),
+      inventoryItem: inventoryByWine.get(result.wine.id) ?? null,
     })),
   };
 }
