@@ -4,7 +4,7 @@ const args = process.argv.slice(2);
 
 function parseOption(name, fallback = null) {
   const arg = args.find((item, index) => {
-    if (!item.startsWith(`--${name}=`)) return false;
+    if (item.startsWith(`--${name}=`)) return true;
     if (item === `--${name}` && args[index + 1]) return true;
     return false;
   });

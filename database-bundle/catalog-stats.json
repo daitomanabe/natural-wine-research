@@ -1,12 +1,12 @@
 {
-  "catalogCount": 42,
+  "catalogCount": 677,
   "inventoryCount": 0,
   "inventoryUnits": 0,
   "inventoryLinked": 0,
   "inventoryLocationCounts": [],
   "uniqueWineInInventory": 0,
-  "plottable": 40,
-  "labelReady": 3,
+  "plottable": 675,
+  "labelReady": 37,
   "labelAssets": 0,
-  "countries": 11
+  "countries": 48
 }

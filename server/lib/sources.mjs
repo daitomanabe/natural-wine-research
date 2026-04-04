@@ -34,9 +34,14 @@ const SOURCE_ITEM_KEYS = {
   aliases: ["aliases", "labelHints", "altNames", "aka", "alsoKnownAs"],
   labelText: ["labelText", "labelHints", "labelHintsText", "labels", "displayName"],
   notes: ["notes", "description", "comment", "commentary", "tasting_note"],
+  regionHint: ["location", "zone", "site"],
 };
 
 const COLOR_ALIAS = {
+  redwine: "red",
+  whitewine: "white",
+  rosewine: "rose",
+  rosered: "rose",
   blanc: "white",
   white: "white",
   rouge: "red",
@@ -50,6 +55,9 @@ const COLOR_ALIAS = {
   amberwine: "orange",
   "amber-red": "orange",
   amber_red: "orange",
+  sparkling: "pétillant",
+  sparklingwine: "pétillant",
+  petnat: "orange",
   unknown: "unknown",
 };
 
@@ -59,13 +67,96 @@ function normalizeText(value) {
 }
 
 function normalizeArray(value) {
+  const candidate = normalizeArrayFromAny(value);
+  if (candidate.length) return candidate;
+  return splitCsv(value).filter(Boolean);
+}
+
+function normalizeArrayFromAny(value) {
+  if (value === null || value === undefined) return [];
   if (Array.isArray(value)) {
-    return value
-      .map((item) => normalizeText(item))
-      .filter(Boolean);
+    return value.map((item) => normalizeText(item)).filter(Boolean);
   }
 
-  return splitCsv(value).filter(Boolean);
+  const trimmed = normalizeText(value).trim();
+  if (!trimmed) return [];
+
+  if (/^\s*\[.*\]\s*$/.test(trimmed)) {
+    const sanitized = trimmed
+      .replace(/^\s*\[\s*/, "[")
+      .replace(/\s*\]\s*$/, "]");
+
+    try {
+      const parsed = JSON.parse(sanitized);
+      if (Array.isArray(parsed)) {
+        return parsed.map((item) => normalizeText(item)).filter(Boolean);
+      }
+    } catch {
+      try {
+        const jsonCompatible = sanitized
+          .replace(/'/g, "\"")
+          .replace(/,\s*\]/g, "]");
+        const parsed = JSON.parse(jsonCompatible);
+        if (Array.isArray(parsed)) {
+          return parsed.map((item) => normalizeText(item)).filter(Boolean);
+        }
+      } catch {
+        // fall through to separator split
+      }
+    }
+
+    return sanitizeBracketSeparatedValues(trimmed);
+  }
+
+  return splitCsv(trimmed).filter(Boolean);
+}
+
+function sanitizeBracketSeparatedValues(raw) {
+  const stripped = raw
+    .replace(/^\[/, "")
+    .replace(/\]$/, "");
+  return splitCsv(stripped)
+    .map((value) => value.replace(/^["']|["']$/g, "").trim())
+    .filter(Boolean);
+}
+
+function pickCountryAndRegion(rawLocation) {
+  const location = normalizeText(rawLocation);
+  if (!location) return { country: "", region: "" };
+  const cleaned = location.replace(/[·]/g, "|").replace(/\r?\n/g, "|");
+  const parts = cleaned
+    .split("|")
+    .map((part) => normalizeText(part))
+    .filter(Boolean);
+
+  if (parts.length >= 2) {
+    return {
+      country: parts[0],
+      region: parts.slice(1).join(" "),
+    };
+  }
+
+  const fallback = splitCsv(location);
+  if (fallback.length >= 2) {
+    return {
+      country: fallback[0],
+      region: fallback[1],
+    };
+  }
+
+  if (parts.length === 1) {
+    return { country: parts[0], region: "" };
+  }
+
+  return { country: "", region: "" };
+}
+
+function parseNumericArray(value) {
+  const values = normalizeArray(value);
+  if (!values.length) return [];
+  return values
+    .map((item) => normalizeNumber(item))
+    .filter((item) => item !== null);
 }
 
 function normalizeNumber(value) {
@@ -179,9 +270,34 @@ function parseJsonPayload(raw) {
   if (!raw || typeof raw !== "object") return [];
   if (Array.isArray(raw.items)) return raw.items;
   if (Array.isArray(raw.wines)) return raw.wines;
+  if (Array.isArray(raw.products)) return raw.products;
   if (Array.isArray(raw.data)) return raw.data;
   if (Array.isArray(raw.results)) return raw.results;
   return [];
+}
+
+function isWineLike(item, source) {
+  if (source?.id !== "openfoodfacts-natural-wine") return true;
+
+  const candidates = [
+    pickValue(item, "name", { fieldMap: { name: ["product_name"] } }),
+    pickValue(item, "producer", { fieldMap: { producer: ["brands"] } }),
+    pickValue(item, "notes", { fieldMap: { notes: ["categories", "ingredients_text"] } }),
+    pickValue(item, "region", { fieldMap: { region: ["countries", "category"] } }),
+  ];
+
+  const haystack = candidates
+    .map((value) => normalizeText(value).toLowerCase())
+    .filter(Boolean)
+    .join(" ");
+
+  if (!haystack) return false;
+
+  const includeTerms = ["wine", "red wine", "white wine", "rose", "rosé", "sparkling", "petnat", "vin"];
+  if (!includeTerms.some((term) => haystack.includes(term))) return false;
+
+  const blockTerms = ["vinegar", "juice", "syrup", "spray", "detergent", "cooking", "vinegar", "sherry"];
+  return !blockTerms.some((term) => haystack.includes(term));
 }
 
 function parseSourceText(text, source) {
@@ -220,7 +336,12 @@ async function readSourceText(endpoint) {
   }
 
   if (normalized.startsWith("http://") || normalized.startsWith("https://")) {
-    const response = await fetch(normalized);
+    const response = await fetch(normalized, {
+      headers: {
+        accept: "application/json, text/plain;q=0.9,*/*;q=0.8",
+        "user-agent": "natural-wine-research/collector (+local)",
+      },
+    });
     if (!response.ok) {
       throw new Error(`Source fetch failed: ${response.status}`);
     }
@@ -241,8 +362,17 @@ function recordKey(record) {
 }
 
 function normalizeRecord(rawItem, source, endpoint) {
+  if (!isWineLike(rawItem, source)) {
+    return null;
+  }
+
   const name = normalizeText(pickValue(rawItem, "name", source));
   const producer = normalizeText(pickValue(rawItem, "producer", source));
+
+  const pickedCountry = normalizeText(pickValue(rawItem, "country", source));
+  const pickedRegionHint = normalizeText(pickValue(rawItem, "regionHint", source));
+  const parsedCountry = pickCountryAndRegion(pickedCountry);
+  const parsedRegionHint = pickCountryAndRegion(pickedRegionHint);
 
   if (!name || !producer) {
     return null;
@@ -254,11 +384,16 @@ function normalizeRecord(rawItem, source, endpoint) {
   const candidate = {
     name,
     producer,
-    country: normalizeText(pickValue(rawItem, "country", source)) || "UNKNOWN",
-    region: normalizeText(pickValue(rawItem, "region", source)) || "Unknown",
+    country: parsedCountry.country || parsedRegionHint.country || "UNKNOWN",
+    region: normalizeText(pickValue(rawItem, "region", source)) || parsedCountry.region || parsedRegionHint.region || "Unknown",
     appellation: normalizeText(pickValue(rawItem, "appellation", source)) || null,
     grapes: normalizeArray(pickValue(rawItem, "grapes", source)),
-    vintage: normalizeNumber(pickValue(rawItem, "vintage", source)),
+    vintage: (() => {
+      const rawVintage = pickValue(rawItem, "vintage", source);
+      const parsedVintage = parseNumericArray(rawVintage);
+      if (parsedVintage.length > 0) return parsedVintage[0];
+      return normalizeNumber(rawVintage);
+    })(),
     color: normalizeColor(pickValue(rawItem, "color", source)),
     so2: normalizeNumber(pickValue(rawItem, "so2", source)),
     farming: normalizeFarming(pickValue(rawItem, "farming", source)),

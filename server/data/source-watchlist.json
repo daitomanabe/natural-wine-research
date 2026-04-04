@@ -9,14 +9,41 @@
     "format": "json",
     "endpoint": "",
     "fieldMap": {
-      "name": ["name", "wine", "title"],
-      "producer": ["producer", "winery"],
-      "country": ["country", "country_code", "origin_country"],
-      "region": ["region", "zone"],
-      "color": ["color", "type"],
-      "grapes": ["grapes", "grape_variety"],
-      "so2": ["so2", "sulfur", "so2_total"],
-      "farming": ["farming", "intervention_style"]
+      "name": [
+        "name",
+        "wine",
+        "title"
+      ],
+      "producer": [
+        "producer",
+        "winery"
+      ],
+      "country": [
+        "country",
+        "country_code",
+        "origin_country"
+      ],
+      "region": [
+        "region",
+        "zone"
+      ],
+      "color": [
+        "color",
+        "type"
+      ],
+      "grapes": [
+        "grapes",
+        "grape_variety"
+      ],
+      "so2": [
+        "so2",
+        "sulfur",
+        "so2_total"
+      ],
+      "farming": [
+        "farming",
+        "intervention_style"
+      ]
     }
   },
   {
@@ -50,14 +77,407 @@
     "endpoint": ""
   },
   {
+    "id": "sampleapi-reds",
+    "label": "SampleAPIs Wines (Reds)",
+    "type": "market",
+    "coverage": "global",
+    "enabled": true,
+    "status": "ok",
+    "format": "json",
+    "endpoint": "https://api.sampleapis.com/wines/reds",
+    "limit": 120,
+    "fieldMap": {
+      "name": [
+        "wine",
+        "name"
+      ],
+      "producer": [
+        "winery",
+        "producer"
+      ],
+      "regionHint": [
+        "location",
+        "region",
+        "area"
+      ],
+      "country": [
+        "country",
+        "origin",
+        "location"
+      ],
+      "color": [
+        "type",
+        "color",
+        "style"
+      ],
+      "grapes": [
+        "grapes",
+        "varieties",
+        "grape",
+        "grapeVariety"
+      ],
+      "notes": [
+        "notes",
+        "description"
+      ]
+    },
+    "lastError": "",
+    "lastResult": {
+      "sourceId": "sampleapi-reds",
+      "sourceLabel": "SampleAPIs Wines (Reds)",
+      "endpoint": "https://api.sampleapis.com/wines/reds",
+      "startedAt": "2026-04-04T12:01:04.774Z",
+      "completedAt": "2026-04-04T12:01:05.775Z",
+      "imported": 119,
+      "skipped": 1,
+      "candidates": 120,
+      "errors": []
+    },
+    "updatedAt": "2026-04-04T12:01:05.776Z",
+    "lastRunAt": "2026-04-04T12:01:05.775Z",
+    "lastEndpoint": "https://api.sampleapis.com/wines/reds"
+  },
+  {
+    "id": "sampleapi-whites",
+    "label": "SampleAPIs Wines (Whites)",
+    "type": "market",
+    "coverage": "global",
+    "enabled": true,
+    "status": "ok",
+    "format": "json",
+    "endpoint": "https://api.sampleapis.com/wines/whites",
+    "limit": 120,
+    "fieldMap": {
+      "name": [
+        "wine",
+        "name"
+      ],
+      "producer": [
+        "winery",
+        "producer"
+      ],
+      "regionHint": [
+        "location",
+        "region",
+        "area"
+      ],
+      "country": [
+        "country",
+        "origin",
+        "location"
+      ],
+      "color": [
+        "type",
+        "color",
+        "style"
+      ],
+      "grapes": [
+        "grapes",
+        "varieties",
+        "grape",
+        "grapeVariety"
+      ],
+      "notes": [
+        "notes",
+        "description"
+      ]
+    },
+    "lastError": "",
+    "lastResult": {
+      "sourceId": "sampleapi-whites",
+      "sourceLabel": "SampleAPIs Wines (Whites)",
+      "endpoint": "https://api.sampleapis.com/wines/whites",
+      "startedAt": "2026-04-04T12:01:05.776Z",
+      "completedAt": "2026-04-04T12:01:06.059Z",
+      "imported": 120,
+      "skipped": 0,
+      "candidates": 120,
+      "errors": []
+    },
+    "updatedAt": "2026-04-04T12:01:06.059Z",
+    "lastRunAt": "2026-04-04T12:01:06.059Z",
+    "lastEndpoint": "https://api.sampleapis.com/wines/whites"
+  },
+  {
+    "id": "sampleapi-rose",
+    "label": "SampleAPIs Wines (Rose)",
+    "type": "market",
+    "coverage": "global",
+    "enabled": true,
+    "status": "ok",
+    "format": "json",
+    "endpoint": "https://api.sampleapis.com/wines/rose",
+    "limit": 120,
+    "fieldMap": {
+      "name": [
+        "wine",
+        "name"
+      ],
+      "producer": [
+        "winery",
+        "producer"
+      ],
+      "regionHint": [
+        "location",
+        "region",
+        "area"
+      ],
+      "country": [
+        "country",
+        "origin",
+        "location"
+      ],
+      "color": [
+        "type",
+        "color",
+        "style"
+      ],
+      "grapes": [
+        "grapes",
+        "varieties",
+        "grape",
+        "grapeVariety"
+      ],
+      "notes": [
+        "notes",
+        "description"
+      ]
+    },
+    "lastError": "",
+    "lastResult": {
+      "sourceId": "sampleapi-rose",
+      "sourceLabel": "SampleAPIs Wines (Rose)",
+      "endpoint": "https://api.sampleapis.com/wines/rose",
+      "startedAt": "2026-04-04T12:01:06.059Z",
+      "completedAt": "2026-04-04T12:01:06.499Z",
+      "imported": 120,
+      "skipped": 0,
+      "candidates": 120,
+      "errors": []
+    },
+    "updatedAt": "2026-04-04T12:01:06.500Z",
+    "lastRunAt": "2026-04-04T12:01:06.499Z",
+    "lastEndpoint": "https://api.sampleapis.com/wines/rose"
+  },
+  {
+    "id": "sampleapi-sparkling",
+    "label": "SampleAPIs Wines (Sparkling)",
+    "type": "market",
+    "coverage": "global",
+    "enabled": true,
+    "status": "ok",
+    "format": "json",
+    "endpoint": "https://api.sampleapis.com/wines/sparkling",
+    "limit": 120,
+    "fieldMap": {
+      "name": [
+        "wine",
+        "name"
+      ],
+      "producer": [
+        "winery",
+        "producer"
+      ],
+      "regionHint": [
+        "location",
+        "region",
+        "area"
+      ],
+      "country": [
+        "country",
+        "origin",
+        "location"
+      ],
+      "color": [
+        "type",
+        "color",
+        "style"
+      ],
+      "grapes": [
+        "grapes",
+        "varieties",
+        "grape",
+        "grapeVariety"
+      ],
+      "notes": [
+        "notes",
+        "description"
+      ]
+    },
+    "lastError": "",
+    "lastResult": {
+      "sourceId": "sampleapi-sparkling",
+      "sourceLabel": "SampleAPIs Wines (Sparkling)",
+      "endpoint": "https://api.sampleapis.com/wines/sparkling",
+      "startedAt": "2026-04-04T12:01:06.500Z",
+      "completedAt": "2026-04-04T12:01:07.224Z",
+      "imported": 120,
+      "skipped": 0,
+      "candidates": 120,
+      "errors": []
+    },
+    "updatedAt": "2026-04-04T12:01:07.224Z",
+    "lastRunAt": "2026-04-04T12:01:07.224Z",
+    "lastEndpoint": "https://api.sampleapis.com/wines/sparkling"
+  },
+  {
+    "id": "xwines-test-csv",
+    "label": "X-Wines Sample CSV",
+    "type": "dataset",
+    "coverage": "global",
+    "enabled": true,
+    "status": "ok",
+    "format": "csv",
+    "endpoint": "https://raw.githubusercontent.com/rogerioxavier/X-Wines/main/Dataset/last/XWines_Test_100_wines.csv",
+    "limit": 100,
+    "fieldMap": {
+      "name": [
+        "WineName",
+        "name"
+      ],
+      "producer": [
+        "WineryName",
+        "producer"
+      ],
+      "country": [
+        "Country",
+        "country"
+      ],
+      "region": [
+        "RegionName",
+        "region"
+      ],
+      "grapes": [
+        "Grapes",
+        "grape",
+        "grapeVariety"
+      ],
+      "vintage": [
+        "Vintages",
+        "vintage"
+      ],
+      "color": [
+        "Type",
+        "color",
+        "style"
+      ],
+      "abv": [
+        "ABV",
+        "abv",
+        "alcohol"
+      ],
+      "notes": [
+        "Harmonize",
+        "notes",
+        "description"
+      ]
+    },
+    "lastError": "",
+    "lastResult": {
+      "sourceId": "xwines-test-csv",
+      "sourceLabel": "X-Wines Sample CSV",
+      "endpoint": "https://raw.githubusercontent.com/rogerioxavier/X-Wines/main/Dataset/last/XWines_Test_100_wines.csv",
+      "startedAt": "2026-04-04T12:01:07.224Z",
+      "completedAt": "2026-04-04T12:01:07.501Z",
+      "imported": 100,
+      "skipped": 0,
+      "candidates": 100,
+      "errors": []
+    },
+    "updatedAt": "2026-04-04T12:01:07.501Z",
+    "lastRunAt": "2026-04-04T12:01:07.501Z",
+    "lastEndpoint": "https://raw.githubusercontent.com/rogerioxavier/X-Wines/main/Dataset/last/XWines_Test_100_wines.csv"
+  },
+  {
+    "id": "openfoodfacts-natural-wine",
+    "label": "Open Food Facts (natural wine candidates)",
+    "type": "market",
+    "coverage": "global",
+    "enabled": true,
+    "status": "ok",
+    "format": "json",
+    "endpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=wine&search_simple=1&action=process&json=1&page_size=120",
+    "limit": 120,
+    "fieldMap": {
+      "name": [
+        "product_name",
+        "name"
+      ],
+      "producer": [
+        "brands",
+        "producer",
+        "manufacturer",
+        "brand"
+      ],
+      "country": [
+        "countries",
+        "countries_tags",
+        "origin_country"
+      ],
+      "region": [
+        "countries",
+        "region"
+      ],
+      "grapes": [
+        "labels",
+        "ingredients_text",
+        "pairing_tags"
+      ],
+      "abv": [
+        "alcohol"
+      ],
+      "notes": [
+        "ingredients_text",
+        "generic_name",
+        "description",
+        "categories"
+      ],
+      "color": [
+        "color",
+        "nutrition_grades",
+        "style"
+      ]
+    },
+    "lastError": "",
+    "lastResult": {
+      "sourceId": "openfoodfacts-natural-wine",
+      "sourceLabel": "Open Food Facts (natural wine candidates)",
+      "endpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=wine&search_simple=1&action=process&json=1&page_size=120",
+      "startedAt": "2026-04-04T12:01:07.502Z",
+      "completedAt": "2026-04-04T12:01:23.639Z",
+      "imported": 53,
+      "skipped": 47,
+      "candidates": 100,
+      "errors": []
+    },
+    "updatedAt": "2026-04-04T12:01:23.639Z",
+    "lastRunAt": "2026-04-04T12:01:23.639Z",
+    "lastEndpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=wine&search_simple=1&action=process&json=1&page_size=120"
+  },
+  {
     "id": "sample-feed",
     "label": "Local Sample Feed",
     "type": "seed",
     "coverage": "demo",
     "enabled": true,
-    "status": "ready",
+    "status": "ok",
     "format": "json",
     "endpoint": "server/data/natural-wine-demo.json",
-    "limit": 20
+    "limit": 20,
+    "lastError": "",
+    "lastResult": {
+      "sourceId": "sample-feed",
+      "sourceLabel": "Local Sample Feed",
+      "endpoint": "server/data/natural-wine-demo.json",
+      "startedAt": "2026-04-04T12:01:23.640Z",
+      "completedAt": "2026-04-04T12:01:23.642Z",
+      "imported": 0,
+      "skipped": 3,
+      "candidates": 3,
+      "errors": []
+    },
+    "updatedAt": "2026-04-04T12:01:23.642Z",
+    "lastRunAt": "2026-04-04T12:01:23.642Z",
+    "lastEndpoint": "server/data/natural-wine-demo.json"
   }
 ]

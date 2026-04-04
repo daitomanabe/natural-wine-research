@@ -27,8 +27,8 @@ This folder contains all currently persisted data used by the current Natural Wi
 
 ## Data generation metadata
 
-- Generated at (UTC): `2026-04-01T02:49:17.575Z`
+- Generated at (UTC): `2026-04-04T12:01:42.100Z`
 - Seed count: `42`
-- Unified catalog count: `42`
+- Unified catalog count: `677`
 - Inventory count: `0`
 - Label count: `0`

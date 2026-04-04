@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-04-01T02:49:17.575Z",
+  "generatedAt": "2026-04-04T12:01:42.100Z",
   "database": {
     "seedCount": 42,
-    "additionsCount": 0,
-    "unifiedCount": 42,
+    "additionsCount": 635,
+    "unifiedCount": 677,
     "inventoryCount": 0,
     "inventoryUnits": 0,
     "linkedInventoryCount": 0,
     "labelAssetCount": 0,
     "linkedCatalogCount": 0,
-    "catalogWithLinkCount": 42,
-    "catalogPlottableCount": 40,
-    "combinedDataSize": 20238
+    "catalogWithLinkCount": 677,
+    "catalogPlottableCount": 675,
+    "combinedDataSize": 504064
   },
   "live": {
     "city": "Tokyo",
@@ -74,8 +74,8 @@
     }
   ],
   "sourceWatchlist": {
-    "total": 5,
-    "enabled": 1
+    "total": 11,
+    "enabled": 7
   },
   "inventorySummary": {
     "totalQuantity": 0,
