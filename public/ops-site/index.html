@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>VIN NATUREL OS — Operations</title>
+    <style>
+      :root {
+        font-family: "IBM Plex Mono", "Noto Sans JP", monospace;
+        color: #c9d6dd;
+        background: linear-gradient(180deg, #08111b 0%, #05070f 100%);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: #c4d4dc;
+      }
+
+      .page {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 28px 20px 44px;
+        display: grid;
+        gap: 16px;
+      }
+
+      .card {
+        border: 1px solid #123147;
+        background: rgba(6, 12, 18, 0.86);
+        padding: 16px;
+      }
+
+      .head {
+        border-bottom: 1px solid #0b1521;
+        padding-bottom: 8px;
+        margin-bottom: 12px;
+      }
+
+      h1,
+      h2 {
+        margin: 0;
+      }
+
+      h1 {
+        color: #8eb7ae;
+        letter-spacing: 0.08em;
+        font-size: clamp(22px, 4vw, 34px);
+      }
+
+      .sub {
+        color: #8ca3b0;
+        margin-top: 4px;
+        font-size: 12px;
+        letter-spacing: 0.04em;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 9px;
+        letter-spacing: 0.12em;
+        border: 1px solid #213448;
+        color: #88adbd;
+        padding: 4px 8px;
+        margin-right: 6px;
+        margin-bottom: 4px;
+      }
+
+      .kpi {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 10px;
+      }
+
+      .kpi-item {
+        border: 1px solid #132334;
+        background: rgba(4, 9, 14, 0.72);
+        padding: 12px;
+      }
+
+      .kpi-label {
+        color: #6d8392;
+        font-size: 10px;
+        margin-bottom: 6px;
+        letter-spacing: 0.1em;
+      }
+
+      .kpi-value {
+        color: #bad1d8;
+        font-size: 20px;
+      }
+
+      .two-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      @media (max-width: 760px) {
+        .two-col {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .btnrow {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      button,
+      .btn {
+        border: 1px solid #24445a;
+        background: rgba(8, 20, 28, 0.85);
+        color: #95b2c0;
+        padding: 8px 12px;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        cursor: pointer;
+        text-decoration: none;
+      }
+
+      button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .grid {
+        display: grid;
+        gap: 6px;
+      }
+
+      .small {
+        font-size: 12px;
+        color: #8297a7;
+      }
+
+      .mono {
+        font-family: "SFMono-Regular", "Menlo", monospace;
+        font-size: 11px;
+        color: #91a9b9;
+      }
+
+      .ok {
+        color: #7ec4a5;
+      }
+
+      .warn {
+        color: #d4a84a;
+      }
+
+      ul {
+        margin: 0;
+        padding-left: 18px;
+      }
+
+      li {
+        margin: 0 0 8px;
+      }
+
+      pre {
+        margin: 8px 0 0;
+        white-space: pre-wrap;
+        background: #02050a;
+        border: 1px solid #121b27;
+        padding: 10px;
+        overflow: auto;
+      }
+
+      .section-title {
+        margin: 0 0 8px;
+        color: #8eb7ae;
+        letter-spacing: 0.08em;
+        font-size: 13px;
+      }
+
+      .muted {
+        color: #6d8392;
+        font-size: 11px;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <header class="card head">
+        <p class="pill">NATURAL WINE OPERATIONS</p>
+        <h1>VIN NATUREL OS</h1>
+        <p class="sub">ワインラベル起点で在庫と推薦を運用する実運用サイト</p>
+      </header>
+
+      <section class="card">
+        <h2 class="section-title">1) 運用サイト起動</h2>
+        <div class="btnrow">
+          <a class="btn" href="/" target="_blank" rel="noopener">本体アプリ（管理UI）</a>
+          <a class="btn" href="/api/health" target="_blank" rel="noopener">API Health</a>
+          <a class="btn" href="/api/stats" target="_blank" rel="noopener">現在の統計</a>
+          <a class="btn" href="/api/context/live" target="_blank" rel="noopener">ライブ文脈</a>
+        </div>
+        <p class="small">起動コマンド: <span class="mono">npm run dev:full</span></p>
+      </section>
+
+      <section class="card">
+        <h2 class="section-title">2) 1日運用チェック</h2>
+        <div class="two-col">
+          <div>
+            <p class="muted">実務で毎朝実施する項目</p>
+            <ul>
+              <li>在庫追加（画像 or 一括インポート）</li>
+              <li>未一致ラベルの手動修正</li>
+              <li>iPad推奨画面のライブ文脈（曲情報）更新</li>
+              <li>本日の推奨結果をメモ（営業判断）</li>
+            </ul>
+          </div>
+          <div>
+            <p class="muted">終了時のエクスポート</p>
+            <ul>
+              <li>1日1回: <span class="mono">npm run bundle:export</span></li>
+              <li>差分ファイル: <span class="mono">database-bundle/*</span> を保管</li>
+              <li>OVERVIEW.md を日報として添付しておく</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2 class="section-title">3) ライフサイクルモニター</h2>
+        <div id="stats" class="kpi">
+          <div class="kpi-item">
+            <div class="kpi-label">APIヘルス</div>
+            <div class="kpi-value" id="health">—</div>
+          </div>
+          <div class="kpi-item">
+            <div class="kpi-label">カタログ</div>
+            <div class="kpi-value" id="catalogCount">—</div>
+          </div>
+          <div class="kpi-item">
+            <div class="kpi-label">在庫レコード</div>
+            <div class="kpi-value" id="inventoryCount">—</div>
+          </div>
+          <div class="kpi-item">
+            <div class="kpi-label">総本数</div>
+            <div class="kpi-value" id="inventoryUnits">—</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2 class="section-title">4) 運用チェックリスト（店内運用）</h2>
+        <div class="grid">
+          <label><input type="checkbox" /> 写真アップロードで新規ボトルを登録</label>
+          <label><input type="checkbox" /> ラベル文言の候補確認（誤登録を防ぐ）</label>
+          <label><input type="checkbox" /> iPadモードでライブ推薦が自動更新されることを確認</label>
+          <label><input type="checkbox" /> 今日の気分・曲の情報を保存（live context）</label>
+          <label><input type="checkbox" /> 日次バックアップ（database-bundle）を取得</label>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2 class="section-title">5) API 参照（運用で使う主要エンドポイント）</h2>
+        <pre class="mono">GET /api/health
+GET /api/stats
+GET /api/context/live
+POST /api/context/live
+POST /api/recommend/live
+POST /api/inventory/import
+POST /api/analyze/upload</pre>
+      </section>
+
+      <section class="card">
+        <h2 class="section-title">6) データ運用ガイド</h2>
+        <p class="small">
+          ラベル・在庫・追加カタログは実運用中の変更データです。`server/data/*.json` はGitignore対象で、起動後に再作成できます。  
+          統合成果物は `database-bundle/` に保存し、必要に応じて共有します。
+        </p>
+      </section>
+    </main>
+
+    <script>
+      async function fetchJson(url, fallback = null) {
+        try {
+          const response = await fetch(url);
+          if (!response.ok) {
+            return fallback;
+          }
+          return await response.json();
+        } catch (error) {
+          return fallback;
+        }
+      }
+
+      async function loadHealth() {
+        const health = await fetchJson("/api/health", { ok: false });
+        const healthNode = document.getElementById("health");
+        if (!health || health.ok === false) {
+          healthNode.textContent = "offline";
+          healthNode.className = "kpi-value warn";
+          return;
+        }
+        healthNode.textContent = "online";
+        healthNode.className = "kpi-value ok";
+      }
+
+      async function loadInventorySummary() {
+        const summary = await fetchJson("/api/inventory/summary", {
+          totalQuantity: 0,
+          linkedCount: 0,
+          inventoryCount: 0,
+        });
+        const counts = await fetchJson("/api/stats", {
+          catalogCount: 0,
+          inventoryCount: 0,
+        });
+        document.getElementById("inventoryCount").textContent = `${counts.inventoryCount}`;
+        document.getElementById("catalogCount").textContent = `${counts.catalogCount}`;
+        document.getElementById("inventoryUnits").textContent = `${summary.totalQuantity || 0}`;
+      }
+
+      loadHealth();
+      loadInventorySummary();
+      setInterval(() => {
+        loadHealth();
+        loadInventorySummary();
+      }, 20000);
+    </script>
+  </body>
+</html>
