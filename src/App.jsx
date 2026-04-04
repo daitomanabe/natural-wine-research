@@ -142,6 +142,18 @@ function parseInventoryCsvRows(text) {
   return rows;
 }
 
+function getSourceLabels(wine) {
+  const refs = wine?.sourceRefs;
+  if (!Array.isArray(refs) || refs.length === 0) return [];
+
+  const labels = refs
+    .map((source) => source?.sourceLabel || source?.sourceId || "")
+    .map((label) => String(label).trim())
+    .filter(Boolean);
+
+  return [...new Set(labels)];
+}
+
 function RecommendationColumn({ title, items, onSelect, emptyLabel }) {
   return (
     <div className="recommend-column">
@@ -329,6 +341,45 @@ export default function App() {
 
     return counts;
   }, [catalog]);
+
+  const researchCatalog = useMemo(() => catalog.filter((wine) => Array.isArray(wine.sourceRefs) && wine.sourceRefs.length > 0), [catalog]);
+
+  const researchSourceCounts = useMemo(() => {
+    const counts = new Map();
+    for (const wine of researchCatalog) {
+      const labels = getSourceLabels(wine);
+      if (labels.length === 0) {
+        counts.set("Unknown source", (counts.get("Unknown source") ?? 0) + 1);
+      } else {
+        labels.forEach((label) => {
+          counts.set(label, (counts.get(label) ?? 0) + 1);
+        });
+      }
+    }
+    return [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+  }, [researchCatalog]);
+
+  const researchTopCountries = useMemo(() => {
+    const counts = new Map();
+    for (const wine of researchCatalog) {
+      const country = wine.country || "UNKNOWN";
+      counts.set(country, (counts.get(country) ?? 0) + 1);
+    }
+    return [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, 6);
+  }, [researchCatalog]);
+
+  const researchListSorted = useMemo(() => {
+    const toSort = [...researchCatalog];
+    return toSort.sort((a, b) => {
+      const aSource = getSourceLabels(a)[0] || "Unknown source";
+      const bSource = getSourceLabels(b)[0] || "Unknown source";
+      if (aSource !== bSource) return aSource.localeCompare(bSource);
+      const aLabel = a.name || "";
+      const bLabel = b.name || "";
+      if (aLabel !== bLabel) return aLabel.localeCompare(bLabel);
+      return (a.producer || "").localeCompare(b.producer || "");
+    });
+  }, [researchCatalog]);
 
   const genreIndex = useMemo(() => {
     const map = new Map();
@@ -1558,10 +1609,91 @@ export default function App() {
         </div>
       </section>
 
+        <section className="module-panel">
+          <div className="panel-head">
+            <div className="section-label">4. RESEARCH WINE HARVEST</div>
+          <div className="micro-copy">
+            {researchCatalog.length} entries from source collection ({researchSourceCounts.length} source groups)
+          </div>
+        </div>
+        <div className="research-dashboard">
+          <div className="research-panel">
+            <div className="section-label">SOURCE DISTRIBUTION</div>
+            {researchSourceCounts.length ? (
+              <div className="research-bars">
+                {researchSourceCounts.map(([source, count]) => {
+                  const max = researchSourceCounts[0]?.[1] ?? 1;
+                  const width = Math.max(6, (count / Math.max(max, 1)) * 100);
+                  return (
+                    <div key={source} className="research-bar-row">
+                      <span className="research-bar-label" title={source}>{source}</span>
+                      <span className="research-bar-track">
+                        <span className="research-bar-fill" style={{ width: `${width}%` }} />
+                      </span>
+                      <span className="research-bar-value">{count}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="empty-card">No source-linked records yet. Run source collection to populate this list.</div>
+            )}
+          </div>
+
+          <div className="research-panel">
+            <div className="section-label">TOP RESEARCH COUNTRIES</div>
+            <div className="research-chip-row">
+              {researchTopCountries.length ? researchTopCountries.map(([country, count]) => (
+                <span key={country} className="research-chip">{country} · {count}</span>
+              )) : (
+                <div className="empty-card">No country tags from source records.</div>
+              )}
+            </div>
+          </div>
+        </div>
+        <div className="region-panel" style={{ marginTop: 12 }}>
+          <div className="section-label">REGION COVERAGE (RESEARCH-ONLY)</div>
+          <BarChart wines={researchCatalog} />
+        </div>
+        <div className="table-wrap research-table-wrap">
+          <table>
+            <thead>
+              <tr>
+                {["SOURCE", "WINE", "PRODUCER", "COUNTRY", "REGION", "COLOR", "SO₂", "PRICE"].map((heading) => (
+                  <th key={heading}>{heading}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {researchListSorted.map((wine) => {
+                const col = COLOR_MAP[wine.color]?.dot ?? "#aaa";
+                const isSelected = selected?.id === wine.id;
+                return (
+                  <tr
+                    key={wine.id}
+                    onClick={() => setSelected(isSelected ? null : wine)}
+                    className={isSelected ? "selected-row" : ""}
+                  >
+                    <td>{getSourceLabels(wine).join(", ") || "Unknown"}</td>
+                    <td style={{ color: col }}>{wine.name}</td>
+                    <td>{wine.producer}</td>
+                    <td>{FLAG_MAP[wine.country] ?? wine.country}</td>
+                    <td>{wine.region}</td>
+                    <td style={{ color: col }}>{COLOR_MAP[wine.color]?.label}</td>
+                    <td style={{ color: wine.so2 === 0 ? "#7eb8b0" : "#2a4050" }}>{wine.so2 === 0 ? "ZERO" : Number.isFinite(wine.so2) ? wine.so2 : "—"}</td>
+                    <td>{Number.isFinite(wine.price) ? `€${wine.price}` : "—"}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
       <main className="content-grid">
         <section className="main-panel">
           <div className="panel-head">
-            <div className="section-label">4. VISUALIZATION: SO₂ × INTERVENTION</div>
+            <div className="section-label">5. VISUALIZATION: SO₂ × INTERVENTION</div>
             <div className="legend">
               <span>● SIZE = PRICE</span>
               {Object.entries(COLOR_MAP).map(([key, value]) => (

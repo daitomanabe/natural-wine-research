@@ -625,6 +625,77 @@ h1 {
   border-top: 1px solid #080c10;
 }
 
+.research-dashboard {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.research-panel {
+  border: 1px solid #102030;
+  background: rgba(3, 7, 12, 0.72);
+  padding: 10px;
+}
+
+.research-bars {
+  margin-top: 8px;
+  display: grid;
+  gap: 8px;
+}
+
+.research-bar-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 4fr) 42px;
+  gap: 8px;
+  align-items: center;
+}
+
+.research-bar-label {
+  font-size: 9px;
+  color: #6e8793;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.research-bar-track {
+  display: block;
+  height: 8px;
+  background: #0c161f;
+  border: 1px solid #1b3040;
+}
+
+.research-bar-fill {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #1f5f5a, #7eb8b0);
+}
+
+.research-bar-value {
+  text-align: right;
+  font-size: 9px;
+  color: #2a4050;
+}
+
+.research-chip-row {
+  margin-top: 8px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.research-chip {
+  border: 1px solid #102030;
+  background: rgba(5, 10, 16, 0.75);
+  padding: 4px 8px;
+  font-size: 9px;
+  color: #6d8795;
+}
+
+.research-table-wrap {
+  margin-top: 12px;
+}
+
 .table-wrap {
   overflow-x: auto;
 }
@@ -667,6 +738,10 @@ tbody tr {
 @media (max-width: 1120px) {
   .two-column,
   .content-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .research-dashboard {
     grid-template-columns: 1fr;
   }
 
