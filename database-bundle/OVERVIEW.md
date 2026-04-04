@@ -1,12 +1,12 @@
 # Natural Wine Research — Database Bundle
 
-Generated: 2026/04/04 21:01
+Generated: 2026/04/04 21:26
 
 ## 1) Database Snapshot
 
 - Seed catalog (base DB): `42`
-- Custom additions: `635`
-- Unified catalog total: `677`
+- Custom additions: `6790`
+- Unified catalog total: `6832`
 - Inventory records: `0`
 - Linked inventory records: `0`
 - Inventory bottles (sum of quantities): `0`
@@ -29,8 +29,8 @@ Generated: 2026/04/04 21:01
 
 ## 3) Source Watchlist
 
-- Total sources: `11`
-- Enabled sources: `7`
+- Total sources: `33`
+- Enabled sources: `29`
 
 ## 4) Rebuild Guidance
 

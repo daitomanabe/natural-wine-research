@@ -66,6 +66,13 @@ function normalizeText(value) {
   return String(value).trim();
 }
 
+function normalizeFieldValue(value) {
+  if (value && typeof value === "object" && Object.hasOwn(value, "value")) {
+    return value.value;
+  }
+  return value;
+}
+
 function normalizeArray(value) {
   const candidate = normalizeArrayFromAny(value);
   if (candidate.length) return candidate;
@@ -201,7 +208,7 @@ function pickValue(item, key, source) {
   const map = source?.fieldMap?.[key];
   const candidateKeys = Array.isArray(map) ? map : map ? [map] : SOURCE_ITEM_KEYS[key];
   for (const candidateKey of candidateKeys ?? []) {
-    const hit = item?.[candidateKey];
+    const hit = normalizeFieldValue(item?.[candidateKey]);
     if (hit !== undefined && hit !== null && hit !== "") return hit;
   }
   return null;
@@ -272,12 +279,20 @@ function parseJsonPayload(raw) {
   if (Array.isArray(raw.wines)) return raw.wines;
   if (Array.isArray(raw.products)) return raw.products;
   if (Array.isArray(raw.data)) return raw.data;
+  if (Array.isArray(raw.results?.bindings)) {
+    return raw.results.bindings.map((entry) => Object.fromEntries(
+      Object.entries(entry).map(([key, rawValue]) => [
+        key,
+        normalizeFieldValue(rawValue),
+      ])
+    ));
+  }
   if (Array.isArray(raw.results)) return raw.results;
   return [];
 }
 
 function isWineLike(item, source) {
-  if (source?.id !== "openfoodfacts-natural-wine") return true;
+  if (!source?.id?.startsWith("openfoodfacts-")) return true;
 
   const candidates = [
     pickValue(item, "name", { fieldMap: { name: ["product_name"] } }),
@@ -293,12 +308,15 @@ function isWineLike(item, source) {
 
   if (!haystack) return false;
 
-  const includeTerms = ["wine", "red wine", "white wine", "rose", "rosé", "sparkling", "petnat", "vin"];
-  if (!includeTerms.some((term) => haystack.includes(term))) return false;
+  const includeTerms = Array.isArray(source?.wineIncludeTerms) && source.wineIncludeTerms.length
+    ? source.wineIncludeTerms.map((value) => String(value).toLowerCase())
+    : ["wine", "red wine", "white wine", "rose", "rosé", "sparkling", "petnat", "pet-nat", "vin", "natural", "orange", "champagne"];
 
-  const blockTerms = ["vinegar", "juice", "syrup", "spray", "detergent", "cooking", "vinegar", "sherry"];
+  const blockTerms = ["vinegar", "juice", "syrup", "spray", "detergent", "cooking", "sherry"];
+  if (!includeTerms.some((term) => haystack.includes(term))) return false;
   return !blockTerms.some((term) => haystack.includes(term));
 }
+
 
 function parseSourceText(text, source) {
   const mode = normalizeText(source.format).toLowerCase();

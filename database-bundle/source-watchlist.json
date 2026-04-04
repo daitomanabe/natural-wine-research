@@ -126,15 +126,15 @@
       "sourceId": "sampleapi-reds",
       "sourceLabel": "SampleAPIs Wines (Reds)",
       "endpoint": "https://api.sampleapis.com/wines/reds",
-      "startedAt": "2026-04-04T12:01:04.774Z",
-      "completedAt": "2026-04-04T12:01:05.775Z",
-      "imported": 119,
-      "skipped": 1,
+      "startedAt": "2026-04-04T12:24:12.805Z",
+      "completedAt": "2026-04-04T12:24:13.797Z",
+      "imported": 0,
+      "skipped": 120,
       "candidates": 120,
       "errors": []
     },
-    "updatedAt": "2026-04-04T12:01:05.776Z",
-    "lastRunAt": "2026-04-04T12:01:05.775Z",
+    "updatedAt": "2026-04-04T12:24:13.798Z",
+    "lastRunAt": "2026-04-04T12:24:13.797Z",
     "lastEndpoint": "https://api.sampleapis.com/wines/reds"
   },
   {
@@ -187,15 +187,15 @@
       "sourceId": "sampleapi-whites",
       "sourceLabel": "SampleAPIs Wines (Whites)",
       "endpoint": "https://api.sampleapis.com/wines/whites",
-      "startedAt": "2026-04-04T12:01:05.776Z",
-      "completedAt": "2026-04-04T12:01:06.059Z",
-      "imported": 120,
-      "skipped": 0,
+      "startedAt": "2026-04-04T12:24:13.800Z",
+      "completedAt": "2026-04-04T12:24:13.995Z",
+      "imported": 0,
+      "skipped": 120,
       "candidates": 120,
       "errors": []
     },
-    "updatedAt": "2026-04-04T12:01:06.059Z",
-    "lastRunAt": "2026-04-04T12:01:06.059Z",
+    "updatedAt": "2026-04-04T12:24:13.996Z",
+    "lastRunAt": "2026-04-04T12:24:13.995Z",
     "lastEndpoint": "https://api.sampleapis.com/wines/whites"
   },
   {
@@ -248,15 +248,15 @@
       "sourceId": "sampleapi-rose",
       "sourceLabel": "SampleAPIs Wines (Rose)",
       "endpoint": "https://api.sampleapis.com/wines/rose",
-      "startedAt": "2026-04-04T12:01:06.059Z",
-      "completedAt": "2026-04-04T12:01:06.499Z",
-      "imported": 120,
-      "skipped": 0,
+      "startedAt": "2026-04-04T12:24:13.997Z",
+      "completedAt": "2026-04-04T12:24:14.258Z",
+      "imported": 0,
+      "skipped": 120,
       "candidates": 120,
       "errors": []
     },
-    "updatedAt": "2026-04-04T12:01:06.500Z",
-    "lastRunAt": "2026-04-04T12:01:06.499Z",
+    "updatedAt": "2026-04-04T12:24:14.259Z",
+    "lastRunAt": "2026-04-04T12:24:14.258Z",
     "lastEndpoint": "https://api.sampleapis.com/wines/rose"
   },
   {
@@ -309,15 +309,15 @@
       "sourceId": "sampleapi-sparkling",
       "sourceLabel": "SampleAPIs Wines (Sparkling)",
       "endpoint": "https://api.sampleapis.com/wines/sparkling",
-      "startedAt": "2026-04-04T12:01:06.500Z",
-      "completedAt": "2026-04-04T12:01:07.224Z",
-      "imported": 120,
-      "skipped": 0,
+      "startedAt": "2026-04-04T12:24:14.261Z",
+      "completedAt": "2026-04-04T12:24:14.453Z",
+      "imported": 0,
+      "skipped": 120,
       "candidates": 120,
       "errors": []
     },
-    "updatedAt": "2026-04-04T12:01:07.224Z",
-    "lastRunAt": "2026-04-04T12:01:07.224Z",
+    "updatedAt": "2026-04-04T12:24:14.454Z",
+    "lastRunAt": "2026-04-04T12:24:14.453Z",
     "lastEndpoint": "https://api.sampleapis.com/wines/sparkling"
   },
   {
@@ -377,15 +377,15 @@
       "sourceId": "xwines-test-csv",
       "sourceLabel": "X-Wines Sample CSV",
       "endpoint": "https://raw.githubusercontent.com/rogerioxavier/X-Wines/main/Dataset/last/XWines_Test_100_wines.csv",
-      "startedAt": "2026-04-04T12:01:07.224Z",
-      "completedAt": "2026-04-04T12:01:07.501Z",
-      "imported": 100,
-      "skipped": 0,
+      "startedAt": "2026-04-04T12:24:14.456Z",
+      "completedAt": "2026-04-04T12:24:14.503Z",
+      "imported": 0,
+      "skipped": 100,
       "candidates": 100,
       "errors": []
     },
-    "updatedAt": "2026-04-04T12:01:07.501Z",
-    "lastRunAt": "2026-04-04T12:01:07.501Z",
+    "updatedAt": "2026-04-04T12:24:14.504Z",
+    "lastRunAt": "2026-04-04T12:24:14.503Z",
     "lastEndpoint": "https://raw.githubusercontent.com/rogerioxavier/X-Wines/main/Dataset/last/XWines_Test_100_wines.csv"
   },
   {
@@ -443,16 +443,1549 @@
       "sourceId": "openfoodfacts-natural-wine",
       "sourceLabel": "Open Food Facts (natural wine candidates)",
       "endpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=wine&search_simple=1&action=process&json=1&page_size=120",
-      "startedAt": "2026-04-04T12:01:07.502Z",
-      "completedAt": "2026-04-04T12:01:23.639Z",
-      "imported": 53,
-      "skipped": 47,
+      "startedAt": "2026-04-04T12:24:14.506Z",
+      "completedAt": "2026-04-04T12:24:19.108Z",
+      "imported": 0,
+      "skipped": 100,
       "candidates": 100,
       "errors": []
     },
-    "updatedAt": "2026-04-04T12:01:23.639Z",
-    "lastRunAt": "2026-04-04T12:01:23.639Z",
+    "updatedAt": "2026-04-04T12:24:19.108Z",
+    "lastRunAt": "2026-04-04T12:24:19.108Z",
     "lastEndpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=wine&search_simple=1&action=process&json=1&page_size=120"
+  },
+  {
+    "id": "openfoodfacts-natural-red-wine",
+    "label": "Open Food Facts (natural red wine)",
+    "type": "market",
+    "coverage": "global",
+    "enabled": true,
+    "status": "ok",
+    "format": "json",
+    "endpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=natural%20red%20wine&search_simple=1&action=process&json=1&page_size=120",
+    "limit": 120,
+    "fieldMap": {
+      "name": [
+        "product_name",
+        "name"
+      ],
+      "producer": [
+        "brands",
+        "producer",
+        "manufacturer",
+        "brand"
+      ],
+      "country": [
+        "countries",
+        "countries_tags",
+        "origin_country"
+      ],
+      "region": [
+        "countries",
+        "region"
+      ],
+      "grapes": [
+        "labels",
+        "ingredients_text",
+        "pairing_tags"
+      ],
+      "abv": [
+        "alcohol"
+      ],
+      "notes": [
+        "ingredients_text",
+        "generic_name",
+        "description",
+        "categories"
+      ],
+      "color": [
+        "color",
+        "nutrition_grades",
+        "style"
+      ]
+    },
+    "lastError": "",
+    "lastResult": {
+      "sourceId": "openfoodfacts-natural-red-wine",
+      "sourceLabel": "Open Food Facts (natural red wine)",
+      "endpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=natural%20red%20wine&search_simple=1&action=process&json=1&page_size=120",
+      "startedAt": "2026-04-04T12:24:19.109Z",
+      "completedAt": "2026-04-04T12:24:23.553Z",
+      "imported": 0,
+      "skipped": 12,
+      "candidates": 12,
+      "errors": []
+    },
+    "updatedAt": "2026-04-04T12:24:23.554Z",
+    "lastRunAt": "2026-04-04T12:24:23.553Z",
+    "lastEndpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=natural%20red%20wine&search_simple=1&action=process&json=1&page_size=120"
+  },
+  {
+    "id": "openfoodfacts-natural-white-wine",
+    "label": "Open Food Facts (natural white wine)",
+    "type": "market",
+    "coverage": "global",
+    "enabled": true,
+    "status": "ok",
+    "format": "json",
+    "endpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=natural%20white%20wine&search_simple=1&action=process&json=1&page_size=120",
+    "limit": 120,
+    "fieldMap": {
+      "name": [
+        "product_name",
+        "name"
+      ],
+      "producer": [
+        "brands",
+        "producer",
+        "manufacturer",
+        "brand"
+      ],
+      "country": [
+        "countries",
+        "countries_tags",
+        "origin_country"
+      ],
+      "region": [
+        "countries",
+        "region"
+      ],
+      "grapes": [
+        "labels",
+        "ingredients_text",
+        "pairing_tags"
+      ],
+      "abv": [
+        "alcohol"
+      ],
+      "notes": [
+        "ingredients_text",
+        "generic_name",
+        "description",
+        "categories"
+      ],
+      "color": [
+        "color",
+        "nutrition_grades",
+        "style"
+      ]
+    },
+    "lastError": "",
+    "lastResult": {
+      "sourceId": "openfoodfacts-natural-white-wine",
+      "sourceLabel": "Open Food Facts (natural white wine)",
+      "endpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=natural%20white%20wine&search_simple=1&action=process&json=1&page_size=120",
+      "startedAt": "2026-04-04T12:24:23.555Z",
+      "completedAt": "2026-04-04T12:24:23.849Z",
+      "imported": 0,
+      "skipped": 4,
+      "candidates": 4,
+      "errors": []
+    },
+    "updatedAt": "2026-04-04T12:24:23.850Z",
+    "lastRunAt": "2026-04-04T12:24:23.849Z",
+    "lastEndpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=natural%20white%20wine&search_simple=1&action=process&json=1&page_size=120"
+  },
+  {
+    "id": "openfoodfacts-natural-rose-wine",
+    "label": "Open Food Facts (natural rosé wine)",
+    "type": "market",
+    "coverage": "global",
+    "enabled": true,
+    "status": "ok",
+    "format": "json",
+    "endpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=natural%20rose%20wine&search_simple=1&action=process&json=1&page_size=120",
+    "limit": 120,
+    "fieldMap": {
+      "name": [
+        "product_name",
+        "name"
+      ],
+      "producer": [
+        "brands",
+        "producer",
+        "manufacturer",
+        "brand"
+      ],
+      "country": [
+        "countries",
+        "countries_tags",
+        "origin_country"
+      ],
+      "region": [
+        "countries",
+        "region"
+      ],
+      "grapes": [
+        "labels",
+        "ingredients_text",
+        "pairing_tags"
+      ],
+      "abv": [
+        "alcohol"
+      ],
+      "notes": [
+        "ingredients_text",
+        "generic_name",
+        "description",
+        "categories"
+      ],
+      "color": [
+        "color",
+        "nutrition_grades",
+        "style"
+      ]
+    },
+    "lastError": "",
+    "lastResult": {
+      "sourceId": "openfoodfacts-natural-rose-wine",
+      "sourceLabel": "Open Food Facts (natural rosé wine)",
+      "endpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=natural%20rose%20wine&search_simple=1&action=process&json=1&page_size=120",
+      "startedAt": "2026-04-04T12:24:23.852Z",
+      "completedAt": "2026-04-04T12:24:24.133Z",
+      "imported": 0,
+      "skipped": 0,
+      "candidates": 0,
+      "errors": []
+    },
+    "updatedAt": "2026-04-04T12:24:24.134Z",
+    "lastRunAt": "2026-04-04T12:24:24.133Z",
+    "lastEndpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=natural%20rose%20wine&search_simple=1&action=process&json=1&page_size=120"
+  },
+  {
+    "id": "openfoodfacts-organic-wine",
+    "label": "Open Food Facts (organic wine)",
+    "type": "market",
+    "coverage": "global",
+    "enabled": true,
+    "status": "ok",
+    "format": "json",
+    "endpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=organic%20wine&search_simple=1&action=process&json=1&page_size=120",
+    "limit": 120,
+    "fieldMap": {
+      "name": [
+        "product_name",
+        "name"
+      ],
+      "producer": [
+        "brands",
+        "producer",
+        "manufacturer",
+        "brand"
+      ],
+      "country": [
+        "countries",
+        "countries_tags",
+        "origin_country"
+      ],
+      "region": [
+        "countries",
+        "region"
+      ],
+      "grapes": [
+        "labels",
+        "ingredients_text",
+        "pairing_tags"
+      ],
+      "abv": [
+        "alcohol"
+      ],
+      "notes": [
+        "ingredients_text",
+        "generic_name",
+        "description",
+        "categories"
+      ],
+      "color": [
+        "color",
+        "nutrition_grades",
+        "style"
+      ]
+    },
+    "lastError": "",
+    "lastResult": {
+      "sourceId": "openfoodfacts-organic-wine",
+      "sourceLabel": "Open Food Facts (organic wine)",
+      "endpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=organic%20wine&search_simple=1&action=process&json=1&page_size=120",
+      "startedAt": "2026-04-04T12:24:24.134Z",
+      "completedAt": "2026-04-04T12:24:27.148Z",
+      "imported": 0,
+      "skipped": 100,
+      "candidates": 100,
+      "errors": []
+    },
+    "updatedAt": "2026-04-04T12:24:27.149Z",
+    "lastRunAt": "2026-04-04T12:24:27.148Z",
+    "lastEndpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=organic%20wine&search_simple=1&action=process&json=1&page_size=120"
+  },
+  {
+    "id": "openfoodfacts-orange-wine",
+    "label": "Open Food Facts (orange wine)",
+    "type": "market",
+    "coverage": "global",
+    "enabled": true,
+    "status": "ok",
+    "format": "json",
+    "endpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=orange%20wine&search_simple=1&action=process&json=1&page_size=120",
+    "limit": 120,
+    "fieldMap": {
+      "name": [
+        "product_name",
+        "name"
+      ],
+      "producer": [
+        "brands",
+        "producer",
+        "manufacturer",
+        "brand"
+      ],
+      "country": [
+        "countries",
+        "countries_tags",
+        "origin_country"
+      ],
+      "region": [
+        "countries",
+        "region"
+      ],
+      "grapes": [
+        "labels",
+        "ingredients_text",
+        "pairing_tags"
+      ],
+      "abv": [
+        "alcohol"
+      ],
+      "notes": [
+        "ingredients_text",
+        "generic_name",
+        "description",
+        "categories"
+      ],
+      "color": [
+        "color",
+        "nutrition_grades",
+        "style"
+      ]
+    },
+    "lastError": "",
+    "lastResult": {
+      "sourceId": "openfoodfacts-orange-wine",
+      "sourceLabel": "Open Food Facts (orange wine)",
+      "endpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=orange%20wine&search_simple=1&action=process&json=1&page_size=120",
+      "startedAt": "2026-04-04T12:24:27.154Z",
+      "completedAt": "2026-04-04T12:24:28.695Z",
+      "imported": 0,
+      "skipped": 7,
+      "candidates": 7,
+      "errors": []
+    },
+    "updatedAt": "2026-04-04T12:24:28.695Z",
+    "lastRunAt": "2026-04-04T12:24:28.695Z",
+    "lastEndpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=orange%20wine&search_simple=1&action=process&json=1&page_size=120"
+  },
+  {
+    "id": "openfoodfacts-natural-sparkling-wine",
+    "label": "Open Food Facts (natural sparkling wine)",
+    "type": "market",
+    "coverage": "global",
+    "enabled": true,
+    "status": "ok",
+    "format": "json",
+    "endpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=natural%20sparkling%20wine&search_simple=1&action=process&json=1&page_size=120",
+    "limit": 120,
+    "wineIncludeTerms": [
+      "wine",
+      "sparkling",
+      "champagne",
+      "natural",
+      "petnat",
+      "pet-nat"
+    ],
+    "fieldMap": {
+      "name": [
+        "product_name",
+        "name"
+      ],
+      "producer": [
+        "brands",
+        "producer",
+        "manufacturer",
+        "brand"
+      ],
+      "country": [
+        "countries",
+        "countries_tags",
+        "origin_country"
+      ],
+      "region": [
+        "countries",
+        "region"
+      ],
+      "grapes": [
+        "labels",
+        "ingredients_text",
+        "pairing_tags"
+      ],
+      "abv": [
+        "alcohol"
+      ],
+      "notes": [
+        "ingredients_text",
+        "generic_name",
+        "description",
+        "categories"
+      ],
+      "color": [
+        "color",
+        "nutrition_grades",
+        "style"
+      ]
+    },
+    "lastError": "",
+    "lastResult": {
+      "sourceId": "openfoodfacts-natural-sparkling-wine",
+      "sourceLabel": "Open Food Facts (natural sparkling wine)",
+      "endpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=natural%20sparkling%20wine&search_simple=1&action=process&json=1&page_size=120",
+      "startedAt": "2026-04-04T12:24:28.697Z",
+      "completedAt": "2026-04-04T12:24:28.978Z",
+      "imported": 0,
+      "skipped": 1,
+      "candidates": 1,
+      "errors": []
+    },
+    "updatedAt": "2026-04-04T12:24:28.979Z",
+    "lastRunAt": "2026-04-04T12:24:28.978Z",
+    "lastEndpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=natural%20sparkling%20wine&search_simple=1&action=process&json=1&page_size=120"
+  },
+  {
+    "id": "openfoodfacts-biodynamic-wine",
+    "label": "Open Food Facts (biodynamic wine)",
+    "type": "market",
+    "coverage": "global",
+    "enabled": true,
+    "status": "ok",
+    "format": "json",
+    "endpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=biodynamic%20wine&search_simple=1&action=process&json=1&page_size=120",
+    "limit": 120,
+    "wineIncludeTerms": [
+      "wine",
+      "red wine",
+      "white wine",
+      "sparkling",
+      "biodynamic",
+      "biodynamics"
+    ],
+    "fieldMap": {
+      "name": [
+        "product_name",
+        "name"
+      ],
+      "producer": [
+        "brands",
+        "producer",
+        "manufacturer",
+        "brand"
+      ],
+      "country": [
+        "countries",
+        "countries_tags",
+        "origin_country"
+      ],
+      "region": [
+        "countries",
+        "region"
+      ],
+      "grapes": [
+        "labels",
+        "ingredients_text",
+        "pairing_tags"
+      ],
+      "abv": [
+        "alcohol"
+      ],
+      "notes": [
+        "ingredients_text",
+        "generic_name",
+        "description",
+        "categories"
+      ],
+      "color": [
+        "color",
+        "nutrition_grades",
+        "style"
+      ]
+    },
+    "lastError": "",
+    "lastResult": {
+      "sourceId": "openfoodfacts-biodynamic-wine",
+      "sourceLabel": "Open Food Facts (biodynamic wine)",
+      "endpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=biodynamic%20wine&search_simple=1&action=process&json=1&page_size=120",
+      "startedAt": "2026-04-04T12:24:28.981Z",
+      "completedAt": "2026-04-04T12:24:29.287Z",
+      "imported": 0,
+      "skipped": 7,
+      "candidates": 7,
+      "errors": []
+    },
+    "updatedAt": "2026-04-04T12:24:29.287Z",
+    "lastRunAt": "2026-04-04T12:24:29.287Z",
+    "lastEndpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=biodynamic%20wine&search_simple=1&action=process&json=1&page_size=120"
+  },
+  {
+    "id": "openfoodfacts-vegan-wine",
+    "label": "Open Food Facts (vegan wine)",
+    "type": "market",
+    "coverage": "global",
+    "enabled": true,
+    "status": "ok",
+    "format": "json",
+    "endpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=vegan%20wine&search_simple=1&action=process&json=1&page_size=120",
+    "limit": 120,
+    "wineIncludeTerms": [
+      "wine",
+      "red wine",
+      "white wine",
+      "rose",
+      "rosé",
+      "sparkling",
+      "vegan"
+    ],
+    "fieldMap": {
+      "name": [
+        "product_name",
+        "name"
+      ],
+      "producer": [
+        "brands",
+        "producer",
+        "manufacturer",
+        "brand"
+      ],
+      "country": [
+        "countries",
+        "countries_tags",
+        "origin_country"
+      ],
+      "region": [
+        "countries",
+        "region"
+      ],
+      "grapes": [
+        "labels",
+        "ingredients_text",
+        "pairing_tags"
+      ],
+      "abv": [
+        "alcohol"
+      ],
+      "notes": [
+        "ingredients_text",
+        "generic_name",
+        "description",
+        "categories"
+      ],
+      "color": [
+        "color",
+        "nutrition_grades",
+        "style"
+      ]
+    },
+    "lastError": "",
+    "lastResult": {
+      "sourceId": "openfoodfacts-vegan-wine",
+      "sourceLabel": "Open Food Facts (vegan wine)",
+      "endpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=vegan%20wine&search_simple=1&action=process&json=1&page_size=120",
+      "startedAt": "2026-04-04T12:24:29.288Z",
+      "completedAt": "2026-04-04T12:24:32.699Z",
+      "imported": 0,
+      "skipped": 100,
+      "candidates": 100,
+      "errors": []
+    },
+    "updatedAt": "2026-04-04T12:24:32.704Z",
+    "lastRunAt": "2026-04-04T12:24:32.699Z",
+    "lastEndpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=vegan%20wine&search_simple=1&action=process&json=1&page_size=120"
+  },
+  {
+    "id": "openfoodfacts-champagne",
+    "label": "Open Food Facts (champagne)",
+    "type": "market",
+    "coverage": "global",
+    "enabled": true,
+    "status": "ok",
+    "format": "json",
+    "endpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=champagne&search_simple=1&action=process&json=1&page_size=120",
+    "limit": 120,
+    "wineIncludeTerms": [
+      "champagne",
+      "sparkling",
+      "wine",
+      "brut"
+    ],
+    "fieldMap": {
+      "name": [
+        "product_name",
+        "name"
+      ],
+      "producer": [
+        "brands",
+        "producer",
+        "manufacturer",
+        "brand"
+      ],
+      "country": [
+        "countries",
+        "countries_tags",
+        "origin_country"
+      ],
+      "region": [
+        "countries",
+        "region"
+      ],
+      "grapes": [
+        "labels",
+        "ingredients_text",
+        "pairing_tags"
+      ],
+      "abv": [
+        "alcohol"
+      ],
+      "notes": [
+        "ingredients_text",
+        "generic_name",
+        "description",
+        "categories"
+      ],
+      "color": [
+        "color",
+        "nutrition_grades",
+        "style"
+      ]
+    },
+    "lastError": "",
+    "lastResult": {
+      "sourceId": "openfoodfacts-champagne",
+      "sourceLabel": "Open Food Facts (champagne)",
+      "endpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=champagne&search_simple=1&action=process&json=1&page_size=120",
+      "startedAt": "2026-04-04T12:24:32.705Z",
+      "completedAt": "2026-04-04T12:24:35.057Z",
+      "imported": 0,
+      "skipped": 100,
+      "candidates": 100,
+      "errors": []
+    },
+    "updatedAt": "2026-04-04T12:24:35.058Z",
+    "lastRunAt": "2026-04-04T12:24:35.057Z",
+    "lastEndpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=champagne&search_simple=1&action=process&json=1&page_size=120"
+  },
+  {
+    "id": "openfoodfacts-petit-verdot",
+    "label": "Open Food Facts (petit verdot)",
+    "type": "market",
+    "coverage": "global",
+    "enabled": true,
+    "status": "ok",
+    "format": "json",
+    "endpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=petit%20verdot&search_simple=1&action=process&json=1&page_size=120",
+    "limit": 120,
+    "wineIncludeTerms": [
+      "petit verdot",
+      "red wine",
+      "wine"
+    ],
+    "fieldMap": {
+      "name": [
+        "product_name",
+        "name"
+      ],
+      "producer": [
+        "brands",
+        "producer",
+        "manufacturer",
+        "brand"
+      ],
+      "country": [
+        "countries",
+        "countries_tags",
+        "origin_country"
+      ],
+      "region": [
+        "countries",
+        "region"
+      ],
+      "grapes": [
+        "labels",
+        "ingredients_text",
+        "pairing_tags"
+      ],
+      "abv": [
+        "alcohol"
+      ],
+      "notes": [
+        "ingredients_text",
+        "generic_name",
+        "description",
+        "categories"
+      ],
+      "color": [
+        "color",
+        "nutrition_grades",
+        "style"
+      ]
+    },
+    "lastError": "",
+    "lastResult": {
+      "sourceId": "openfoodfacts-petit-verdot",
+      "sourceLabel": "Open Food Facts (petit verdot)",
+      "endpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=petit%20verdot&search_simple=1&action=process&json=1&page_size=120",
+      "startedAt": "2026-04-04T12:24:35.063Z",
+      "completedAt": "2026-04-04T12:24:35.425Z",
+      "imported": 0,
+      "skipped": 9,
+      "candidates": 9,
+      "errors": []
+    },
+    "updatedAt": "2026-04-04T12:24:35.426Z",
+    "lastRunAt": "2026-04-04T12:24:35.425Z",
+    "lastEndpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=petit%20verdot&search_simple=1&action=process&json=1&page_size=120"
+  },
+  {
+    "id": "openfoodfacts-low-intervention-wine",
+    "label": "Open Food Facts (low intervention wine)",
+    "type": "market",
+    "coverage": "global",
+    "enabled": true,
+    "status": "ok",
+    "format": "json",
+    "endpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=low%20intervention%20wine&search_simple=1&action=process&json=1&page_size=120",
+    "limit": 120,
+    "wineIncludeTerms": [
+      "low intervention",
+      "wine",
+      "red wine",
+      "white wine",
+      "sparkling",
+      "natural"
+    ],
+    "fieldMap": {
+      "name": [
+        "product_name",
+        "name"
+      ],
+      "producer": [
+        "brands",
+        "producer",
+        "manufacturer",
+        "brand"
+      ],
+      "country": [
+        "countries",
+        "countries_tags",
+        "origin_country"
+      ],
+      "region": [
+        "countries",
+        "region"
+      ],
+      "grapes": [
+        "labels",
+        "ingredients_text",
+        "pairing_tags"
+      ],
+      "abv": [
+        "alcohol"
+      ],
+      "notes": [
+        "ingredients_text",
+        "generic_name",
+        "description",
+        "categories"
+      ],
+      "color": [
+        "color",
+        "nutrition_grades",
+        "style"
+      ]
+    },
+    "lastError": "",
+    "lastResult": {
+      "sourceId": "openfoodfacts-low-intervention-wine",
+      "sourceLabel": "Open Food Facts (low intervention wine)",
+      "endpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=low%20intervention%20wine&search_simple=1&action=process&json=1&page_size=120",
+      "startedAt": "2026-04-04T12:24:35.428Z",
+      "completedAt": "2026-04-04T12:24:35.841Z",
+      "imported": 0,
+      "skipped": 1,
+      "candidates": 1,
+      "errors": []
+    },
+    "updatedAt": "2026-04-04T12:24:35.841Z",
+    "lastRunAt": "2026-04-04T12:24:35.841Z",
+    "lastEndpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=low%20intervention%20wine&search_simple=1&action=process&json=1&page_size=120"
+  },
+  {
+    "id": "openfoodfacts-wine-page-2",
+    "label": "Open Food Facts (wine candidates, page 2)",
+    "type": "market",
+    "coverage": "global",
+    "enabled": true,
+    "status": "ok",
+    "format": "json",
+    "endpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=wine&search_simple=1&action=process&json=1&page_size=100&page=2",
+    "limit": 100,
+    "wineIncludeTerms": [
+      "wine",
+      "red wine",
+      "white wine",
+      "rose",
+      "rosé",
+      "sparkling",
+      "natural",
+      "organic",
+      "champagne"
+    ],
+    "fieldMap": {
+      "name": [
+        "product_name",
+        "name"
+      ],
+      "producer": [
+        "brands",
+        "producer",
+        "manufacturer",
+        "brand"
+      ],
+      "country": [
+        "countries",
+        "countries_tags",
+        "origin_country"
+      ],
+      "region": [
+        "countries",
+        "region"
+      ],
+      "grapes": [
+        "labels",
+        "ingredients_text",
+        "pairing_tags"
+      ],
+      "abv": [
+        "alcohol"
+      ],
+      "notes": [
+        "ingredients_text",
+        "generic_name",
+        "description",
+        "categories"
+      ],
+      "color": [
+        "color",
+        "nutrition_grades",
+        "style"
+      ]
+    },
+    "lastError": "",
+    "lastResult": {
+      "sourceId": "openfoodfacts-wine-page-2",
+      "sourceLabel": "Open Food Facts (wine candidates, page 2)",
+      "endpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=wine&search_simple=1&action=process&json=1&page_size=100&page=2",
+      "startedAt": "2026-04-04T12:24:35.843Z",
+      "completedAt": "2026-04-04T12:24:38.539Z",
+      "imported": 45,
+      "skipped": 55,
+      "candidates": 100,
+      "errors": []
+    },
+    "updatedAt": "2026-04-04T12:24:38.539Z",
+    "lastRunAt": "2026-04-04T12:24:38.539Z",
+    "lastEndpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=wine&search_simple=1&action=process&json=1&page_size=100&page=2"
+  },
+  {
+    "id": "openfoodfacts-wine-page-3",
+    "label": "Open Food Facts (wine candidates, page 3)",
+    "type": "market",
+    "coverage": "global",
+    "enabled": true,
+    "status": "ok",
+    "format": "json",
+    "endpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=wine&search_simple=1&action=process&json=1&page_size=100&page=3",
+    "limit": 100,
+    "wineIncludeTerms": [
+      "wine",
+      "red wine",
+      "white wine",
+      "rose",
+      "rosé",
+      "sparkling",
+      "natural",
+      "organic",
+      "champagne"
+    ],
+    "fieldMap": {
+      "name": [
+        "product_name",
+        "name"
+      ],
+      "producer": [
+        "brands",
+        "producer",
+        "manufacturer",
+        "brand"
+      ],
+      "country": [
+        "countries",
+        "countries_tags",
+        "origin_country"
+      ],
+      "region": [
+        "countries",
+        "region"
+      ],
+      "grapes": [
+        "labels",
+        "ingredients_text",
+        "pairing_tags"
+      ],
+      "abv": [
+        "alcohol"
+      ],
+      "notes": [
+        "ingredients_text",
+        "generic_name",
+        "description",
+        "categories"
+      ],
+      "color": [
+        "color",
+        "nutrition_grades",
+        "style"
+      ]
+    },
+    "lastError": "",
+    "lastResult": {
+      "sourceId": "openfoodfacts-wine-page-3",
+      "sourceLabel": "Open Food Facts (wine candidates, page 3)",
+      "endpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=wine&search_simple=1&action=process&json=1&page_size=100&page=3",
+      "startedAt": "2026-04-04T12:24:38.540Z",
+      "completedAt": "2026-04-04T12:24:41.042Z",
+      "imported": 31,
+      "skipped": 69,
+      "candidates": 100,
+      "errors": []
+    },
+    "updatedAt": "2026-04-04T12:24:41.042Z",
+    "lastRunAt": "2026-04-04T12:24:41.042Z",
+    "lastEndpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=wine&search_simple=1&action=process&json=1&page_size=100&page=3"
+  },
+  {
+    "id": "openfoodfacts-wine-page-4",
+    "label": "Open Food Facts (wine candidates, page 4)",
+    "type": "market",
+    "coverage": "global",
+    "enabled": true,
+    "status": "ok",
+    "format": "json",
+    "endpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=wine&search_simple=1&action=process&json=1&page_size=100&page=4",
+    "limit": 100,
+    "wineIncludeTerms": [
+      "wine",
+      "red wine",
+      "white wine",
+      "rose",
+      "rosé",
+      "sparkling",
+      "natural",
+      "organic",
+      "champagne"
+    ],
+    "fieldMap": {
+      "name": [
+        "product_name",
+        "name"
+      ],
+      "producer": [
+        "brands",
+        "producer",
+        "manufacturer",
+        "brand"
+      ],
+      "country": [
+        "countries",
+        "countries_tags",
+        "origin_country"
+      ],
+      "region": [
+        "countries",
+        "region"
+      ],
+      "grapes": [
+        "labels",
+        "ingredients_text",
+        "pairing_tags"
+      ],
+      "abv": [
+        "alcohol"
+      ],
+      "notes": [
+        "ingredients_text",
+        "generic_name",
+        "description",
+        "categories"
+      ],
+      "color": [
+        "color",
+        "nutrition_grades",
+        "style"
+      ]
+    },
+    "lastError": "",
+    "lastResult": {
+      "sourceId": "openfoodfacts-wine-page-4",
+      "sourceLabel": "Open Food Facts (wine candidates, page 4)",
+      "endpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=wine&search_simple=1&action=process&json=1&page_size=100&page=4",
+      "startedAt": "2026-04-04T12:24:41.043Z",
+      "completedAt": "2026-04-04T12:24:43.736Z",
+      "imported": 42,
+      "skipped": 58,
+      "candidates": 100,
+      "errors": []
+    },
+    "updatedAt": "2026-04-04T12:24:43.736Z",
+    "lastRunAt": "2026-04-04T12:24:43.736Z",
+    "lastEndpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=wine&search_simple=1&action=process&json=1&page_size=100&page=4"
+  },
+  {
+    "id": "openfoodfacts-organic-wine-page-2",
+    "label": "Open Food Facts (organic wine, page 2)",
+    "type": "market",
+    "coverage": "global",
+    "enabled": true,
+    "status": "ok",
+    "format": "json",
+    "endpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=organic%20wine&search_simple=1&action=process&json=1&page_size=100&page=2",
+    "limit": 100,
+    "wineIncludeTerms": [
+      "organic",
+      "wine",
+      "red wine",
+      "white wine",
+      "sparkling"
+    ],
+    "fieldMap": {
+      "name": [
+        "product_name",
+        "name"
+      ],
+      "producer": [
+        "brands",
+        "producer",
+        "manufacturer",
+        "brand"
+      ],
+      "country": [
+        "countries",
+        "countries_tags",
+        "origin_country"
+      ],
+      "region": [
+        "countries",
+        "region"
+      ],
+      "grapes": [
+        "labels",
+        "ingredients_text",
+        "pairing_tags"
+      ],
+      "abv": [
+        "alcohol"
+      ],
+      "notes": [
+        "ingredients_text",
+        "generic_name",
+        "description",
+        "categories"
+      ],
+      "color": [
+        "color",
+        "nutrition_grades",
+        "style"
+      ]
+    },
+    "lastError": "",
+    "lastResult": {
+      "sourceId": "openfoodfacts-organic-wine-page-2",
+      "sourceLabel": "Open Food Facts (organic wine, page 2)",
+      "endpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=organic%20wine&search_simple=1&action=process&json=1&page_size=100&page=2",
+      "startedAt": "2026-04-04T12:24:43.736Z",
+      "completedAt": "2026-04-04T12:24:46.764Z",
+      "imported": 16,
+      "skipped": 84,
+      "candidates": 100,
+      "errors": []
+    },
+    "updatedAt": "2026-04-04T12:24:46.764Z",
+    "lastRunAt": "2026-04-04T12:24:46.764Z",
+    "lastEndpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=organic%20wine&search_simple=1&action=process&json=1&page_size=100&page=2"
+  },
+  {
+    "id": "openfoodfacts-vegan-wine-page-2",
+    "label": "Open Food Facts (vegan wine, page 2)",
+    "type": "market",
+    "coverage": "global",
+    "enabled": true,
+    "status": "ok",
+    "format": "json",
+    "endpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=vegan%20wine&search_simple=1&action=process&json=1&page_size=100&page=2",
+    "limit": 100,
+    "wineIncludeTerms": [
+      "wine",
+      "red wine",
+      "white wine",
+      "rose",
+      "rosé",
+      "sparkling",
+      "vegan"
+    ],
+    "fieldMap": {
+      "name": [
+        "product_name",
+        "name"
+      ],
+      "producer": [
+        "brands",
+        "producer",
+        "manufacturer",
+        "brand"
+      ],
+      "country": [
+        "countries",
+        "countries_tags",
+        "origin_country"
+      ],
+      "region": [
+        "countries",
+        "region"
+      ],
+      "grapes": [
+        "labels",
+        "ingredients_text",
+        "pairing_tags"
+      ],
+      "abv": [
+        "alcohol"
+      ],
+      "notes": [
+        "ingredients_text",
+        "generic_name",
+        "description",
+        "categories"
+      ],
+      "color": [
+        "color",
+        "nutrition_grades",
+        "style"
+      ]
+    },
+    "lastError": "",
+    "lastResult": {
+      "sourceId": "openfoodfacts-vegan-wine-page-2",
+      "sourceLabel": "Open Food Facts (vegan wine, page 2)",
+      "endpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=vegan%20wine&search_simple=1&action=process&json=1&page_size=100&page=2",
+      "startedAt": "2026-04-04T12:24:46.764Z",
+      "completedAt": "2026-04-04T12:24:49.754Z",
+      "imported": 29,
+      "skipped": 50,
+      "candidates": 79,
+      "errors": []
+    },
+    "updatedAt": "2026-04-04T12:24:49.754Z",
+    "lastRunAt": "2026-04-04T12:24:49.754Z",
+    "lastEndpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=vegan%20wine&search_simple=1&action=process&json=1&page_size=100&page=2"
+  },
+  {
+    "id": "openfoodfacts-champagne-page-2",
+    "label": "Open Food Facts (champagne, page 2)",
+    "type": "market",
+    "coverage": "global",
+    "enabled": true,
+    "status": "ok",
+    "format": "json",
+    "endpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=champagne&search_simple=1&action=process&json=1&page_size=100&page=2",
+    "limit": 100,
+    "wineIncludeTerms": [
+      "champagne",
+      "sparkling",
+      "wine",
+      "brut",
+      "petnat",
+      "pet-nat"
+    ],
+    "fieldMap": {
+      "name": [
+        "product_name",
+        "name"
+      ],
+      "producer": [
+        "brands",
+        "producer",
+        "manufacturer",
+        "brand"
+      ],
+      "country": [
+        "countries",
+        "countries_tags",
+        "origin_country"
+      ],
+      "region": [
+        "countries",
+        "region"
+      ],
+      "grapes": [
+        "labels",
+        "ingredients_text",
+        "pairing_tags"
+      ],
+      "abv": [
+        "alcohol"
+      ],
+      "notes": [
+        "ingredients_text",
+        "generic_name",
+        "description",
+        "categories"
+      ],
+      "color": [
+        "color",
+        "nutrition_grades",
+        "style"
+      ]
+    },
+    "lastError": "",
+    "lastResult": {
+      "sourceId": "openfoodfacts-champagne-page-2",
+      "sourceLabel": "Open Food Facts (champagne, page 2)",
+      "endpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=champagne&search_simple=1&action=process&json=1&page_size=100&page=2",
+      "startedAt": "2026-04-04T12:24:49.755Z",
+      "completedAt": "2026-04-04T12:24:52.390Z",
+      "imported": 65,
+      "skipped": 35,
+      "candidates": 100,
+      "errors": []
+    },
+    "updatedAt": "2026-04-04T12:24:52.390Z",
+    "lastRunAt": "2026-04-04T12:24:52.390Z",
+    "lastEndpoint": "https://world.openfoodfacts.net/cgi/search.pl?search_terms=champagne&search_simple=1&action=process&json=1&page_size=100&page=2"
+  },
+  {
+    "id": "dataset-gist-ajubin-wine-reviews",
+    "label": "Gist Wine Reviews (Ajubin)",
+    "type": "dataset",
+    "coverage": "global",
+    "enabled": true,
+    "status": "ok",
+    "format": "json",
+    "endpoint": "https://gist.githubusercontent.com/ajubin/d331f3251db4bd239c7a1efd0af54e38/raw",
+    "limit": 5000,
+    "fieldMap": {
+      "name": [
+        "title",
+        "name"
+      ],
+      "producer": [
+        "winery",
+        "producer"
+      ],
+      "country": [
+        "country",
+        "country_name"
+      ],
+      "region": [
+        "region_1",
+        "region_2",
+        "province"
+      ],
+      "grapes": [
+        "variety",
+        "grapes"
+      ],
+      "notes": [
+        "description",
+        "notes"
+      ],
+      "abv": [
+        "alcohol"
+      ],
+      "price": [
+        "price"
+      ]
+    },
+    "lastError": "",
+    "lastResult": {
+      "sourceId": "dataset-gist-ajubin-wine-reviews",
+      "sourceLabel": "Gist Wine Reviews (Ajubin)",
+      "endpoint": "https://gist.githubusercontent.com/ajubin/d331f3251db4bd239c7a1efd0af54e38/raw",
+      "startedAt": "2026-04-04T12:24:52.390Z",
+      "completedAt": "2026-04-04T12:26:40.013Z",
+      "imported": 4978,
+      "skipped": 22,
+      "candidates": 5000,
+      "errors": []
+    },
+    "updatedAt": "2026-04-04T12:26:40.013Z",
+    "lastRunAt": "2026-04-04T12:26:40.013Z",
+    "lastEndpoint": "https://gist.githubusercontent.com/ajubin/d331f3251db4bd239c7a1efd0af54e38/raw"
+  },
+  {
+    "id": "dataset-gist-mconnor-wines",
+    "label": "Gist Winery List (mconnor)",
+    "type": "dataset",
+    "coverage": "global",
+    "enabled": true,
+    "status": "ok",
+    "format": "json",
+    "endpoint": "https://gist.githubusercontent.com/mconnor/9b9f93ad895c695cfdc70ba6857fe6a1/raw",
+    "limit": 100,
+    "fieldMap": {
+      "name": [
+        "name"
+      ],
+      "producer": [
+        "vineyard",
+        "producer"
+      ],
+      "country": [
+        "region",
+        "country"
+      ],
+      "region": [
+        "region"
+      ],
+      "grapes": [
+        "type"
+      ],
+      "vintage": [
+        "vintage"
+      ],
+      "color": [
+        "type"
+      ],
+      "notes": [
+        "description"
+      ]
+    },
+    "lastError": "",
+    "lastResult": {
+      "sourceId": "dataset-gist-mconnor-wines",
+      "sourceLabel": "Gist Winery List (mconnor)",
+      "endpoint": "https://gist.githubusercontent.com/mconnor/9b9f93ad895c695cfdc70ba6857fe6a1/raw",
+      "startedAt": "2026-04-04T12:26:40.014Z",
+      "completedAt": "2026-04-04T12:26:41.066Z",
+      "imported": 12,
+      "skipped": 0,
+      "candidates": 12,
+      "errors": []
+    },
+    "updatedAt": "2026-04-04T12:26:41.066Z",
+    "lastRunAt": "2026-04-04T12:26:41.066Z",
+    "lastEndpoint": "https://gist.githubusercontent.com/mconnor/9b9f93ad895c695cfdc70ba6857fe6a1/raw"
+  },
+  {
+    "id": "sampleapi-dessert",
+    "label": "SampleAPIs Wines (Dessert)",
+    "type": "market",
+    "coverage": "global",
+    "enabled": true,
+    "status": "ok",
+    "format": "json",
+    "endpoint": "https://api.sampleapis.com/wines/dessert",
+    "limit": 120,
+    "fieldMap": {
+      "name": [
+        "wine",
+        "name"
+      ],
+      "producer": [
+        "winery",
+        "producer"
+      ],
+      "region": [
+        "region",
+        "location",
+        "area"
+      ],
+      "country": [
+        "country",
+        "origin",
+        "location"
+      ],
+      "color": [
+        "type",
+        "color",
+        "style"
+      ],
+      "grapes": [
+        "grapes",
+        "grape_variety"
+      ],
+      "notes": [
+        "notes",
+        "description"
+      ],
+      "abv": [
+        "abv",
+        "alcohol"
+      ],
+      "price": [
+        "price"
+      ]
+    },
+    "lastError": "",
+    "lastResult": {
+      "sourceId": "sampleapi-dessert",
+      "sourceLabel": "SampleAPIs Wines (Dessert)",
+      "endpoint": "https://api.sampleapis.com/wines/dessert",
+      "startedAt": "2026-04-04T12:26:41.067Z",
+      "completedAt": "2026-04-04T12:26:42.013Z",
+      "imported": 0,
+      "skipped": 120,
+      "candidates": 120,
+      "errors": []
+    },
+    "updatedAt": "2026-04-04T12:26:42.014Z",
+    "lastRunAt": "2026-04-04T12:26:42.013Z",
+    "lastEndpoint": "https://api.sampleapis.com/wines/dessert"
+  },
+  {
+    "id": "sampleapi-port",
+    "label": "SampleAPIs Wines (Port)",
+    "type": "market",
+    "coverage": "global",
+    "enabled": true,
+    "status": "ok",
+    "format": "json",
+    "endpoint": "https://api.sampleapis.com/wines/port",
+    "limit": 120,
+    "fieldMap": {
+      "name": [
+        "wine",
+        "name"
+      ],
+      "producer": [
+        "winery",
+        "producer"
+      ],
+      "region": [
+        "region",
+        "location",
+        "area"
+      ],
+      "country": [
+        "country",
+        "origin",
+        "location"
+      ],
+      "color": [
+        "type",
+        "color",
+        "style"
+      ],
+      "grapes": [
+        "grapes",
+        "grape_variety"
+      ],
+      "notes": [
+        "notes",
+        "description"
+      ],
+      "abv": [
+        "abv",
+        "alcohol"
+      ],
+      "price": [
+        "price"
+      ]
+    },
+    "lastError": "",
+    "lastResult": {
+      "sourceId": "sampleapi-port",
+      "sourceLabel": "SampleAPIs Wines (Port)",
+      "endpoint": "https://api.sampleapis.com/wines/port",
+      "startedAt": "2026-04-04T12:26:42.016Z",
+      "completedAt": "2026-04-04T12:26:42.275Z",
+      "imported": 0,
+      "skipped": 120,
+      "candidates": 120,
+      "errors": []
+    },
+    "updatedAt": "2026-04-04T12:26:42.276Z",
+    "lastRunAt": "2026-04-04T12:26:42.275Z",
+    "lastEndpoint": "https://api.sampleapis.com/wines/port"
+  },
+  {
+    "id": "winemag-tidy",
+    "label": "Wine Enthusiast Reviews (TidyTuesday)",
+    "type": "dataset",
+    "coverage": "global",
+    "enabled": true,
+    "status": "ok",
+    "format": "csv",
+    "endpoint": "https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-05-28/winemag-data-130k-v2.csv",
+    "limit": 500,
+    "fieldMap": {
+      "name": [
+        "title",
+        "name"
+      ],
+      "producer": [
+        "winery",
+        "producer"
+      ],
+      "country": [
+        "country"
+      ],
+      "region": [
+        "region_1",
+        "province",
+        "region_2"
+      ],
+      "grapes": [
+        "variety",
+        "grapes"
+      ],
+      "vintage": [
+        "title"
+      ],
+      "color": [
+        "style"
+      ],
+      "notes": [
+        "description",
+        "notes"
+      ],
+      "price": [
+        "price"
+      ],
+      "abv": [
+        "alcohol",
+        "abv"
+      ]
+    },
+    "lastError": "",
+    "lastResult": {
+      "sourceId": "winemag-tidy",
+      "sourceLabel": "Wine Enthusiast Reviews (TidyTuesday)",
+      "endpoint": "https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-05-28/winemag-data-130k-v2.csv",
+      "startedAt": "2026-04-04T12:26:42.278Z",
+      "completedAt": "2026-04-04T12:26:43.628Z",
+      "imported": 0,
+      "skipped": 500,
+      "candidates": 500,
+      "errors": []
+    },
+    "updatedAt": "2026-04-04T12:26:43.629Z",
+    "lastRunAt": "2026-04-04T12:26:43.628Z",
+    "lastEndpoint": "https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-05-28/winemag-data-130k-v2.csv"
   },
   {
     "id": "sample-feed",
@@ -469,15 +2002,15 @@
       "sourceId": "sample-feed",
       "sourceLabel": "Local Sample Feed",
       "endpoint": "server/data/natural-wine-demo.json",
-      "startedAt": "2026-04-04T12:01:23.640Z",
-      "completedAt": "2026-04-04T12:01:23.642Z",
+      "startedAt": "2026-04-04T12:26:43.630Z",
+      "completedAt": "2026-04-04T12:26:43.648Z",
       "imported": 0,
       "skipped": 3,
       "candidates": 3,
       "errors": []
     },
-    "updatedAt": "2026-04-04T12:01:23.642Z",
-    "lastRunAt": "2026-04-04T12:01:23.642Z",
+    "updatedAt": "2026-04-04T12:26:43.649Z",
+    "lastRunAt": "2026-04-04T12:26:43.648Z",
     "lastEndpoint": "server/data/natural-wine-demo.json"
   }
 ]
