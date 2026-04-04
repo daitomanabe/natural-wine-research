@@ -154,6 +154,10 @@ function getSourceLabels(wine) {
   return [...new Set(labels)];
 }
 
+function normalizeResearchCountry(value) {
+  return value || "UNKNOWN";
+}
+
 function RecommendationColumn({ title, items, onSelect, emptyLabel }) {
   return (
     <div className="recommend-column">
@@ -243,6 +247,9 @@ export default function App() {
   const [sourceScope, setSourceScope] = useState("all");
   const [genreFilter, setGenreFilter] = useState([]);
   const [regionFilter, setRegionFilter] = useState([]);
+  const [researchSourceFilter, setResearchSourceFilter] = useState("");
+  const [researchRegionFilter, setResearchRegionFilter] = useState([]);
+  const [researchCountryFilter, setResearchCountryFilter] = useState([]);
   const [filterColor, setFilterColor] = useState(null);
   const [filterFarming, setFilterFarming] = useState(null);
   const [filterSo2Max, setFilterSo2Max] = useState(45);
@@ -343,10 +350,38 @@ export default function App() {
   }, [catalog]);
 
   const researchCatalog = useMemo(() => catalog.filter((wine) => Array.isArray(wine.sourceRefs) && wine.sourceRefs.length > 0), [catalog]);
+  const researchSourceFilterName = researchSourceFilter || "all";
+  const researchRegionCountryBase = useMemo(() => {
+    const regionSet = new Set(researchRegionFilter);
+    const countrySet = new Set(researchCountryFilter.map((country) => normalizeResearchCountry(country)));
+
+    return researchCatalog.filter((wine) => {
+      if (regionSet.size > 0 && !regionSet.has(wine.region)) {
+        return false;
+      }
+
+      if (countrySet.size > 0 && !countrySet.has(normalizeResearchCountry(wine.country))) {
+        return false;
+      }
+
+      return true;
+    });
+  }, [researchCatalog, researchCountryFilter, researchRegionFilter]);
+
+  const researchFilteredCatalog = useMemo(() => {
+    if (researchSourceFilterName === "all") {
+      return researchRegionCountryBase;
+    }
+
+    return researchRegionCountryBase.filter((wine) => {
+      const sourceLabels = getSourceLabels(wine);
+      return sourceLabels.includes(researchSourceFilter);
+    });
+  }, [researchRegionCountryBase, researchSourceFilter, researchSourceFilterName]);
 
   const researchSourceCounts = useMemo(() => {
     const counts = new Map();
-    for (const wine of researchCatalog) {
+    for (const wine of researchRegionCountryBase) {
       const labels = getSourceLabels(wine);
       if (labels.length === 0) {
         counts.set("Unknown source", (counts.get("Unknown source") ?? 0) + 1);
@@ -357,19 +392,19 @@ export default function App() {
       }
     }
     return [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
-  }, [researchCatalog]);
+  }, [researchRegionCountryBase]);
 
   const researchTopCountries = useMemo(() => {
     const counts = new Map();
-    for (const wine of researchCatalog) {
+    for (const wine of researchFilteredCatalog) {
       const country = wine.country || "UNKNOWN";
       counts.set(country, (counts.get(country) ?? 0) + 1);
     }
     return [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, 6);
-  }, [researchCatalog]);
+  }, [researchFilteredCatalog]);
 
   const researchListSorted = useMemo(() => {
-    const toSort = [...researchCatalog];
+    const toSort = [...researchFilteredCatalog];
     return toSort.sort((a, b) => {
       const aSource = getSourceLabels(a)[0] || "Unknown source";
       const bSource = getSourceLabels(b)[0] || "Unknown source";
@@ -379,7 +414,9 @@ export default function App() {
       if (aLabel !== bLabel) return aLabel.localeCompare(bLabel);
       return (a.producer || "").localeCompare(b.producer || "");
     });
-  }, [researchCatalog]);
+  }, [researchFilteredCatalog]);
+
+  const hasResearchFilters = researchSourceFilterName !== "all" || researchCountryFilter.length > 0 || researchRegionFilter.length > 0;
 
   const genreIndex = useMemo(() => {
     const map = new Map();
@@ -438,6 +475,43 @@ export default function App() {
   const avgPrice = avgPriceKnown.length ? (avgPriceKnown.reduce((sum, wine) => sum + wine.price, 0) / avgPriceKnown.length).toFixed(0) : "N/A";
   const selectedCandidate = analysisResult?.candidates?.find((candidate) => candidate.wine.id === analysisSelectionId) ?? analysisResult?.candidates?.[0] ?? null;
   const labelTargetWine = selectedCandidate?.wine ?? selected;
+
+  function setRegionFilterFromChart(region) {
+    setRegionFilter((current) => {
+      if (!region) return [];
+      return current.includes(region) ? current.filter((entry) => entry !== region) : [...current, region];
+    });
+  }
+
+  function setResearchSourceFilterFromChart(source) {
+    const target = source || "all";
+    setResearchSourceFilter((current) => (current === target ? "" : target));
+  }
+
+  function setResearchCountryFilterFromChart(country) {
+    if (!country) return;
+    const normalized = normalizeResearchCountry(country);
+    setResearchCountryFilter((current) => {
+      return current.includes(normalized)
+        ? current.filter((entry) => entry !== normalized)
+        : [...current, normalized];
+    });
+  }
+
+  function setResearchRegionFilterFromChart(region) {
+    if (!region) return;
+    setResearchRegionFilter((current) => {
+      return current.includes(region)
+        ? current.filter((entry) => entry !== region)
+        : [...current, region];
+    });
+  }
+
+  function clearResearchFilters() {
+    setResearchSourceFilter("");
+    setResearchCountryFilter([]);
+    setResearchRegionFilter([]);
+  }
 
   function hydrateCatalogDraftFromCandidate(candidate) {
     if (!candidate?.wine) return;
@@ -1609,12 +1683,20 @@ export default function App() {
         </div>
       </section>
 
-        <section className="module-panel">
-          <div className="panel-head">
+      <section className="module-panel">
+        <div className="panel-head">
+          <div>
             <div className="section-label">4. RESEARCH WINE HARVEST</div>
-          <div className="micro-copy">
-            {researchCatalog.length} entries from source collection ({researchSourceCounts.length} source groups)
+            <div className="micro-copy">
+              {researchFilteredCatalog.length}/{researchCatalog.length} entries
+              {hasResearchFilters ? " after research filters" : " from source collection"}
+            </div>
           </div>
+          {hasResearchFilters ? (
+            <button type="button" className="secondary-button" onClick={clearResearchFilters}>
+              CLEAR RESEARCH FILTERS
+            </button>
+          ) : null}
         </div>
         <div className="research-dashboard">
           <div className="research-panel">
@@ -1625,13 +1707,18 @@ export default function App() {
                   const max = researchSourceCounts[0]?.[1] ?? 1;
                   const width = Math.max(6, (count / Math.max(max, 1)) * 100);
                   return (
-                    <div key={source} className="research-bar-row">
+                    <button
+                      key={source}
+                      type="button"
+                      className={`research-bar-row ${researchSourceFilterName === source ? "research-bar-row-active" : ""}`}
+                      onClick={() => setResearchSourceFilterFromChart(source)}
+                    >
                       <span className="research-bar-label" title={source}>{source}</span>
                       <span className="research-bar-track">
                         <span className="research-bar-fill" style={{ width: `${width}%` }} />
                       </span>
                       <span className="research-bar-value">{count}</span>
-                    </div>
+                    </button>
                   );
                 })}
               </div>
@@ -1644,7 +1731,14 @@ export default function App() {
             <div className="section-label">TOP RESEARCH COUNTRIES</div>
             <div className="research-chip-row">
               {researchTopCountries.length ? researchTopCountries.map(([country, count]) => (
-                <span key={country} className="research-chip">{country} · {count}</span>
+                <button
+                  key={country}
+                  type="button"
+                  className={`research-chip ${researchCountryFilter.includes(country) ? "research-chip-active" : ""}`}
+                  onClick={() => setResearchCountryFilterFromChart(country)}
+                >
+                  {country} · {count}
+                </button>
               )) : (
                 <div className="empty-card">No country tags from source records.</div>
               )}
@@ -1653,41 +1747,49 @@ export default function App() {
         </div>
         <div className="region-panel" style={{ marginTop: 12 }}>
           <div className="section-label">REGION COVERAGE (RESEARCH-ONLY)</div>
-          <BarChart wines={researchCatalog} />
+          <BarChart
+            wines={researchFilteredCatalog}
+            selectedRegions={researchRegionFilter}
+            onRegionSelect={setResearchRegionFilterFromChart}
+          />
         </div>
-        <div className="table-wrap research-table-wrap">
-          <table>
-            <thead>
-              <tr>
-                {["SOURCE", "WINE", "PRODUCER", "COUNTRY", "REGION", "COLOR", "SO₂", "PRICE"].map((heading) => (
-                  <th key={heading}>{heading}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {researchListSorted.map((wine) => {
-                const col = COLOR_MAP[wine.color]?.dot ?? "#aaa";
-                const isSelected = selected?.id === wine.id;
-                return (
-                  <tr
-                    key={wine.id}
-                    onClick={() => setSelected(isSelected ? null : wine)}
-                    className={isSelected ? "selected-row" : ""}
-                  >
-                    <td>{getSourceLabels(wine).join(", ") || "Unknown"}</td>
-                    <td style={{ color: col }}>{wine.name}</td>
-                    <td>{wine.producer}</td>
-                    <td>{FLAG_MAP[wine.country] ?? wine.country}</td>
-                    <td>{wine.region}</td>
-                    <td style={{ color: col }}>{COLOR_MAP[wine.color]?.label}</td>
-                    <td style={{ color: wine.so2 === 0 ? "#7eb8b0" : "#2a4050" }}>{wine.so2 === 0 ? "ZERO" : Number.isFinite(wine.so2) ? wine.so2 : "—"}</td>
-                    <td>{Number.isFinite(wine.price) ? `€${wine.price}` : "—"}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+        {researchListSorted.length ? (
+          <div className="table-wrap research-table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  {["SOURCE", "WINE", "PRODUCER", "COUNTRY", "REGION", "COLOR", "SO₂", "PRICE"].map((heading) => (
+                    <th key={heading}>{heading}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {researchListSorted.map((wine) => {
+                  const col = COLOR_MAP[wine.color]?.dot ?? "#aaa";
+                  const isSelected = selected?.id === wine.id;
+                  return (
+                    <tr
+                      key={wine.id}
+                      onClick={() => setSelected(isSelected ? null : wine)}
+                      className={isSelected ? "selected-row" : ""}
+                    >
+                      <td>{getSourceLabels(wine).join(", ") || "Unknown"}</td>
+                      <td style={{ color: col }}>{wine.name}</td>
+                      <td>{wine.producer}</td>
+                      <td>{FLAG_MAP[wine.country] ?? wine.country}</td>
+                      <td>{wine.region}</td>
+                      <td style={{ color: col }}>{COLOR_MAP[wine.color]?.label}</td>
+                      <td style={{ color: wine.so2 === 0 ? "#7eb8b0" : "#2a4050" }}>{wine.so2 === 0 ? "ZERO" : Number.isFinite(wine.so2) ? wine.so2 : "—"}</td>
+                      <td>{Number.isFinite(wine.price) ? `€${wine.price}` : "—"}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <div className="empty-card">No records match the current research filters.</div>
+        )}
       </section>
 
       <main className="content-grid">
@@ -1708,7 +1810,11 @@ export default function App() {
 
           <div className="region-panel">
             <div className="section-label">DISTRIBUTION BY REGION</div>
-            <BarChart wines={filtered} />
+            <BarChart
+              wines={filtered}
+              selectedRegions={regionFilter}
+              onRegionSelect={setRegionFilterFromChart}
+            />
           </div>
         </section>
 

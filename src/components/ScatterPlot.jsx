@@ -70,6 +70,7 @@ export function ScatterPlot({ wines, selected, onSelect }) {
               stroke={isSelected ? col : "none"}
               strokeWidth={isSelected ? 2 : 0}
               filter={isSelected ? "url(#glow-sm)" : "none"}
+              title={`${w.name} · ${w.producer} · ${w.region} · SO₂ ${w.so2 ?? "N/A"} · price ${w.price ?? "N/A"}`}
             />
             {isSelected && (
               <text x={x} y={y - r - 6} textAnchor="middle" fill={col} fontSize="9" fontFamily="'IBM Plex Mono',monospace" letterSpacing="0.5">

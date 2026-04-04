@@ -1,4 +1,6 @@
-export function BarChart({ wines }) {
+export function BarChart({ wines, selectedRegions = [], onRegionSelect }) {
+  const selected = new Set(selectedRegions);
+  const interactive = typeof onRegionSelect === "function";
   const counts = {};
   wines.forEach((wine) => {
     counts[wine.region] = (counts[wine.region] || 0) + 1;
@@ -8,13 +10,24 @@ export function BarChart({ wines }) {
   const max = Math.max(...regions.map(([, count]) => count), 1);
 
   return (
-    <div style={{ fontFamily: "'IBM Plex Mono',monospace" }}>
+    <div className="bar-chart" style={{ fontFamily: "'IBM Plex Mono',monospace" }}>
       {regions.map(([region, count]) => (
-        <div key={region} style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 5 }}>
-          <div style={{ width: 90, fontSize: 9, letterSpacing: 0.5, color: "#2a4050", textAlign: "right", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{region}</div>
-          <div style={{ height: 10, width: `${(count / max) * 100}%`, maxWidth: 120, background: "#0e1820", borderRight: "2px solid #1a3040", transition: "width 0.3s" }} />
-          <div style={{ fontSize: 9, color: "#1e3040" }}>{count}</div>
-        </div>
+        <button
+          key={region}
+          type="button"
+          className={`bar-chart-row ${selected.has(region) ? "bar-chart-row-active" : ""}`}
+          onClick={() => onRegionSelect?.(region)}
+          disabled={!interactive}
+          aria-pressed={selected.has(region)}
+        >
+          <span className="bar-chart-label" title={region}>
+            {region}
+          </span>
+          <span className="bar-chart-track">
+            <span className="bar-chart-fill" style={{ width: `${(count / max) * 100}%` }} />
+          </span>
+          <span className="bar-chart-value">{count}</span>
+        </button>
       ))}
     </div>
   );

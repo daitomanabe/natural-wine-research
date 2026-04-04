@@ -625,6 +625,67 @@ h1 {
   border-top: 1px solid #080c10;
 }
 
+.bar-chart {
+  margin-top: 8px;
+  display: grid;
+  gap: 8px;
+}
+
+.bar-chart-row,
+.bar-chart-row:disabled {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 4fr) 42px;
+  gap: 8px;
+  align-items: center;
+  border: 1px solid #102030;
+  background: rgba(3, 7, 12, 0.74);
+  padding: 4px 6px;
+  font: inherit;
+  color: inherit;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.bar-chart-row:disabled {
+  cursor: default;
+  opacity: 0.8;
+}
+
+.bar-chart-row:hover:not(:disabled),
+.bar-chart-row-active {
+  border-color: #7eb8b0;
+  background: rgba(7, 25, 22, 0.75);
+}
+
+.bar-chart-label {
+  font-size: 9px;
+  color: #6e8793;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bar-chart-track {
+  display: block;
+  height: 8px;
+  background: #0c161f;
+  border: 1px solid #1b3040;
+}
+
+.bar-chart-fill {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #1f5f5a, #7eb8b0);
+}
+
+.bar-chart-value {
+  text-align: right;
+  font-size: 9px;
+  color: #2a4050;
+}
+
 .research-dashboard {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -648,6 +709,22 @@ h1 {
   grid-template-columns: minmax(0, 1.2fr) minmax(0, 4fr) 42px;
   gap: 8px;
   align-items: center;
+  font: inherit;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 1px solid transparent;
+  padding: 0;
+}
+
+.research-bar-row-active,
+.research-bar-row:active {
+  border-color: #7eb8b0;
+}
+
+.research-bar-row:hover {
+  border-color: #1b3040;
 }
 
 .research-bar-label {
@@ -690,6 +767,12 @@ h1 {
   padding: 4px 8px;
   font-size: 9px;
   color: #6d8795;
+  cursor: pointer;
+}
+
+.research-chip-active {
+  color: #7eb8b0;
+  border-color: #7eb8b0;
 }
 
 .research-table-wrap {

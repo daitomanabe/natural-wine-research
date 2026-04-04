@@ -6,8 +6,11 @@
   "scripts": {
     "dev": "vite",
     "dev:client": "vite",
+    "web": "vite",
+    "start:web": "vite --host 0.0.0.0 --port 5173",
     "dev:server": "node --watch server/index.mjs",
     "dev:full": "concurrently -k -n api,web -c blue,green \"npm:dev:server\" \"npm:dev:client\"",
+    "start:all": "npm run dev:full",
     "build": "vite build",
     "preview": "vite preview",
     "start:server": "node server/index.mjs",
