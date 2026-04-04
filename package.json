@@ -10,6 +10,7 @@
     "start:web": "vite --host 0.0.0.0 --port 5173",
     "dev:server": "node --watch server/index.mjs",
     "dev:full": "concurrently -k -n api,web -c blue,green \"npm:dev:server\" \"npm:dev:client\"",
+    "start:fresh": "bash ./scripts/start-fresh.sh",
     "start:all": "npm run dev:full",
     "build": "vite build",
     "preview": "vite preview",
