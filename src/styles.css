@@ -791,6 +791,208 @@ h1 {
   align-items: start;
 }
 
+.catalog-mode {
+  --nm-text-main: #c8dde6;
+  --nm-text-soft: #9db3c1;
+  --nm-text-muted: #7f97a3;
+  --nm-border: #203447;
+  --nm-panel: rgba(5, 13, 20, 0.86);
+}
+
+.catalog-mode .app-header,
+.catalog-mode .filter-bar,
+.catalog-mode .table-panel,
+.catalog-mode .module-panel,
+.catalog-mode .detail-panel,
+.catalog-mode .watchlist-panel {
+  background: linear-gradient(180deg, rgba(8, 16, 23, 0.95), rgba(5, 10, 16, 0.98));
+}
+
+.catalog-mode .app-header h1 {
+  letter-spacing: 0.14em;
+}
+
+.catalog-mode .stats-grid {
+  gap: 14px;
+}
+
+.catalog-mode .stat-block {
+  min-width: 130px;
+}
+
+.catalog-mode .stat-label {
+  color: var(--nm-text-soft);
+}
+
+.catalog-mode .stat-value {
+  color: var(--nm-text-main);
+  font-size: 20px;
+  letter-spacing: 0.08em;
+}
+
+.catalog-mode .filter-bar.catalog-filter-bar.catalog-management-filters {
+  border: 1px solid var(--nm-border);
+  background: var(--nm-panel);
+  margin-top: 14px;
+}
+
+.catalog-mode .catalog-filter-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.catalog-mode .catalog-filter-head .secondary-button {
+  white-space: nowrap;
+  margin-left: auto;
+}
+
+.catalog-mode .search-input-wrap span {
+  color: var(--nm-text-soft);
+  letter-spacing: 0.14em;
+  font-size: 10px;
+}
+
+.catalog-mode .search-input-wrap input {
+  width: 100%;
+  min-height: 42px;
+  font-size: 15px;
+  padding: 10px 12px;
+}
+
+.catalog-mode .filter-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.catalog-mode .filter-subtitle {
+  width: 100%;
+  font-size: 9px;
+  color: var(--nm-text-muted);
+  letter-spacing: 0.16em;
+  margin-bottom: 2px;
+}
+
+.catalog-mode .filter-chip,
+.catalog-mode .secondary-button,
+.catalog-mode .action-button {
+  font-size: 10px;
+  padding: 8px 10px;
+  min-height: 32px;
+}
+
+.catalog-mode .catalog-browser-layout {
+  grid-template-columns: minmax(0, 2.1fr) minmax(320px, 360px);
+  gap: 16px;
+}
+
+.catalog-mode .catalog-browser-main {
+  gap: 16px;
+}
+
+.catalog-mode .table-panel,
+.catalog-mode .module-panel,
+.catalog-mode .detail-panel {
+  border-color: var(--nm-border);
+}
+
+.catalog-mode .panel-head,
+.catalog-mode .table-head {
+  margin-bottom: 14px;
+}
+
+.catalog-mode .table-wrap {
+  border: 1px solid var(--nm-border);
+}
+
+.catalog-mode th {
+  background: #071320;
+  color: #9db3c1;
+  font-size: 11px;
+  padding: 10px 10px 9px;
+}
+
+.catalog-mode td {
+  color: var(--nm-text-main);
+  font-size: 13px;
+  padding: 10px;
+  border-bottom-color: #162634;
+}
+
+.catalog-mode thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.catalog-mode tbody tr:nth-child(even) {
+  background: rgba(4, 11, 16, 0.48);
+}
+
+.catalog-mode tbody tr {
+  transition: background 0.15s ease;
+}
+
+.catalog-mode tbody tr:hover {
+  background: rgba(126, 184, 176, 0.08);
+}
+
+.catalog-mode .selected-row {
+  background: rgba(126, 184, 176, 0.16);
+}
+
+.catalog-mode .sort-button {
+  color: #d9e7ee;
+}
+
+.catalog-mode .sort-arrow {
+  color: #7eb8b0;
+}
+
+.catalog-mode .catalog-browser-detail {
+  position: sticky;
+  top: 16px;
+}
+
+.catalog-mode .catalog-meta,
+.catalog-mode .catalog-meta .micro-copy {
+  color: var(--nm-text-soft);
+  font-size: 11px;
+}
+
+.catalog-mode .catalog-meta > div {
+  border: 1px solid #1b2f3f;
+  background: rgba(2, 8, 13, 0.85);
+  padding: 8px 10px;
+}
+
+.catalog-mode .catalog-page-controls label,
+.catalog-mode .catalog-page-indicator,
+.catalog-mode .catalog-pager .micro-copy {
+  font-size: 10px;
+}
+
+.catalog-mode .slider-row {
+  align-items: center;
+}
+
+.catalog-mode .slider-row input {
+  width: 140px;
+}
+
+.catalog-mode .catalog-page-controls select,
+.catalog-mode .catalog-page-controls label {
+  font-size: 11px;
+}
+
+.catalog-mode .catalog-browser-detail .detail-panel,
+.catalog-mode .table-panel {
+  box-shadow: 0 0 0 1px rgba(126, 184, 176, 0.08);
+}
+
 .catalog-browser-main {
   display: grid;
   gap: 14px;
@@ -926,6 +1128,19 @@ tbody tr {
 
   .catalog-browser-layout {
     grid-template-columns: 1fr;
+  }
+
+  .catalog-mode .app-header,
+  .catalog-mode .filter-bar.catalog-filter-bar.catalog-management-filters,
+  .catalog-mode .table-panel,
+  .catalog-mode .module-panel,
+  .catalog-mode .detail-panel {
+    margin-left: 16px;
+    margin-right: 16px;
+  }
+
+  .catalog-mode .search-input-wrap input {
+    min-height: 38px;
   }
 
   .detail-panel {

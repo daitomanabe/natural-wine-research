@@ -81,7 +81,7 @@ const INITIAL_LIVE_FORM = {
 const APP_VIEWS = [
   { id: "operations", label: "Cellar Operations" },
   { id: "insights", label: "Catalog Insights" },
-  { id: "catalog", label: "Catalog Browser" },
+  { id: "catalog", label: "Catalog Management" },
   { id: "kiosk", label: "iPad Kiosk Recommendations" },
 ];
 
@@ -1021,12 +1021,12 @@ export default function App() {
 
   if (viewMode === "catalog") {
     return (
-      <div className="app-shell">
+      <div className="app-shell catalog-mode">
         <header className="app-header">
           <div>
             <div className="eyebrow">NATURAL WINE RESEARCH — CATALOG EXPLORER</div>
             <h1>VIN NATUREL OS</h1>
-            <div className="subhead">UNIFIED CATALOG / LABEL / INVENTORY DATABASE BROWSER</div>
+            <div className="subhead">DATABASE MANAGEMENT CENTER FOR CATALOG AND INVENTORY LINKAGE</div>
           </div>
           <div className="stats-grid">
             {[
@@ -1074,8 +1074,20 @@ export default function App() {
         {statusMessage ? <div className="app-banner status-banner">{statusMessage}</div> : null}
         {isPending ? <div className="app-banner pending-banner">Refreshing interface…</div> : null}
 
-        <section className="filter-bar catalog-filter-bar">
-          <div className="filter-label">CATALOG FILTER</div>
+        <section className="filter-bar catalog-filter-bar catalog-management-filters">
+          <div className="catalog-filter-head">
+            <div className="filter-label">CATALOG FILTER</div>
+            <button
+              type="button"
+              className="secondary-button"
+              onClick={() => {
+                applyCatalogFilterReset();
+                setCatalogPage(1);
+              }}
+            >
+              CLEAR FILTERS
+            </button>
+          </div>
           <label className="search-input-wrap">
             <span>SEARCH (name / producer / grape / tag)</span>
             <input
@@ -1088,7 +1100,7 @@ export default function App() {
             />
           </label>
 
-          <div className="chip-row">
+          <div className="filter-chip-row">
             <button
               type="button"
               className={`filter-chip ${sourceScope === "all" ? "chip-active" : ""}`}
@@ -1117,21 +1129,12 @@ export default function App() {
                 setCatalogPage(1);
               }}
             >
-              Custom ({catalogSourceCounts.custom + catalogSourceCounts.unknown})
-            </button>
-            <button
-              type="button"
-              className="secondary-button"
-              onClick={() => {
-                applyCatalogFilterReset();
-                setCatalogPage(1);
-              }}
-            >
-              RESET FILTERS
-            </button>
+                Custom ({catalogSourceCounts.custom + catalogSourceCounts.unknown})
+              </button>
           </div>
 
-          <div className="chip-row">
+          <div className="filter-chip-row">
+            <div className="filter-subtitle">STYLE / FLAVOR TAGS</div>
             {genreIndex.slice(0, 10).map(([genre]) => (
               <button
                 key={genre}
@@ -1149,7 +1152,8 @@ export default function App() {
             ))}
           </div>
 
-          <div className="chip-row">
+          <div className="filter-chip-row">
+            <div className="filter-subtitle">REGIONS</div>
             {availableRegions.slice(0, 10).map((region) => (
               <button
                 key={region}
@@ -1169,7 +1173,8 @@ export default function App() {
             ))}
           </div>
 
-          <div className="chip-row">
+          <div className="filter-chip-row">
+            <div className="filter-subtitle">COLOR</div>
             {Object.entries(COLOR_MAP).map(([key, value]) => (
               <button
                 key={key}
@@ -1190,7 +1195,8 @@ export default function App() {
             ))}
           </div>
 
-          <div className="chip-row">
+          <div className="filter-chip-row">
+            <div className="filter-subtitle">FARMING</div>
             {Object.entries(FARMING_MAP).map(([key, value]) => (
               <button
                 key={key}
