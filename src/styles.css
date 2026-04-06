@@ -854,6 +854,13 @@ h1 {
   font-size: 10px;
 }
 
+.catalog-mode .section-label,
+.catalog-mode .filter-label,
+.catalog-mode .table-head {
+  color: var(--nm-text-soft);
+  font-size: 10px;
+}
+
 .catalog-mode .search-input-wrap input {
   width: 100%;
   min-height: 42px;
