@@ -783,6 +783,102 @@ h1 {
   overflow-x: auto;
 }
 
+.catalog-browser-layout {
+  margin: 18px 28px 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 360px);
+  gap: 14px;
+  align-items: start;
+}
+
+.catalog-browser-main {
+  display: grid;
+  gap: 14px;
+}
+
+.catalog-browser-detail {
+  display: grid;
+}
+
+.catalog-browser-detail .detail-panel {
+  margin: 0;
+}
+
+.catalog-filter-bar {
+  margin: 18px 28px 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.catalog-page-controls label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 8px;
+  letter-spacing: 0.14em;
+  color: #1a3040;
+}
+
+.catalog-page-controls select {
+  width: auto;
+  min-width: 78px;
+}
+
+.catalog-pager {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.catalog-page-indicator {
+  font-size: 9px;
+  color: #1a3040;
+  letter-spacing: 0.12em;
+}
+
+.catalog-meta {
+  display: grid;
+  gap: 8px;
+}
+
+.sort-button {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  width: 100%;
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+  cursor: pointer;
+}
+
+.sort-button-active {
+  color: #7eb8b0;
+}
+
+.sort-arrow {
+  width: 10px;
+  color: #9db3c1;
+}
+
+table thead th,
+table tbody td,
+table .empty-card {
+  border-bottom: 0;
+}
+
+.empty-card {
+  text-align: left;
+  padding: 12px;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
@@ -825,6 +921,10 @@ tbody tr {
   }
 
   .research-dashboard {
+    grid-template-columns: 1fr;
+  }
+
+  .catalog-browser-layout {
     grid-template-columns: 1fr;
   }
 

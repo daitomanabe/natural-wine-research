@@ -81,6 +81,7 @@ const INITIAL_LIVE_FORM = {
 const APP_VIEWS = [
   { id: "operations", label: "Cellar Operations" },
   { id: "insights", label: "Catalog Insights" },
+  { id: "catalog", label: "Catalog Browser" },
   { id: "kiosk", label: "iPad Kiosk Recommendations" },
 ];
 
@@ -156,6 +157,41 @@ function getSourceLabels(wine) {
 
 function normalizeResearchCountry(value) {
   return value || "UNKNOWN";
+}
+
+function formatNumber(value, fallback = "—") {
+  if (value === null || value === undefined || Number.isNaN(value)) return fallback;
+  return String(value);
+}
+
+function sortCatalogValue(wine, key, inventoryByWine) {
+  switch (key) {
+    case "source":
+      if (wine.source === "seed") return "Seed";
+      return getSourceLabels(wine)[0] || "Custom";
+    case "name":
+      return wine.name || "";
+    case "producer":
+      return wine.producer || "";
+    case "country":
+      return wine.country || "UNKNOWN";
+    case "region":
+      return wine.region || "";
+    case "color":
+      return COLOR_MAP[wine.color]?.label || wine.color || "";
+    case "vintage":
+      return wine.vintage ?? Number.POSITIVE_INFINITY;
+    case "so2":
+      return wine.so2 ?? Number.POSITIVE_INFINITY;
+    case "price":
+      return wine.price ?? Number.POSITIVE_INFINITY;
+    case "intervention":
+      return wine.intervention ?? Number.POSITIVE_INFINITY;
+    case "inventory":
+      return inventoryByWine.get(wine.id) ?? 0;
+    default:
+      return wine.name || "";
+  }
 }
 
 function RecommendationColumn({ title, items, onSelect, emptyLabel }) {
@@ -277,6 +313,9 @@ export default function App() {
 
   const [contextForm, setContextForm] = useState(INITIAL_CONTEXT_FORM);
   const [contextRecommendations, setContextRecommendations] = useState(null);
+  const [catalogSort, setCatalogSort] = useState({ key: "name", direction: "asc" });
+  const [catalogPage, setCatalogPage] = useState(1);
+  const [catalogPageSize, setCatalogPageSize] = useState(25);
 
   useEffect(() => {
     if (!analysisFile) {
@@ -347,6 +386,22 @@ export default function App() {
     }
 
     return counts;
+  }, [catalog]);
+
+  const inventoryByWine = useMemo(() => {
+    const map = new Map();
+    for (const item of inventory) {
+      const wineId = item.catalogWineId;
+      if (!wineId) continue;
+      const current = map.get(wineId) ?? 0;
+      map.set(wineId, current + Number(item.quantity || 1));
+    }
+    return map;
+  }, [inventory]);
+
+  const catalogCountries = useMemo(() => {
+    const all = catalog.map((wine) => wine.country).filter(Boolean);
+    return [...new Set(all)].sort();
   }, [catalog]);
 
   const researchCatalog = useMemo(() => catalog.filter((wine) => Array.isArray(wine.sourceRefs) && wine.sourceRefs.length > 0), [catalog]);
@@ -468,6 +523,38 @@ export default function App() {
     return true;
   }), [catalog, filterColor, filterFarming, filterSo2Max, genreFilter, regionFilter, search, sourceScope]);
 
+  const catalogFilteredForBrowse = filtered;
+
+  const catalogSortedForBrowse = useMemo(() => {
+    const direction = catalogSort.direction === "asc" ? 1 : -1;
+    const rows = [...catalogFilteredForBrowse];
+
+    rows.sort((left, right) => {
+      const leftValue = sortCatalogValue(left, catalogSort.key, inventoryByWine);
+      const rightValue = sortCatalogValue(right, catalogSort.key, inventoryByWine);
+      let compare = 0;
+
+      if (typeof leftValue === "number" && typeof rightValue === "number") {
+        compare = leftValue - rightValue;
+      } else {
+        compare = String(leftValue).localeCompare(String(rightValue), "en", { sensitivity: "base" });
+      }
+
+      if (compare === 0) {
+        compare = String(left.name).localeCompare(String(right.name), "en", { sensitivity: "base" });
+      }
+
+      return compare * direction;
+    });
+
+    return rows;
+  }, [catalogFilteredForBrowse, catalogSort, inventoryByWine]);
+
+  const catalogTotalPages = Math.max(1, Math.ceil(catalogSortedForBrowse.length / catalogPageSize));
+  const catalogStart = (catalogPage - 1) * catalogPageSize;
+  const catalogEnd = catalogStart + catalogPageSize;
+  const catalogPageRows = catalogSortedForBrowse.slice(catalogStart, catalogEnd);
+
   const plottable = filtered.filter((wine) => Number.isFinite(wine.so2) && Number.isFinite(wine.intervention));
   const avgSo2Known = filtered.filter((wine) => Number.isFinite(wine.so2));
   const avgPriceKnown = filtered.filter((wine) => Number.isFinite(wine.price));
@@ -475,6 +562,41 @@ export default function App() {
   const avgPrice = avgPriceKnown.length ? (avgPriceKnown.reduce((sum, wine) => sum + wine.price, 0) / avgPriceKnown.length).toFixed(0) : "N/A";
   const selectedCandidate = analysisResult?.candidates?.find((candidate) => candidate.wine.id === analysisSelectionId) ?? analysisResult?.candidates?.[0] ?? null;
   const labelTargetWine = selectedCandidate?.wine ?? selected;
+  const selectedInventoryQty = selected?.id ? (inventoryByWine.get(selected.id) ?? 0) : 0;
+  const catalogFilteredCount = catalogFilteredForBrowse.length;
+  const catalogCountryCounts = useMemo(() => {
+    const counts = new Map();
+    for (const wine of catalogFilteredForBrowse) {
+      const country = wine.country || "UNKNOWN";
+      counts.set(country, (counts.get(country) ?? 0) + 1);
+    }
+    return [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+  }, [catalogFilteredForBrowse]);
+  const catalogSourceCountsForBrowse = useMemo(() => {
+    const counts = new Map();
+    for (const wine of catalogFilteredForBrowse) {
+      if (wine.source === "seed") {
+        counts.set("seed", (counts.get("seed") ?? 0) + 1);
+      } else {
+        const labels = getSourceLabels(wine);
+        const label = labels[0] || "custom";
+        counts.set(label, (counts.get(label) ?? 0) + 1);
+      }
+    }
+    return [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+  }, [catalogFilteredForBrowse]);
+  const catalogBrowserHeaders = [
+    { key: "name", label: "WINE" },
+    { key: "producer", label: "PRODUCER" },
+    { key: "source", label: "SOURCE" },
+    { key: "country", label: "COUNTRY" },
+    { key: "region", label: "REGION" },
+    { key: "color", label: "COLOR" },
+    { key: "so2", label: "SO₂" },
+    { key: "price", label: "PRICE" },
+    { key: "intervention", label: "INTERVENTION" },
+    { key: "inventory", label: "INVENTORY" },
+  ];
 
   function setRegionFilterFromChart(region) {
     setRegionFilter((current) => {
@@ -507,11 +629,57 @@ export default function App() {
     });
   }
 
+  function handleCatalogSort(key) {
+    setCatalogSort((current) => {
+      if (current.key === key) {
+        return {
+          key,
+          direction: current.direction === "asc" ? "desc" : "asc",
+        };
+      }
+      return {
+        key,
+        direction: "asc",
+      };
+    });
+    setCatalogPage(1);
+  }
+
+  function goCatalogPage(page) {
+    const safePage = Math.max(1, Math.min(page, catalogTotalPages));
+    setCatalogPage(safePage);
+  }
+
+  function setCatalogPageSizeSafe(size) {
+    const next = Number(size) || 25;
+    setCatalogPageSize(next);
+    setCatalogPage(1);
+  }
+
+  function applyCatalogFilterReset() {
+    setSearch("");
+    setSourceScope("all");
+    setGenreFilter([]);
+    setRegionFilter([]);
+    setFilterColor(null);
+    setFilterFarming(null);
+    setFilterSo2Max(45);
+  }
+
   function clearResearchFilters() {
     setResearchSourceFilter("");
     setResearchCountryFilter([]);
     setResearchRegionFilter([]);
   }
+
+  useEffect(() => {
+    if (catalogPage > catalogTotalPages) {
+      setCatalogPage(catalogTotalPages);
+    }
+    if (catalogPage < 1) {
+      setCatalogPage(1);
+    }
+  }, [catalogPage, catalogTotalPages]);
 
   function hydrateCatalogDraftFromCandidate(candidate) {
     if (!candidate?.wine) return;
@@ -854,6 +1022,397 @@ export default function App() {
   const liveWeather = liveSnapshot?.weather ?? null;
   const liveNews = liveSnapshot?.news ?? null;
   const liveTags = liveSnapshot?.tags ?? [];
+  const sourceWatchlist = stats.sourceWatchlist ?? [];
+
+  if (viewMode === "catalog") {
+    return (
+      <div className="app-shell">
+        <header className="app-header">
+          <div>
+            <div className="eyebrow">NATURAL WINE RESEARCH — CATALOG EXPLORER</div>
+            <h1>VIN NATUREL OS</h1>
+            <div className="subhead">UNIFIED CATALOG / LABEL / INVENTORY DATABASE BROWSER</div>
+          </div>
+          <div className="stats-grid">
+            {[
+              ["GLOBAL CATALOG", `${stats.catalogCount}`],
+              ["FILTERED", `${catalogFilteredCount}`],
+              ["CELLAR STOCK LINKS", `${stats.inventoryLinked}`],
+              ["INVENTORY", `${stats.inventoryUnits ?? 0}`],
+              ["SOURCE TAGS", `${catalogSourceCountsForBrowse.length}`],
+              ["COUNTRIES", `${catalogCountryCounts.length}`],
+              ["LABEL ASSETS", `${stats.labelAssets}`],
+            ].map(([label, value]) => (
+              <div key={label} className="stat-block">
+                <div className="stat-label">{label}</div>
+                <div className="stat-value">{value}</div>
+              </div>
+            ))}
+          </div>
+        </header>
+
+        <section className="view-mode-bar">
+          {APP_VIEWS.map((view) => (
+            <button
+              key={view.id}
+              type="button"
+              onClick={() => setViewMode(view.id)}
+              className={`filter-chip ${viewMode === view.id ? "chip-active" : ""}`}
+            >
+              {view.label}
+            </button>
+          ))}
+        </section>
+
+        {sourceWatchlist.length ? (
+          <section className="watchlist-panel">
+            <SourceWatchlist
+              sources={sourceWatchlist}
+              onRun={handleRunSource}
+              onRunAll={handleRunAllSources}
+              runningIds={sourceRunning}
+            />
+          </section>
+        ) : null}
+
+        {appError ? <div className="app-banner error-banner">{appError}</div> : null}
+        {statusMessage ? <div className="app-banner status-banner">{statusMessage}</div> : null}
+        {isPending ? <div className="app-banner pending-banner">Refreshing interface…</div> : null}
+
+        <section className="filter-bar catalog-filter-bar">
+          <div className="filter-label">CATALOG FILTER</div>
+          <label className="search-input-wrap">
+            <span>SEARCH (name / producer / grape / tag)</span>
+            <input
+              value={search}
+              onChange={(event) => {
+                setSearch(event.target.value);
+                setCatalogPage(1);
+              }}
+              placeholder="Muscadet, Ortrugo, pétillant..."
+            />
+          </label>
+
+          <div className="chip-row">
+            <button
+              type="button"
+              className={`filter-chip ${sourceScope === "all" ? "chip-active" : ""}`}
+              onClick={() => {
+                setSourceScope("all");
+                setCatalogPage(1);
+              }}
+            >
+              All ({catalogFilteredCount})
+            </button>
+            <button
+              type="button"
+              className={`filter-chip ${sourceScope === "seed" ? "chip-active" : ""}`}
+              onClick={() => {
+                setSourceScope("seed");
+                setCatalogPage(1);
+              }}
+            >
+              Seed ({catalogSourceCounts.seed})
+            </button>
+            <button
+              type="button"
+              className={`filter-chip ${sourceScope === "custom" ? "chip-active" : ""}`}
+              onClick={() => {
+                setSourceScope("custom");
+                setCatalogPage(1);
+              }}
+            >
+              Custom ({catalogSourceCounts.custom + catalogSourceCounts.unknown})
+            </button>
+            <button
+              type="button"
+              className="secondary-button"
+              onClick={() => {
+                applyCatalogFilterReset();
+                setCatalogPage(1);
+              }}
+            >
+              RESET FILTERS
+            </button>
+          </div>
+
+          <div className="chip-row">
+            {genreIndex.slice(0, 10).map(([genre]) => (
+              <button
+                key={genre}
+                type="button"
+                className={`filter-chip ${genreFilter.includes(genre) ? "chip-active" : ""}`}
+                onClick={() => {
+                  setGenreFilter((current) => (current.includes(genre)
+                    ? current.filter((entry) => entry !== genre)
+                    : [...current, genre]));
+                  setCatalogPage(1);
+                }}
+              >
+                {genre}
+              </button>
+            ))}
+          </div>
+
+          <div className="chip-row">
+            {availableRegions.slice(0, 10).map((region) => (
+              <button
+                key={region}
+                type="button"
+                className={`filter-chip ${regionFilter.includes(region) ? "chip-active" : ""}`}
+                onClick={() => {
+                  setRegionFilter((current) => {
+                    return current.includes(region)
+                      ? current.filter((entry) => entry !== region)
+                      : [...current, region];
+                  });
+                  setCatalogPage(1);
+                }}
+              >
+                {region}
+              </button>
+            ))}
+          </div>
+
+          <div className="chip-row">
+            {Object.entries(COLOR_MAP).map(([key, value]) => (
+              <button
+                key={key}
+                type="button"
+                onClick={() => {
+                  setFilterColor(filterColor === key ? null : key);
+                  setCatalogPage(1);
+                }}
+                className="filter-chip"
+                style={{
+                  background: filterColor === key ? value.bg : "transparent",
+                  borderColor: filterColor === key ? value.dot : "#0a1018",
+                  color: filterColor === key ? value.dot : "#1a3040",
+                }}
+              >
+                {value.label}
+              </button>
+            ))}
+          </div>
+
+          <div className="chip-row">
+            {Object.entries(FARMING_MAP).map(([key, value]) => (
+              <button
+                key={key}
+                type="button"
+                onClick={() => {
+                  setFilterFarming(filterFarming === key ? null : key);
+                  setCatalogPage(1);
+                }}
+                className="filter-chip"
+                style={{
+                  background: filterFarming === key ? "rgba(255,255,255,0.03)" : "transparent",
+                  borderColor: filterFarming === key ? value.color : "#0a1018",
+                  color: filterFarming === key ? value.color : "#1a3040",
+                }}
+              >
+                {value.label.toUpperCase()}
+              </button>
+            ))}
+          </div>
+
+          <label className="slider-row">
+            <span>MAX SO₂</span>
+            <input
+              type="range"
+              min={0}
+              max={45}
+              step={5}
+              value={filterSo2Max}
+              onChange={(event) => {
+                setFilterSo2Max(Number(event.target.value));
+                setCatalogPage(1);
+              }}
+            />
+            <strong>{filterSo2Max} mg/L</strong>
+          </label>
+        </section>
+
+        <section className="catalog-browser-layout">
+          <div className="catalog-browser-main">
+            <section className="module-panel">
+              <div className="panel-head">
+                    <div className="section-label">SOURCE DISTRIBUTION (VISIBLE SET)</div>
+                <div className="micro-copy">
+                  Distribution bars show visible catalog sources.
+                </div>
+              </div>
+              <div className="research-bars">
+                {catalogSourceCountsForBrowse.length ? catalogSourceCountsForBrowse.map(([source, count]) => {
+                  const max = catalogSourceCountsForBrowse[0]?.[1] ?? 1;
+                  const width = Math.max(6, (count / Math.max(max, 1)) * 100);
+                  return (
+                    <div key={source} className="research-bar-row">
+                      <span className="research-bar-label">{source}</span>
+                      <span className="research-bar-track">
+                        <span className="research-bar-fill" style={{ width: `${width}%` }} />
+                      </span>
+                      <span className="research-bar-value">{count}</span>
+                    </div>
+                  );
+                }) : <div className="empty-card">No source labels for current filter set.</div>}
+              </div>
+            </section>
+
+            <section className="module-panel">
+              <div className="panel-head">
+                <div className="section-label">TOP COUNTRIES (VISIBLE SET)</div>
+                <div className="micro-copy">{catalogFilteredCount} rows match current filters.</div>
+              </div>
+              <div className="research-chip-row">
+                {catalogCountryCounts.length ? catalogCountryCounts.slice(0, 10).map(([country, count]) => (
+                  <span key={country} className="research-chip">
+                    {FLAG_MAP[country] || country} {country} · {count}
+                  </span>
+                )) : <div className="empty-card">No country values in current filter.</div>}
+              </div>
+            </section>
+
+            <section className="module-panel">
+              <div className="panel-head">
+                <div className="section-label">REGION COVERAGE (VISIBLE SET)</div>
+              </div>
+              <BarChart
+                wines={catalogFilteredForBrowse}
+                selectedRegions={regionFilter}
+                onRegionSelect={setRegionFilterFromChart}
+              />
+            </section>
+
+            <section className="table-panel">
+              <div className="table-head">
+                <span>CATALOG TABLE — {catalogFilteredCount} RECORDS</span>
+                <div className="catalog-page-controls">
+                  <label>
+                    Page size
+                    <select value={catalogPageSize} onChange={(event) => setCatalogPageSizeSafe(event.target.value)}>
+                      {[10, 25, 50, 100].map((size) => (
+                        <option key={size} value={size}>{size}</option>
+                      ))}
+                    </select>
+                  </label>
+                </div>
+              </div>
+
+              <div className="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      {catalogBrowserHeaders.map(({ key, label }) => (
+                        <th key={key}>
+                          <button type="button" className={`sort-button ${catalogSort.key === key ? "sort-button-active" : ""}`} onClick={() => handleCatalogSort(key)}>
+                            {label}
+                            <span className="sort-arrow">
+                              {catalogSort.key === key ? (catalogSort.direction === "asc" ? "↑" : "↓") : ""}
+                            </span>
+                          </button>
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {catalogPageRows.length ? catalogPageRows.map((wine) => {
+                      const isSelected = selected?.id === wine.id;
+                      const col = COLOR_MAP[wine.color]?.dot ?? "#aaa";
+                      const sourceLabel = wine.source === "seed" ? "seed" : (getSourceLabels(wine)[0] || "custom");
+                      const inventoryCount = inventoryByWine.get(wine.id) ?? 0;
+                      return (
+                        <tr
+                          key={wine.id}
+                          onClick={() => {
+                            setSelected(wine);
+                            setCatalogPage(Math.min(catalogPage, catalogTotalPages));
+                          }}
+                          className={isSelected ? "selected-row" : ""}
+                        >
+                          <td style={{ color: col }}>{wine.name}</td>
+                          <td>{wine.producer}</td>
+                          <td>{sourceLabel}</td>
+                          <td>{FLAG_MAP[wine.country] ?? wine.country}</td>
+                          <td>{wine.region}</td>
+                          <td style={{ color: col }}>{COLOR_MAP[wine.color]?.label}</td>
+                          <td>{formatNumber(wine.so2)}</td>
+                          <td>{Number.isFinite(wine.price) ? `€${wine.price}` : formatNumber(wine.price)}</td>
+                          <td>{formatNumber(wine.intervention)}</td>
+                          <td>{formatNumber(inventoryCount, "0")}</td>
+                        </tr>
+                      );
+                    }) : (
+                      <tr>
+                        <td colSpan={catalogBrowserHeaders.length} className="empty-card">No records match current filters.</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+
+              <div className="catalog-pager">
+                <button
+                  type="button"
+                  className="secondary-button"
+                  disabled={catalogPage <= 1}
+                  onClick={() => goCatalogPage(catalogPage - 1)}
+                >
+                  PREV
+                </button>
+                <span className="catalog-page-indicator">
+                  PAGE {catalogPage}/{catalogTotalPages}
+                </span>
+                <button
+                  type="button"
+                  className="secondary-button"
+                  disabled={catalogPage >= catalogTotalPages}
+                  onClick={() => goCatalogPage(catalogPage + 1)}
+                >
+                  NEXT
+                </button>
+                <span className="micro-copy">
+                  Showing {catalogFilteredCount ? catalogStart + 1 : 0} - {Math.min(catalogEnd, catalogFilteredCount)} / {catalogFilteredCount}
+                </span>
+              </div>
+            </section>
+          </div>
+
+          <aside className="catalog-browser-detail">
+            <section className="detail-panel">
+              <div className="panel-head">
+                <div className="section-label">SELECTED RECORD</div>
+                <div className="micro-copy">
+                  {selected ? `ID: ${selected.id}` : "Click a row to inspect full metadata"}
+                </div>
+              </div>
+              <WineDetail wine={selected} />
+              {selected ? (
+                <div className="catalog-meta">
+                  <div>
+                    <div className="micro-copy">DATABASE SOURCE</div>
+                    <div>{selected.source || "custom"}</div>
+                  </div>
+                  <div>
+                    <div className="micro-copy">SOURCE TAGS</div>
+                    <div>{getSourceLabels(selected).join(", ") || "none"}</div>
+                  </div>
+                  <div>
+                    <div className="micro-copy">INVENTORY LINKS</div>
+                    <div>{selectedInventoryQty} bottles</div>
+                  </div>
+                  <div>
+                    <div className="micro-copy">ALTERNATE LABEL HINTS</div>
+                    <div>{selected.aliases?.length ? `${selected.aliases.length} entries` : "none"}</div>
+                  </div>
+                </div>
+              ) : null}
+            </section>
+          </aside>
+        </section>
+      </div>
+    );
+  }
 
   if (isKiosk) {
     return (
