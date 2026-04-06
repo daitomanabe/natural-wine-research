@@ -399,11 +399,6 @@ export default function App() {
     return map;
   }, [inventory]);
 
-  const catalogCountries = useMemo(() => {
-    const all = catalog.map((wine) => wine.country).filter(Boolean);
-    return [...new Set(all)].sort();
-  }, [catalog]);
-
   const researchCatalog = useMemo(() => catalog.filter((wine) => Array.isArray(wine.sourceRefs) && wine.sourceRefs.length > 0), [catalog]);
   const researchSourceFilterName = researchSourceFilter || "all";
   const researchRegionCountryBase = useMemo(() => {
