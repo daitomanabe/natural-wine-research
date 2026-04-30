@@ -1,9 +1,16 @@
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { BarChart } from "./components/BarChart";
+import { SimilarityMap } from "./components/SimilarityMap";
 import { ScatterPlot } from "./components/ScatterPlot";
 import { WineDetail } from "./components/WineDetail";
 import { COLOR_MAP, DB as SEED_DB, FARMING_MAP, FLAG_MAP } from "./data/wines";
 import { getJson, postJson, uploadImage } from "./lib/api";
+import { findSimilarWines } from "./lib/similarWines";
+import {
+  buildSpotlightSignal,
+  buildSpotlightSignalFilename,
+  findSpotlightWine,
+} from "./lib/spotlightSignal";
 
 const EMPTY_STATS = {
   catalogCount: SEED_DB.length,
@@ -79,11 +86,31 @@ const INITIAL_LIVE_FORM = {
 };
 
 const APP_VIEWS = [
+  { id: "spotlight", label: "Bottle Spotlight" },
   { id: "operations", label: "Cellar Operations" },
   { id: "insights", label: "Catalog Insights" },
   { id: "catalog", label: "Catalog Management" },
   { id: "kiosk", label: "iPad Kiosk Recommendations" },
 ];
+
+const APP_VIEW_IDS = new Set(APP_VIEWS.map((view) => view.id));
+
+function resolveInitialView() {
+  if (typeof window === "undefined") return "operations";
+  const hash = window.location.hash.replace(/^#/, "");
+  return APP_VIEW_IDS.has(hash) ? hash : "operations";
+}
+
+function formatYen(value, fallback = "—") {
+  if (!Number.isFinite(value)) return fallback;
+  return `¥${Number(value).toLocaleString("ja-JP")}`;
+}
+
+function excerptText(value, maxLength = 380) {
+  const text = String(value ?? "").replace(/\s+/g, " ").trim();
+  if (text.length <= maxLength) return text;
+  return `${text.slice(0, maxLength).trim()}…`;
+}
 
 function textIncludes(haystack, query) {
   return String(haystack ?? "").toLowerCase().includes(query);
@@ -277,7 +304,7 @@ export default function App() {
   const [catalog, setCatalog] = useState(SEED_DB);
   const [inventory, setInventory] = useState([]);
   const [stats, setStats] = useState(EMPTY_STATS);
-  const [viewMode, setViewMode] = useState("operations");
+  const [viewMode, setViewMode] = useState(resolveInitialView);
   const [selected, setSelected] = useState(null);
   const [search, setSearch] = useState("");
   const [sourceScope, setSourceScope] = useState("all");
@@ -364,6 +391,25 @@ export default function App() {
   useEffect(() => {
     void refreshData();
   }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return undefined;
+
+    const handleHashChange = () => {
+      const nextView = resolveInitialView();
+      setViewMode((current) => (current === nextView ? current : nextView));
+    };
+
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const hash = window.location.hash.replace(/^#/, "");
+    if (hash === viewMode) return;
+    window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}#${viewMode}`);
+  }, [viewMode]);
 
   useEffect(() => {
     if (selected && !catalog.find((wine) => wine.id === selected.id)) {
@@ -1018,6 +1064,393 @@ export default function App() {
   const liveNews = liveSnapshot?.news ?? null;
   const liveTags = liveSnapshot?.tags ?? [];
   const sourceWatchlist = stats.sourceWatchlist ?? [];
+  const spotlightWine = useMemo(() => findSpotlightWine(catalog, inventory), [catalog, inventory]);
+  const spotlightInventoryItem = useMemo(() => {
+    if (!spotlightWine) return null;
+    return inventory.find((item) => item.catalogWineId === spotlightWine.id)
+      ?? inventory.find((item) => item?.wine?.id === spotlightWine.id)
+      ?? null;
+  }, [inventory, spotlightWine]);
+  const spotlightSimilar = useMemo(() => (
+    spotlightWine ? findSimilarWines(spotlightWine, catalog, { limit: 10 }) : []
+  ), [catalog, spotlightWine]);
+  const spotlightSelection = useMemo(() => {
+    if (!spotlightWine) return null;
+    const allowedIds = new Set([spotlightWine.id, ...spotlightSimilar.map((item) => item.wine.id)]);
+    return selected && allowedIds.has(selected.id) ? selected : spotlightWine;
+  }, [selected, spotlightSimilar, spotlightWine]);
+  const spotlightSourceUrl = spotlightWine?.sourceRefs?.[0]?.sourceUrl ?? "";
+  const spotlightSignalWine = spotlightSelection ?? spotlightWine;
+  const spotlightSignalSimilar = useMemo(() => {
+    if (!spotlightSignalWine) return [];
+    if (spotlightWine && spotlightSignalWine.id === spotlightWine.id) {
+      return spotlightSimilar;
+    }
+    return findSimilarWines(spotlightSignalWine, catalog, { limit: 6 });
+  }, [catalog, spotlightSignalWine, spotlightSimilar, spotlightWine]);
+  const spotlightSignal = useMemo(() => (
+    spotlightSignalWine
+      ? buildSpotlightSignal(spotlightSignalWine, { similar: spotlightSignalSimilar })
+      : null
+  ), [spotlightSignalSimilar, spotlightSignalWine]);
+  const spotlightSignalJson = useMemo(() => (
+    spotlightSignal ? JSON.stringify(spotlightSignal, null, 2) : ""
+  ), [spotlightSignal]);
+  const spotlightSignalApiUrl = useMemo(() => {
+    if (!spotlightSignalWine) return "";
+    const relative = `/api/spotlight/signal?wineId=${encodeURIComponent(spotlightSignalWine.id)}`;
+    if (typeof window === "undefined") return relative;
+    return new URL(relative, window.location.origin).toString();
+  }, [spotlightSignalWine]);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !spotlightSignal) return;
+    window.__NATURAL_WINE_SPOTLIGHT_SIGNAL__ = spotlightSignal;
+    window.dispatchEvent(new CustomEvent("natural-wine-research:spotlight-signal", {
+      detail: spotlightSignal,
+    }));
+    if (window.parent && window.parent !== window) {
+      window.parent.postMessage({
+        type: "natural-wine-research:spotlight-signal",
+        payload: spotlightSignal,
+      }, "*");
+    }
+  }, [spotlightSignal]);
+
+  async function handleCopySpotlightSignal() {
+    if (!spotlightSignalJson) return;
+
+    try {
+      if (!navigator.clipboard?.writeText) {
+        throw new Error("clipboard unavailable");
+      }
+      await navigator.clipboard.writeText(spotlightSignalJson);
+      setStatusMessage("Spotlight signal JSON copied.");
+    } catch {
+      setStatusMessage("Copy failed. Use download or the API URL.");
+    }
+  }
+
+  function handleDownloadSpotlightSignal() {
+    if (!spotlightSignalJson || !spotlightSignalWine || typeof document === "undefined") return;
+
+    const blob = new Blob([spotlightSignalJson], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = buildSpotlightSignalFilename(spotlightSignalWine);
+    document.body.append(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+    setStatusMessage("Spotlight signal JSON downloaded.");
+  }
+
+  async function handleShareSpotlightSignal() {
+    if (!spotlightSignalJson) return;
+
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: `${spotlightSignalWine?.name ?? "Wine"} signal`,
+          text: spotlightSignalJson,
+        });
+        setStatusMessage("Spotlight signal shared.");
+        return;
+      }
+      await handleCopySpotlightSignal();
+    } catch {
+      setStatusMessage("Share cancelled.");
+    }
+  }
+
+  if (viewMode === "spotlight") {
+    return (
+      <div className="app-shell spotlight-mode">
+        <header className="app-header">
+          <div>
+            <div className="eyebrow">NATURAL WINE RESEARCH — BOTTLE SPOTLIGHT</div>
+            <h1>VIN NATUREL OS</h1>
+            <div className="subhead">FEATURED BOTTLE, 10 CLOSEST MATCHES, AND A VISUAL SIMILARITY GRAPHIC</div>
+          </div>
+          <div className="stats-grid">
+            {[
+              ["FEATURED WINE", spotlightWine?.name ?? "—"],
+              ["PRODUCER", spotlightWine?.producer ?? "—"],
+              ["INVENTORY", spotlightInventoryItem ? `${spotlightInventoryItem.quantity} bottle` : "not linked"],
+              ["SIMILAR SET", `${spotlightSimilar.length}`],
+              ["TARGET PRICE", formatYen(spotlightWine?.price)],
+            ].map(([label, value]) => (
+              <div key={label} className="stat-block">
+                <div className="stat-label">{label}</div>
+                <div className="stat-value">{value}</div>
+              </div>
+            ))}
+          </div>
+        </header>
+
+        <section className="view-mode-bar">
+          {APP_VIEWS.map((view) => (
+            <button
+              key={view.id}
+              type="button"
+              onClick={() => setViewMode(view.id)}
+              className={`filter-chip ${viewMode === view.id ? "chip-active" : ""}`}
+            >
+              {view.label}
+            </button>
+          ))}
+        </section>
+
+        {appError ? <div className="app-banner error-banner">{appError}</div> : null}
+        {statusMessage ? <div className="app-banner status-banner">{statusMessage}</div> : null}
+        {isPending ? <div className="app-banner pending-banner">Refreshing interface…</div> : null}
+
+        {spotlightWine ? (
+          <>
+            <section className="spotlight-hero">
+              <div className="module-panel spotlight-target-card">
+                <div className="panel-head">
+                  <div className="section-label">FEATURED BOTTLE</div>
+                  <div className="micro-copy">
+                    {spotlightInventoryItem ? `${spotlightInventoryItem.location || "Unknown"} · qty ${spotlightInventoryItem.quantity}` : "Catalog-linked bottle"}
+                  </div>
+                </div>
+                <div className="spotlight-target-layout">
+                  {spotlightInventoryItem?.imagePath ? (
+                    <img
+                      src={spotlightInventoryItem.imagePath}
+                      alt={spotlightWine.name}
+                      className="spotlight-target-image"
+                    />
+                  ) : null}
+                  <div className="spotlight-target-copy">
+                    <div className="spotlight-kicker">{spotlightWine.producer}</div>
+                    <h2 className="spotlight-title">{spotlightWine.name}</h2>
+                    <div className="spotlight-meta-row">
+                      <span>{FLAG_MAP[spotlightWine.country] ?? spotlightWine.country}</span>
+                      <span>{spotlightWine.region}</span>
+                      <span>{COLOR_MAP[spotlightWine.color]?.label ?? spotlightWine.color}</span>
+                      <span>{spotlightWine.vintage ?? "NV"}</span>
+                      <span>{formatYen(spotlightWine.price)}</span>
+                    </div>
+                    <div className="tag-row">
+                      {(spotlightWine.grapes ?? []).slice(0, 6).map((grape) => (
+                        <span key={grape} className="tag-chip">{grape}</span>
+                      ))}
+                    </div>
+                    <p className="spotlight-description">{excerptText(spotlightWine.notes, 520)}</p>
+                    <div className="inline-actions">
+                      {spotlightSourceUrl ? (
+                        <a className="secondary-button spotlight-link-button" href={spotlightSourceUrl} target="_blank" rel="noreferrer">
+                          Open Source Record
+                        </a>
+                      ) : null}
+                      <button type="button" className="action-button" onClick={() => setSelected(spotlightWine)}>
+                        Inspect Target Detail
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="module-panel spotlight-map-panel">
+                <div className="panel-head">
+                  <div className="section-label">SIMILARITY MAP</div>
+                  <div className="micro-copy">Scored by color, geography, grapes, price, vintage, and cellar method cues.</div>
+                </div>
+                <SimilarityMap
+                  target={spotlightWine}
+                  items={spotlightSimilar}
+                  selected={spotlightSelection}
+                  onSelect={setSelected}
+                />
+                <div className="micro-copy spotlight-map-caption">
+                  Bubble size = grape overlap · vertical line = target price · click any node to inspect that wine
+                </div>
+              </div>
+            </section>
+
+            <section className="spotlight-results-layout">
+              {spotlightSignal ? (
+                <section className="spotlight-signal-layout">
+                  <div className="module-panel spotlight-signal-panel">
+                    <div className="panel-head">
+                      <div className="section-label">WINE SIGNAL</div>
+                      <div className="micro-copy">
+                        {spotlightSignalWine?.id === spotlightWine?.id ? "Featured bottle output" : "Selected match output"}
+                      </div>
+                    </div>
+                    <div className="signal-gradient-band" style={{ backgroundImage: spotlightSignal.palette.gradient }} />
+
+                    <div className="signal-block">
+                      <div className="signal-subhead">COLORMAP</div>
+                      <div className="signal-palette-grid">
+                        {spotlightSignal.palette.colors.map((color) => (
+                          <div key={color.role} className="signal-swatch-card">
+                            <div className="signal-swatch" style={{ background: color.hex }} />
+                            <div className="signal-swatch-copy">
+                              <div className="signal-swatch-label">{color.label}</div>
+                              <div className="micro-copy">{color.role} · {color.hex}</div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="signal-two-column">
+                      <div className="signal-block">
+                        <div className="signal-subhead">ATMOSPHERE</div>
+                        <div className="tag-row">
+                          {spotlightSignal.scene.moodTags.map((tag) => (
+                            <span key={tag} className="tag-chip">{tag}</span>
+                          ))}
+                        </div>
+                        <div className="signal-copy">{spotlightSignal.scene.setting}</div>
+                        <div className="signal-copy">{spotlightSignal.scene.lighting}</div>
+                        <div className="signal-copy">{spotlightSignal.scene.atmosphere.join(" · ")}</div>
+                        <div className="signal-copy">{spotlightSignal.scene.materials.join(" · ")}</div>
+                      </div>
+
+                      <div className="signal-block">
+                        <div className="signal-subhead">MUSIC</div>
+                        <div className="signal-metrics-grid">
+                          {[
+                            ["GENRE", spotlightSignal.music.primaryGenre],
+                            ["BPM", `${spotlightSignal.music.bpm}`],
+                            ["RANGE", `${spotlightSignal.music.bpmRange[0]}–${spotlightSignal.music.bpmRange[1]}`],
+                            ["ENERGY", `${spotlightSignal.music.energy}`],
+                          ].map(([label, value]) => (
+                            <div key={label} className="signal-metric-card">
+                              <div className="signal-metric-label">{label}</div>
+                              <div className="signal-metric-value">{value}</div>
+                            </div>
+                          ))}
+                        </div>
+                        <div className="tag-row">
+                          {spotlightSignal.music.supportingGenres.map((genre) => (
+                            <span key={genre} className="tag-chip">{genre}</span>
+                          ))}
+                        </div>
+                        <div className="signal-copy">{spotlightSignal.music.textures.join(" · ")}</div>
+                        <div className="signal-copy">{spotlightSignal.music.instruments.join(" · ")}</div>
+                      </div>
+                    </div>
+
+                    <div className="signal-block">
+                      <div className="signal-subhead">RATIONALE</div>
+                      <div className="tag-row">
+                        {spotlightSignal.context.derivedFrom.map((item) => (
+                          <span key={item} className="tag-chip">{item}</span>
+                        ))}
+                      </div>
+                      <p className="signal-copy">{spotlightSignal.context.rationale}</p>
+                    </div>
+                  </div>
+
+                  <div className="module-panel spotlight-export-panel">
+                    <div className="panel-head">
+                      <div className="section-label">JSON EXPORT</div>
+                      <div className="micro-copy">Fetch, copy, share, or download the same payload other apps can consume.</div>
+                    </div>
+                    <div className="inline-actions signal-action-row">
+                      <button type="button" className="action-button" onClick={handleCopySpotlightSignal}>
+                        Copy JSON
+                      </button>
+                      <button type="button" className="secondary-button" onClick={handleDownloadSpotlightSignal}>
+                        Download JSON
+                      </button>
+                      <button type="button" className="secondary-button" onClick={handleShareSpotlightSignal}>
+                        Share JSON
+                      </button>
+                      <a className="secondary-button spotlight-link-button" href={spotlightSignalApiUrl} target="_blank" rel="noreferrer">
+                        Open API JSON
+                      </a>
+                    </div>
+                    <div className="signal-api-meta">
+                      <div className="signal-inline-label">API</div>
+                      <code>{spotlightSignalApiUrl}</code>
+                    </div>
+                    <div className="signal-api-meta">
+                      <div className="signal-inline-label">EVENT</div>
+                      <code>{spotlightSignal.transport.eventName}</code>
+                    </div>
+                    <div className="signal-api-meta">
+                      <div className="signal-inline-label">GLOBAL</div>
+                      <code>window.{spotlightSignal.transport.globalKey}</code>
+                    </div>
+                    <div className="signal-block">
+                      <div className="signal-subhead">PROMPT</div>
+                      <p className="signal-copy">{spotlightSignal.prompt}</p>
+                    </div>
+                    <div className="signal-block">
+                      <div className="signal-subhead">PAYLOAD</div>
+                      <pre className="signal-code-block">{spotlightSignalJson}</pre>
+                    </div>
+                  </div>
+                </section>
+              ) : null}
+
+              <div className="module-panel">
+                <div className="panel-head">
+                  <div className="section-label">10 SIMILAR WINES</div>
+                  <div className="micro-copy">Closest matches inside the unified catalog for this bottle.</div>
+                </div>
+                <div className="spotlight-card-grid">
+                  {spotlightSimilar.map((item, index) => (
+                    <button
+                      key={item.wine.id}
+                      type="button"
+                      className={`spotlight-card ${spotlightSelection?.id === item.wine.id ? "spotlight-card-active" : ""}`}
+                      onClick={() => setSelected(item.wine)}
+                    >
+                      <div className="spotlight-card-top">
+                        <span className="spotlight-rank">#{index + 1}</span>
+                        <span className="spotlight-score">{item.score.toFixed(1)}</span>
+                      </div>
+                      <div className="spotlight-card-title">{item.wine.name}</div>
+                      <div className="spotlight-card-subtitle">{item.wine.producer}</div>
+                      <div className="spotlight-card-meta">
+                        {item.wine.region} · {COLOR_MAP[item.wine.color]?.label ?? item.wine.color} · {formatYen(item.wine.price)}
+                      </div>
+                      <div className="spotlight-reasons">{item.reasons.join(" · ")}</div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <aside className="detail-panel spotlight-detail-panel">
+                <div className="panel-head">
+                  <div className="section-label">
+                    {spotlightSelection?.id === spotlightWine.id ? "FEATURED WINE DETAIL" : "SELECTED MATCH DETAIL"}
+                  </div>
+                  <div className="micro-copy">
+                    {spotlightSelection ? `ID: ${spotlightSelection.id}` : "No wine selected"}
+                  </div>
+                </div>
+                <WineDetail wine={spotlightSelection} />
+              </aside>
+            </section>
+
+            {sourceWatchlist.length ? (
+              <section className="watchlist-panel">
+                <SourceWatchlist
+                  sources={sourceWatchlist}
+                  onRun={handleRunSource}
+                  onRunAll={handleRunAllSources}
+                  runningIds={sourceRunning}
+                />
+              </section>
+            ) : null}
+          </>
+        ) : (
+          <section className="module-panel" style={{ margin: "18px 28px 0" }}>
+            <div className="empty-card">Featured bottle record was not found in the current catalog.</div>
+          </section>
+        )}
+      </div>
+    );
+  }
 
   if (viewMode === "catalog") {
     return (
