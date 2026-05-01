@@ -1,1 +1,327 @@
-[]
+[
+  {
+    "id": "inventory-1777554368305-ef3zb6",
+    "catalogWineId": "catalog-1777554368214-2ggcgy",
+    "customLabel": "プルミエ・ジュ 2024",
+    "quantity": 1,
+    "location": "店内",
+    "notes": "Bottle registered from label photos. Front label: Premier jus 2024. Back label: PREMIER JUS 2024 / VIN DE FRANCE / Rodolphe Gianesini / Laetitia Ourliac / 12.5% vol / 750ml / Vins Coeur importer code 043890. Photo files: S__14532617_0.jpg(front), S__14532618_0.jpg(back).",
+    "imagePath": "/uploads/1777554368302-fond-cypres-premier-jus-2024-inventory.jpg",
+    "ocrText": "PREMIER JUS\n2024\nVIN DE FRANCE\nRodolphe Gianesini\nLaetitia Ourliac\n12.5% vol\n750ml\n043890",
+    "confidence": "high",
+    "matchedAt": "2026-04-30T13:06:08.305Z",
+    "wine": {
+      "id": "catalog-1777554368214-2ggcgy",
+      "name": "プルミエ・ジュ 2024",
+      "producer": "ドメーヌ・フォン・シプレ",
+      "country": "フランス",
+      "region": "ラングドック",
+      "appellation": "Vin de France",
+      "grapes": [
+        "グルナッシュ",
+        "カリニャン"
+      ],
+      "vintage": 2024,
+      "color": "red",
+      "so2": null,
+      "farming": "organic",
+      "intervention": null,
+      "skinDays": null,
+      "wholeCluster": null,
+      "indigenousYeast": null,
+      "addedSo2": null,
+      "filtration": "unknown",
+      "price": null,
+      "bottleMl": 750,
+      "abv": 12.5,
+      "closure": null,
+      "flavors": [],
+      "styles": [],
+      "aliases": [
+        "Premier Jus 2024",
+        "Fond Cyprès Premier Jus 2024",
+        "Premier jus"
+      ],
+      "labelText": [
+        "PREMIER JUS",
+        "2024",
+        "Rodolphe Gianesini",
+        "Laetitia Ourliac",
+        "043890"
+      ],
+      "notes": "Label-matched from in-store bottle photos. Front label reads \"Premier jus 2024\" and back label reads \"PREMIER JUS 2024 / VIN DE FRANCE\" with Rodolphe Gianesini and Laetitia Ourliac, Fond Cyprès website, and importer Vins Coeur code 043890.\nExternal shop descriptions for Fond Cyprès Premier Jus 2024 identify it as a Vin de France from Languedoc made from Grenache and Carignan, intended to be served slightly chilled.\nABV is read from the bottle back label as 12.5% vol.",
+      "sourceRefs": [
+        {
+          "sourceId": "fond-cypres-premier-jus-2024-shop",
+          "sourceLabel": "Fond Cypres Premier Jus 2024 shop listing",
+          "sourceType": "market",
+          "sourceUrl": "https://epicerieleschampions.com/en/products/fond-cypres-premier-jus-2020-languedoc"
+        },
+        {
+          "sourceId": "fond-cypres-domain",
+          "sourceLabel": "Fond Cypres official domain",
+          "sourceType": "producer",
+          "sourceUrl": "https://www.fond-cypres.com"
+        }
+      ],
+      "createdAt": "2026-04-30T13:06:08.214Z",
+      "labels": [],
+      "source": "custom"
+    }
+  },
+  {
+    "id": "inventory-1777554130326-l3gmv1",
+    "catalogWineId": "catalog-1777554130232-n199za",
+    "customLabel": "ブルゴーニュ・ルージュ・ドゥ・スーザ 2022",
+    "quantity": 1,
+    "location": "店内",
+    "notes": "Bottle registered from label photos. Front label: Pinot Noir with dancing couple illustration. Back label: 2022 / DE SOUSA / PETIT-ROY / 750ml. Photo files: S__14532611_0.jpg(front), S__14532615_0.jpg(back).",
+    "imagePath": "/uploads/1777554130325-petit-roy-bourgogne-rouge-de-sousa-2022-inventory.jpg",
+    "ocrText": "Pinot Noir\n2022\nDE SOUSA\nPETIT-ROY\n750ml",
+    "confidence": "high",
+    "matchedAt": "2026-04-30T13:02:10.326Z",
+    "wine": {
+      "id": "catalog-1777554130232-n199za",
+      "name": "ブルゴーニュ・ルージュ・ドゥ・スーザ 2022",
+      "producer": "ドメーヌ・プティ・ロワ",
+      "country": "フランス",
+      "region": "ブルゴーニュ",
+      "appellation": "Bourgogne Rouge",
+      "grapes": [
+        "ピノ・ノワール100%"
+      ],
+      "vintage": 2022,
+      "color": "red",
+      "so2": null,
+      "farming": "biodynamic",
+      "intervention": null,
+      "skinDays": null,
+      "wholeCluster": null,
+      "indigenousYeast": null,
+      "addedSo2": null,
+      "filtration": "unknown",
+      "price": null,
+      "bottleMl": 750,
+      "abv": 12,
+      "closure": null,
+      "flavors": [],
+      "styles": [],
+      "aliases": [
+        "Petit-Roy Bourgogne Rouge De Sousa 2022",
+        "De Sousa 2022",
+        "Petit Roy De Sousa Bourgogne 2022"
+      ],
+      "labelText": [
+        "PETIT-ROY",
+        "DE SOUSA",
+        "Pinot Noir",
+        "2022"
+      ],
+      "notes": "Label-matched from in-store bottle photos. Front label reads \"Pinot Noir\" and back label reads \"2022 / DE SOUSA / PETIT-ROY\".\nRaffine importer sheet lists this cuvee as Bourgogne Rouge De Sousa 2022 from Domaine Petit Roy, Pinot Noir 100%, biodynamic/organic farming, 12.0% abv, 100% whole cluster, aged 12 months in 228L barrels plus 5 months in tank, unfined and unfiltered.\nThe De Sousa parcel is described there as clay-limestone soils, about 0.2ha, planted in 1949.",
+      "sourceRefs": [
+        {
+          "sourceId": "raffine-petit-roy-2022-sheet",
+          "sourceLabel": "Raffine Petit Roy technical sheet",
+          "sourceType": "importer-sheet",
+          "sourceUrl": "https://www.raffinewine.com/winery_pdf/306.pdf"
+        },
+        {
+          "sourceId": "wine-family-petit-roy-de-sousa-2022",
+          "sourceLabel": "WineFamily Petit Roy De Sousa 2022",
+          "sourceType": "market",
+          "sourceUrl": "https://wine-family.com/products/domaine-petit-roy-bourgogne-de-sousa-2022"
+        }
+      ],
+      "createdAt": "2026-04-30T13:02:10.232Z",
+      "labels": [],
+      "source": "custom"
+    }
+  },
+  {
+    "id": "inventory-1777553982057-g1qrxl",
+    "catalogWineId": "catalog-1777553981967-fj717k",
+    "customLabel": "ピストゥス 2022",
+    "quantity": 1,
+    "location": "店内",
+    "notes": "Bottle registered from label photos. Front label matched as I CUSTODI / PISTUS / ETNA ROSSO / 2022. Back label included 750ml, 13% vol, importer sticker with Racines and code 097265. Photo files: S__14524421.jpg(front), S__14524422.jpg(back).",
+    "imagePath": "/uploads/1777553982057-i-custodi-pistus-etna-rosso-2022-inventory.jpg",
+    "ocrText": "I CUSTODI\nPISTUS\nETNA ROSSO\n2022\n750ml\n13% vol\nRacines\n097265",
+    "confidence": "high",
+    "matchedAt": "2026-04-30T12:59:42.057Z",
+    "wine": {
+      "id": "catalog-1777553981967-fj717k",
+      "name": "ピストゥス 2022",
+      "producer": "イ・クストディ・デッレ・ヴィーニェ・デル・エトナ",
+      "country": "イタリア",
+      "region": "シチリア",
+      "appellation": "Etna Rosso DOC",
+      "grapes": [
+        "ネレッロ・マスカレーゼ80%",
+        "ネレッロ・カップッチョ20%"
+      ],
+      "vintage": 2022,
+      "color": "red",
+      "so2": null,
+      "farming": "organic",
+      "intervention": null,
+      "skinDays": null,
+      "wholeCluster": null,
+      "indigenousYeast": null,
+      "addedSo2": null,
+      "filtration": "unknown",
+      "price": null,
+      "bottleMl": 750,
+      "abv": 13,
+      "closure": null,
+      "flavors": [],
+      "styles": [],
+      "aliases": [
+        "Pistus",
+        "I Custodi Pistus Etna Rosso 2022",
+        "Pistus Etna Rosso 2022"
+      ],
+      "labelText": [
+        "I CUSTODI",
+        "PISTUS",
+        "ETNA ROSSO",
+        "2022",
+        "097265",
+        "Racines"
+      ],
+      "notes": "Label-matched from in-store bottle photos. Front label reads \"I Custodi delle vigne dell'Etna / Pistus / Etna Rosso / 2022\". Back label shows 750ml, 13% vol, importer sticker with code 097265 and Racines.\nOfficial producer page describes Pistus as an Etna Rosso from Contrada Moganazzi Cantina on Etna's northern slope, made from Nerello Mascalese (80%) and Nerello Cappuccio, aged about 9 months in steel and at least 6 months in bottle.\nRegion was normalized to Sicily in the local catalog; Etna Rosso DOC is preserved in appellation.",
+      "sourceRefs": [
+        {
+          "sourceId": "icustodi-pistus-official",
+          "sourceLabel": "I Custodi official Pistus page",
+          "sourceType": "producer",
+          "sourceUrl": "https://www.icustodi.it/en/pistus-en/"
+        }
+      ],
+      "createdAt": "2026-04-30T12:59:41.967Z",
+      "labels": [],
+      "source": "custom"
+    }
+  },
+  {
+    "id": "inventory-1777553883846-k5ns4w",
+    "catalogWineId": "catalog-1777553883737-4wdtgh",
+    "customLabel": "ママ・ムシ",
+    "quantity": 1,
+    "location": "店内",
+    "notes": "Bottle registered from label photos. Front label: Mama Mouchi / sheep illustration / \"Quelle bite est ce la ? -Melie\". Back sticker: France, 750ml, VINS COEUR importer, code 042688. Vintage not visible in provided photos, so catalog record keeps vintage blank pending confirmation. Photo files: S__14524419.jpg(front), S__14524420.jpg(back).",
+    "imagePath": "/uploads/1777553883845-domaine-le-briseau-mama-mouchi-inventory.jpg",
+    "ocrText": "Mama Mouchi\nQuelle bite est ce la ?\nMelie\nFrance\n750ml\nVINS COEUR\n042688",
+    "confidence": "high",
+    "matchedAt": "2026-04-30T12:58:03.846Z",
+    "wine": {
+      "id": "catalog-1777553883737-4wdtgh",
+      "name": "ママ・ムシ",
+      "producer": "ドメーヌ・ル・ブリゾー",
+      "country": "フランス",
+      "region": "ロワール",
+      "appellation": "Vin de France",
+      "grapes": [
+        "ピノドニス"
+      ],
+      "vintage": null,
+      "color": "red",
+      "so2": null,
+      "farming": "organic",
+      "intervention": null,
+      "skinDays": null,
+      "wholeCluster": null,
+      "indigenousYeast": null,
+      "addedSo2": null,
+      "filtration": "unknown",
+      "price": null,
+      "bottleMl": 750,
+      "abv": null,
+      "closure": null,
+      "flavors": [],
+      "styles": [],
+      "aliases": [
+        "Mama Mouchi",
+        "VdF Mama Mouchi rouge"
+      ],
+      "labelText": [
+        "Mama Mouchi",
+        "Quelle bite est ce la ?",
+        "Melie",
+        "042688"
+      ],
+      "notes": "Label-matched from in-store bottle photos. Front label reads \"Mama Mouchi\" with the sheep illustration and \"Quelle bite est ce la ? -Melie\"; back importer sticker shows France, 750ml, importer VINS COEUR, code 042688.\nVintage is intentionally left blank because the provided bottle photos do not show the year clearly.\nOfficial VinsCœur sheets confirm Domaine Le Briseau / VdF Mama Mouchi rouge exists at least as 2021 and 2023 vintages, made from Pineau d'Aunis in Loire.",
+      "sourceRefs": [
+        {
+          "sourceId": "vinscoeur-vcn-26-2023-05",
+          "sourceLabel": "VinsCœur VCN 26 May 2023",
+          "sourceType": "importer-sheet",
+          "sourceUrl": "https://vinscoeur.co.jp/wp/wp-content/uploads/2017/12/26-2023-05W.pdf"
+        },
+        {
+          "sourceId": "vinscoeur-vcn-26-2026-01",
+          "sourceLabel": "VinsCœur VCN 26 February 2026",
+          "sourceType": "importer-sheet",
+          "sourceUrl": "https://vinscoeur.co.jp/wp/wp-content/uploads/2024/12/26-2026-01-E-1.pdf"
+        }
+      ],
+      "createdAt": "2026-04-30T12:58:03.737Z",
+      "labels": [],
+      "source": "custom"
+    }
+  },
+  {
+    "id": "inventory-1777553132004-mjdo8d",
+    "catalogWineId": "catalog-1775697953662-j5p35x",
+    "customLabel": "ミルー 2023",
+    "quantity": 1,
+    "location": "店内",
+    "notes": "Bottle registered from label photos. Front label matched as COL TAMARIE MILU / BIANCO FERMO. Back label included lot L GANESH2023 and 0.75L 12% vol. Photo files: IMG_8275.JPG(front), IMG_8274.JPG(back).",
+    "imagePath": "/uploads/1777553132004-col-tamarie-milu-2023-inventory.JPG",
+    "ocrText": "COL TAMARIE MILU\nBIANCO FERMO\nMilu\nVINO BIANCO\nVITTORIO VENETO (TV) ITALIA\n0.75L\n12% vol\nL GANESH2023\n043588",
+    "confidence": "high",
+    "matchedAt": "2026-04-30T12:45:32.004Z",
+    "wine": {
+      "id": "catalog-1775697953662-j5p35x",
+      "name": "ミルー 2023",
+      "producer": "コル・タマリエ",
+      "country": "イタリア",
+      "region": "ヴェネト",
+      "appellation": null,
+      "grapes": [
+        "グレラ",
+        "プロセッコルンゴ",
+        "マルヴァージアをメインにその他"
+      ],
+      "vintage": 2023,
+      "color": "white",
+      "so2": null,
+      "farming": "unknown",
+      "intervention": null,
+      "skinDays": null,
+      "wholeCluster": null,
+      "indigenousYeast": null,
+      "addedSo2": null,
+      "filtration": "filtered",
+      "price": 4510,
+      "bottleMl": 750,
+      "abv": null,
+      "closure": null,
+      "flavors": [],
+      "styles": [],
+      "aliases": [],
+      "labelText": [],
+      "notes": "Milu 2023 / Col Tamarie\nヴァルドビアッデーネ近郊の町、ヴィットーリオ・ヴェネトの西側。自然の森に囲まれひっそりと暮らすアルベルトとマルタ夫婦。2000年よりブドウ造りを開始し、2003年初収穫。出来たブドウはそのまま知人のワイナリーへ販売していた。2007年より実験的に醸造を開始するが、すぐにリリースはせず、納得のいくワインができるまで6年もの年月をかけ完成させた。少量の初リリースとなった 2013 年ヴィンテージ、そして2ヴィンテージ目となった2014年は15.000本を生産。順調にカンティーナとしての歩みを始めている。畑では農薬や化学肥料は使用せず、9haある土地のうち、半分の4.5haをブドウ畑、残り半分は森のまま、自然 環境を保つ事を最重要にしている。栽培する品種は、主要品種であるグレラとその他の補助品種。ブドウ品種によって区画を分けず、乱雑に品種を混ぜて栽培する事で、より自然な状態でブドウが育つという考え。丁寧に手作業で育てられたブドウは収穫も一房一房丁寧に行 われ、ブドウが傷つかないよう、慎重にカセットに並べられ醸造へ。自然酵母にて発酵。全ての段階でフィルターや清澄作業は行わない。\nモストフィオーレ（プレスしないフリーランジュース）のみ使用。ステン発酵。SO2は瓶詰前に2mg/L添加。ラベルにはマルタとミルーちゃん（飼っている猫）、やはりアルナチャラ山、マントラ、そしてアルベルトが描かれています。(インポーター資料より)\nStock count: 1\nStatus: available",
+      "sourceRefs": [
+        {
+          "sourceId": "fika-online-shop",
+          "sourceLabel": "Fika Online Shop",
+          "sourceType": "market",
+          "sourceUrl": "https://fikas.shop/?pid=189096064"
+        }
+      ],
+      "createdAt": "2026-04-09T01:25:53.662Z",
+      "labels": [],
+      "source": "custom"
+    }
+  }
+]

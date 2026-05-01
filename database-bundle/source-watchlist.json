@@ -1686,7 +1686,7 @@
     "status": "ok",
     "format": "json",
     "endpoint": "https://gist.githubusercontent.com/ajubin/d331f3251db4bd239c7a1efd0af54e38/raw",
-    "limit": 5000,
+    "limit": 30000,
     "fieldMap": {
       "name": [
         "title",
@@ -1986,6 +1986,32 @@
     "updatedAt": "2026-04-04T12:26:43.629Z",
     "lastRunAt": "2026-04-04T12:26:43.628Z",
     "lastEndpoint": "https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-05-28/winemag-data-130k-v2.csv"
+  },
+  {
+    "id": "fika-online-shop",
+    "label": "Fika Online Shop",
+    "type": "market",
+    "coverage": "jp",
+    "enabled": true,
+    "status": "ok",
+    "format": "fika-html",
+    "endpoint": "https://fikas.shop/",
+    "limit": 30000,
+    "lastError": "",
+    "lastResult": {
+      "sourceId": "fika-online-shop",
+      "sourceLabel": "Fika Online Shop",
+      "endpoint": "https://fikas.shop/",
+      "startedAt": "2026-04-13T13:38:13.143Z",
+      "completedAt": "2026-04-13T13:39:12.322Z",
+      "imported": 2832,
+      "skipped": 2602,
+      "candidates": 5434,
+      "errors": []
+    },
+    "updatedAt": "2026-04-13T13:39:12.322Z",
+    "lastRunAt": "2026-04-13T13:39:12.322Z",
+    "lastEndpoint": "https://fikas.shop/"
   },
   {
     "id": "sample-feed",

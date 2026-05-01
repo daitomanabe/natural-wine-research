@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-04-04T12:26:45.315Z",
+  "generatedAt": "2026-04-30T13:06:22.200Z",
   "database": {
     "seedCount": 42,
-    "additionsCount": 6790,
-    "unifiedCount": 6832,
-    "inventoryCount": 0,
-    "inventoryUnits": 0,
-    "linkedInventoryCount": 0,
+    "additionsCount": 18125,
+    "unifiedCount": 18167,
+    "inventoryCount": 5,
+    "inventoryUnits": 5,
+    "linkedInventoryCount": 5,
     "labelAssetCount": 0,
-    "linkedCatalogCount": 0,
-    "catalogWithLinkCount": 6832,
+    "linkedCatalogCount": 5,
+    "catalogWithLinkCount": 18167,
     "catalogPlottableCount": 6830,
-    "combinedDataSize": 6816885
+    "combinedDataSize": 22643368
   },
   "live": {
     "city": "Tokyo",
@@ -74,14 +74,65 @@
     }
   ],
   "sourceWatchlist": {
-    "total": 33,
-    "enabled": 29
+    "total": 34,
+    "enabled": 30
   },
   "inventorySummary": {
-    "totalQuantity": 0,
-    "linkedCount": 0,
-    "uniqueWineCount": 0,
-    "byLocation": [],
-    "byWine": []
+    "totalQuantity": 5,
+    "linkedCount": 5,
+    "uniqueWineCount": 5,
+    "byLocation": [
+      [
+        "店内",
+        5
+      ]
+    ],
+    "byWine": [
+      {
+        "wineId": "catalog-1777554368214-2ggcgy",
+        "entries": 1,
+        "quantity": 1,
+        "lastSeenAt": "2026-04-30T13:06:08.305Z",
+        "locations": [
+          "店内"
+        ]
+      },
+      {
+        "wineId": "catalog-1777554130232-n199za",
+        "entries": 1,
+        "quantity": 1,
+        "lastSeenAt": "2026-04-30T13:02:10.326Z",
+        "locations": [
+          "店内"
+        ]
+      },
+      {
+        "wineId": "catalog-1777553981967-fj717k",
+        "entries": 1,
+        "quantity": 1,
+        "lastSeenAt": "2026-04-30T12:59:42.057Z",
+        "locations": [
+          "店内"
+        ]
+      },
+      {
+        "wineId": "catalog-1777553883737-4wdtgh",
+        "entries": 1,
+        "quantity": 1,
+        "lastSeenAt": "2026-04-30T12:58:03.846Z",
+        "locations": [
+          "店内"
+        ]
+      },
+      {
+        "wineId": "catalog-1775697953662-j5p35x",
+        "entries": 1,
+        "quantity": 1,
+        "lastSeenAt": "2026-04-30T12:45:32.004Z",
+        "locations": [
+          "店内"
+        ]
+      }
+    ]
   }
 }

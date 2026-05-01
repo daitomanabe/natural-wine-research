@@ -1,7 +1,8 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import { addCatalogRecord, listCatalog } from "./catalog.mjs";
+import { addCatalogRecord, addCatalogRecords, listCatalog } from "./catalog.mjs";
 import { DATA_DIR } from "./paths.mjs";
+import { collectFikaProducts } from "./source-fika.mjs";
 import { makeId, readJson, writeJson, splitCsv } from "./storage.mjs";
 import { fileURLToPath } from "node:url";
 
@@ -346,6 +347,17 @@ function parseSourceText(text, source) {
   }
 }
 
+async function collectSourceItems(source, endpoint, options = {}) {
+  const mode = normalizeText(source.format).toLowerCase();
+
+  if (mode === "fika-html") {
+    return collectFikaProducts(source, endpoint, options);
+  }
+
+  const payloadText = await readSourceText(endpoint);
+  return parseSourceText(payloadText, source);
+}
+
 async function readSourceText(endpoint) {
   const normalized = normalizeText(endpoint);
 
@@ -435,7 +447,7 @@ function normalizeRecord(rawItem, source, endpoint) {
         sourceId: source.id,
         sourceLabel: source.label,
         sourceType: source.type,
-        sourceUrl: endpoint,
+        sourceUrl: normalizeText(rawItem?.sourceUrl) || endpoint,
       },
     ],
     createdAt: new Date().toISOString(),
@@ -494,14 +506,14 @@ export async function runSourceCollection(sourceId, options = {}) {
 
   let payloadText = "";
   try {
-    payloadText = await readSourceText(endpoint);
+    payloadText = await collectSourceItems(source, endpoint, options);
   } catch (error) {
     const nextError = error instanceof Error ? error.message : "source read failed";
     await updateSource(sourceId, { status: "error", lastError: nextError, lastRunAt: startedAt });
     throw error;
   }
 
-  const items = parseSourceText(await payloadText, source);
+  const items = Array.isArray(payloadText) ? payloadText : parseSourceText(payloadText, source);
   const max = Number.isFinite(options.limit) && options.limit > 0
     ? options.limit
     : Number.isFinite(source.limit) && source.limit > 0
@@ -512,6 +524,7 @@ export async function runSourceCollection(sourceId, options = {}) {
   let imported = 0;
   let skipped = 0;
   const errors = [];
+  const pendingRecords = [];
 
   for (const item of targetItems) {
     const candidate = normalizeRecord(item, source, endpoint);
@@ -527,7 +540,7 @@ export async function runSourceCollection(sourceId, options = {}) {
     }
 
     try {
-      await addCatalogRecord(candidate);
+      pendingRecords.push(candidate);
       knownKeys.add(key);
       imported += 1;
     } catch (error) {
@@ -536,6 +549,20 @@ export async function runSourceCollection(sourceId, options = {}) {
         id: item.id ?? makeId("item"),
         name: candidate.name,
         message: error instanceof Error ? error.message : "failed to register item",
+      });
+    }
+  }
+
+  if (pendingRecords.length) {
+    try {
+      await addCatalogRecords(pendingRecords);
+    } catch (error) {
+      imported -= pendingRecords.length;
+      skipped += pendingRecords.length;
+      errors.push({
+        id: makeId("batch"),
+        name: source.label,
+        message: error instanceof Error ? error.message : "failed to register items",
       });
     }
   }

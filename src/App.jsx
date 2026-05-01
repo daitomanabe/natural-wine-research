@@ -8,6 +8,8 @@ import { getJson, postJson, uploadImage } from "./lib/api";
 import { findSimilarWines } from "./lib/similarWines";
 import {
   buildSpotlightSignal,
+  buildSpotlightSignalBundle,
+  buildSpotlightSignalBundleFilename,
   buildSpotlightSignalFilename,
   findSpotlightWine,
 } from "./lib/spotlightSignal";
@@ -85,7 +87,10 @@ const INITIAL_LIVE_FORM = {
   maxPrice: 45,
 };
 
+const DEFAULT_VIEW = "store";
+
 const APP_VIEWS = [
+  { id: "store", label: "In-Store Inventory" },
   { id: "spotlight", label: "Bottle Spotlight" },
   { id: "operations", label: "Cellar Operations" },
   { id: "insights", label: "Catalog Insights" },
@@ -96,9 +101,9 @@ const APP_VIEWS = [
 const APP_VIEW_IDS = new Set(APP_VIEWS.map((view) => view.id));
 
 function resolveInitialView() {
-  if (typeof window === "undefined") return "operations";
+  if (typeof window === "undefined") return DEFAULT_VIEW;
   const hash = window.location.hash.replace(/^#/, "");
-  return APP_VIEW_IDS.has(hash) ? hash : "operations";
+  return APP_VIEW_IDS.has(hash) ? hash : DEFAULT_VIEW;
 }
 
 function formatYen(value, fallback = "—") {
@@ -297,6 +302,251 @@ function SourceWatchlist({ sources, onRun, onRunAll, runningIds }) {
         );
       })}
     </div>
+  );
+}
+
+function SpotlightSignalSection({
+  signal,
+  signalWine,
+  featuredWine,
+  signalJson,
+  signalApiUrl,
+  onCopy,
+  onDownload,
+  onShare,
+  featuredCopy = "Featured bottle output",
+  selectedCopy = "Selected match output",
+}) {
+  if (!signal || !signalWine) return null;
+
+  return (
+    <section className="spotlight-signal-layout">
+      <div className="module-panel spotlight-signal-panel">
+        <div className="panel-head">
+          <div className="section-label">WINE SIGNAL</div>
+          <div className="micro-copy">
+            {signalWine.id === featuredWine?.id ? featuredCopy : selectedCopy}
+          </div>
+        </div>
+        <div className="signal-gradient-band" style={{ backgroundImage: signal.palette.gradient }} />
+
+        <div className="signal-block">
+          <div className="signal-subhead">COLORMAP</div>
+          <div className="signal-palette-grid">
+            {signal.palette.colors.map((color) => (
+              <div key={color.role} className="signal-swatch-card">
+                <div className="signal-swatch" style={{ background: color.hex }} />
+                <div className="signal-swatch-copy">
+                  <div className="signal-swatch-label">{color.label}</div>
+                  <div className="micro-copy">{color.role} · {color.hex}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="signal-two-column">
+          <div className="signal-block">
+            <div className="signal-subhead">ATMOSPHERE</div>
+            <div className="tag-row">
+              {signal.scene.moodTags.map((tag) => (
+                <span key={tag} className="tag-chip">{tag}</span>
+              ))}
+            </div>
+            <div className="signal-copy">{signal.scene.setting}</div>
+            <div className="signal-copy">{signal.scene.lighting}</div>
+            <div className="signal-copy">{signal.scene.atmosphere.join(" · ")}</div>
+            <div className="signal-copy">{signal.scene.materials.join(" · ")}</div>
+          </div>
+
+          <div className="signal-block">
+            <div className="signal-subhead">MUSIC</div>
+            <div className="signal-metrics-grid">
+              {[
+                ["GENRE", signal.music.primaryGenre],
+                ["BPM", `${signal.music.bpm}`],
+                ["RANGE", `${signal.music.bpmRange[0]}–${signal.music.bpmRange[1]}`],
+                ["ENERGY", `${signal.music.energy}`],
+              ].map(([label, value]) => (
+                <div key={label} className="signal-metric-card">
+                  <div className="signal-metric-label">{label}</div>
+                  <div className="signal-metric-value">{value}</div>
+                </div>
+              ))}
+            </div>
+            <div className="tag-row">
+              {signal.music.supportingGenres.map((genre) => (
+                <span key={genre} className="tag-chip">{genre}</span>
+              ))}
+            </div>
+            <div className="signal-copy">{signal.music.textures.join(" · ")}</div>
+            <div className="signal-copy">{signal.music.instruments.join(" · ")}</div>
+          </div>
+        </div>
+
+        <div className="signal-block">
+          <div className="signal-subhead">RATIONALE</div>
+          <div className="tag-row">
+            {signal.context.derivedFrom.map((item) => (
+              <span key={item} className="tag-chip">{item}</span>
+            ))}
+          </div>
+          <p className="signal-copy">{signal.context.rationale}</p>
+        </div>
+      </div>
+
+      <div className="module-panel spotlight-export-panel">
+        <div className="panel-head">
+          <div className="section-label">JSON EXPORT</div>
+          <div className="micro-copy">Fetch, copy, share, or download the same payload other apps can consume.</div>
+        </div>
+        <div className="inline-actions signal-action-row">
+          <button type="button" className="action-button" onClick={onCopy}>
+            Copy JSON
+          </button>
+          <button type="button" className="secondary-button" onClick={onDownload}>
+            Download JSON
+          </button>
+          <button type="button" className="secondary-button" onClick={onShare}>
+            Share JSON
+          </button>
+          <a className="secondary-button spotlight-link-button" href={signalApiUrl} target="_blank" rel="noreferrer">
+            Open API JSON
+          </a>
+        </div>
+        <div className="signal-api-meta">
+          <div className="signal-inline-label">API</div>
+          <code>{signalApiUrl}</code>
+        </div>
+        <div className="signal-api-meta">
+          <div className="signal-inline-label">EVENT</div>
+          <code>{signal.transport.eventName}</code>
+        </div>
+        <div className="signal-api-meta">
+          <div className="signal-inline-label">GLOBAL</div>
+          <code>window.{signal.transport.globalKey}</code>
+        </div>
+        <div className="signal-block">
+          <div className="signal-subhead">PROMPT</div>
+          <p className="signal-copy">{signal.prompt}</p>
+        </div>
+        <div className="signal-block">
+          <div className="signal-subhead">PAYLOAD</div>
+          <pre className="signal-code-block">{signalJson}</pre>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function StoreSignalBundleSection({
+  bundle,
+  items,
+  selectedWineId,
+  onSelect,
+  bundleApiUrl,
+  bundleJson,
+  onCopy,
+  onDownload,
+  onShare,
+}) {
+  if (!bundle) return null;
+
+  return (
+    <section className="spotlight-store-layout">
+      <div className="module-panel spotlight-store-panel">
+        <div className="panel-head">
+          <div className="section-label">IN-STORE SIGNAL SET</div>
+          <div className="micro-copy">
+            {bundle.summary.uniqueWineCount} wines · {bundle.summary.totalQuantity} bottles · {bundle.location || "all locations"}
+          </div>
+        </div>
+        <div className="spotlight-store-grid">
+          {items.map((item) => (
+            <button
+              key={item.wine.id}
+              type="button"
+              className={`spotlight-store-card ${selectedWineId === item.wine.id ? "spotlight-store-card-active" : ""}`}
+              onClick={() => onSelect(item.wine)}
+            >
+              <div className="spotlight-store-card-band" style={{ backgroundImage: item.signal.palette.gradient }} />
+              <div className="spotlight-store-card-body">
+                <div className="spotlight-store-card-top">
+                  <div>
+                    <div className="spotlight-card-title">{item.wine.name}</div>
+                    <div className="spotlight-card-subtitle">{item.wine.producer}</div>
+                  </div>
+                  <div className="spotlight-store-qty">qty {item.inventory.quantity}</div>
+                </div>
+                <div className="spotlight-card-meta">
+                  {COLOR_MAP[item.wine.color]?.label ?? item.wine.color} · {item.signal.music.primaryGenre} · {item.signal.music.bpm} BPM
+                </div>
+                <div className="tag-row">
+                  {item.signal.scene.moodTags.slice(0, 4).map((tag) => (
+                    <span key={tag} className="tag-chip">{tag}</span>
+                  ))}
+                </div>
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="module-panel spotlight-store-export-panel">
+        <div className="panel-head">
+          <div className="section-label">STORE JSON BUNDLE</div>
+          <div className="micro-copy">One payload for every wine currently in `店内`.</div>
+        </div>
+        <div className="signal-metrics-grid">
+          {[
+            ["WINES", `${bundle.summary.uniqueWineCount}`],
+            ["BOTTLES", `${bundle.summary.totalQuantity}`],
+            ["AVG BPM", bundle.summary.averageBpm ?? "—"],
+            ["AVG ENERGY", bundle.summary.averageEnergy ?? "—"],
+          ].map(([label, value]) => (
+            <div key={label} className="signal-metric-card">
+              <div className="signal-metric-label">{label}</div>
+              <div className="signal-metric-value">{value}</div>
+            </div>
+          ))}
+        </div>
+        <div className="tag-row">
+          {bundle.summary.primaryGenres.map((genre) => (
+            <span key={genre} className="tag-chip">{genre}</span>
+          ))}
+        </div>
+        <div className="inline-actions signal-action-row">
+          <button type="button" className="action-button" onClick={onCopy}>
+            Copy Bundle
+          </button>
+          <button type="button" className="secondary-button" onClick={onDownload}>
+            Download Bundle
+          </button>
+          <button type="button" className="secondary-button" onClick={onShare}>
+            Share Bundle
+          </button>
+          <a className="secondary-button spotlight-link-button" href={bundleApiUrl} target="_blank" rel="noreferrer">
+            Open Bundle API
+          </a>
+        </div>
+        <div className="signal-api-meta">
+          <div className="signal-inline-label">API</div>
+          <code>{bundleApiUrl}</code>
+        </div>
+        <div className="signal-api-meta">
+          <div className="signal-inline-label">EVENT</div>
+          <code>{bundle.transport.eventName}</code>
+        </div>
+        <div className="signal-api-meta">
+          <div className="signal-inline-label">GLOBAL</div>
+          <code>window.{bundle.transport.globalKey}</code>
+        </div>
+        <div className="signal-block">
+          <div className="signal-subhead">PAYLOAD</div>
+          <pre className="signal-code-block signal-code-compact">{bundleJson}</pre>
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -1075,10 +1325,11 @@ export default function App() {
     spotlightWine ? findSimilarWines(spotlightWine, catalog, { limit: 10 }) : []
   ), [catalog, spotlightWine]);
   const spotlightSelection = useMemo(() => {
-    if (!spotlightWine) return null;
-    const allowedIds = new Set([spotlightWine.id, ...spotlightSimilar.map((item) => item.wine.id)]);
-    return selected && allowedIds.has(selected.id) ? selected : spotlightWine;
-  }, [selected, spotlightSimilar, spotlightWine]);
+    if (selected && catalog.find((wine) => wine.id === selected.id)) {
+      return selected;
+    }
+    return spotlightWine;
+  }, [catalog, selected, spotlightWine]);
   const spotlightSourceUrl = spotlightWine?.sourceRefs?.[0]?.sourceUrl ?? "";
   const spotlightSignalWine = spotlightSelection ?? spotlightWine;
   const spotlightSignalSimilar = useMemo(() => {
@@ -1102,66 +1353,343 @@ export default function App() {
     if (typeof window === "undefined") return relative;
     return new URL(relative, window.location.origin).toString();
   }, [spotlightSignalWine]);
+  const storeSignalBundle = useMemo(() => buildSpotlightSignalBundle({
+    inventory,
+    catalog,
+    location: "店内",
+    featuredWineId: spotlightWine?.id ?? null,
+  }), [catalog, inventory, spotlightWine]);
+  const storeSignalItems = storeSignalBundle?.items ?? [];
+  const storeSignalJson = useMemo(() => (
+    storeSignalBundle ? JSON.stringify(storeSignalBundle, null, 2) : ""
+  ), [storeSignalBundle]);
+  const storeSignalApiUrl = useMemo(() => {
+    const relative = `/api/spotlight/signals?location=${encodeURIComponent("店内")}`;
+    if (typeof window === "undefined") return relative;
+    return new URL(relative, window.location.origin).toString();
+  }, []);
+  const storeWineIdSet = useMemo(() => new Set(storeSignalItems.map((item) => item.wine.id)), [storeSignalItems]);
+  const storeDisplayWine = useMemo(() => {
+    if (selected && storeWineIdSet.has(selected.id)) {
+      return selected;
+    }
+    if (spotlightWine && storeWineIdSet.has(spotlightWine.id)) {
+      return spotlightWine;
+    }
+    return storeSignalItems[0]?.wine ?? null;
+  }, [selected, spotlightWine, storeSignalItems, storeWineIdSet]);
+  const storeDisplayInventoryItem = useMemo(() => (
+    storeDisplayWine ? storeSignalItems.find((item) => item.wine.id === storeDisplayWine.id)?.inventory ?? null : null
+  ), [storeDisplayWine, storeSignalItems]);
+  const storeDisplaySimilar = useMemo(() => (
+    storeDisplayWine ? findSimilarWines(storeDisplayWine, catalog, { limit: 6 }) : []
+  ), [catalog, storeDisplayWine]);
+  const storeDisplaySignal = useMemo(() => (
+    storeDisplayWine
+      ? buildSpotlightSignal(storeDisplayWine, { similar: storeDisplaySimilar })
+      : null
+  ), [storeDisplaySimilar, storeDisplayWine]);
+  const storeDisplaySignalJson = useMemo(() => (
+    storeDisplaySignal ? JSON.stringify(storeDisplaySignal, null, 2) : ""
+  ), [storeDisplaySignal]);
+  const storeDisplaySignalApiUrl = useMemo(() => {
+    if (!storeDisplayWine) return "";
+    const relative = `/api/spotlight/signal?wineId=${encodeURIComponent(storeDisplayWine.id)}`;
+    if (typeof window === "undefined") return relative;
+    return new URL(relative, window.location.origin).toString();
+  }, [storeDisplayWine]);
+  const activeSignal = viewMode === "store" ? storeDisplaySignal : spotlightSignal;
 
   useEffect(() => {
-    if (typeof window === "undefined" || !spotlightSignal) return;
-    window.__NATURAL_WINE_SPOTLIGHT_SIGNAL__ = spotlightSignal;
+    if (typeof window === "undefined" || !activeSignal) return;
+    window.__NATURAL_WINE_SPOTLIGHT_SIGNAL__ = activeSignal;
     window.dispatchEvent(new CustomEvent("natural-wine-research:spotlight-signal", {
-      detail: spotlightSignal,
+      detail: activeSignal,
     }));
     if (window.parent && window.parent !== window) {
       window.parent.postMessage({
         type: "natural-wine-research:spotlight-signal",
-        payload: spotlightSignal,
+        payload: activeSignal,
       }, "*");
     }
-  }, [spotlightSignal]);
+  }, [activeSignal]);
 
-  async function handleCopySpotlightSignal() {
-    if (!spotlightSignalJson) return;
+  useEffect(() => {
+    if (typeof window === "undefined" || !storeSignalBundle) return;
+    window.__NATURAL_WINE_SPOTLIGHT_SIGNAL_BUNDLE__ = storeSignalBundle;
+    window.dispatchEvent(new CustomEvent("natural-wine-research:inventory-signals", {
+      detail: storeSignalBundle,
+    }));
+    if (window.parent && window.parent !== window) {
+      window.parent.postMessage({
+        type: "natural-wine-research:inventory-signals",
+        payload: storeSignalBundle,
+      }, "*");
+    }
+  }, [storeSignalBundle]);
+
+  async function copyJsonPayload(json, successMessage, failureMessage) {
+    if (!json) return;
 
     try {
       if (!navigator.clipboard?.writeText) {
         throw new Error("clipboard unavailable");
       }
-      await navigator.clipboard.writeText(spotlightSignalJson);
-      setStatusMessage("Spotlight signal JSON copied.");
+      await navigator.clipboard.writeText(json);
+      setStatusMessage(successMessage);
     } catch {
-      setStatusMessage("Copy failed. Use download or the API URL.");
+      setStatusMessage(failureMessage);
     }
   }
 
-  function handleDownloadSpotlightSignal() {
-    if (!spotlightSignalJson || !spotlightSignalWine || typeof document === "undefined") return;
+  function downloadJsonPayload(json, filename, successMessage) {
+    if (!json || typeof document === "undefined") return;
 
-    const blob = new Blob([spotlightSignalJson], { type: "application/json" });
+    const blob = new Blob([json], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = buildSpotlightSignalFilename(spotlightSignalWine);
+    link.download = filename;
     document.body.append(link);
     link.click();
     link.remove();
     URL.revokeObjectURL(url);
-    setStatusMessage("Spotlight signal JSON downloaded.");
+    setStatusMessage(successMessage);
   }
 
-  async function handleShareSpotlightSignal() {
-    if (!spotlightSignalJson) return;
+  async function shareJsonPayload(json, title, successMessage, fallback) {
+    if (!json) return;
 
     try {
       if (navigator.share) {
-        await navigator.share({
-          title: `${spotlightSignalWine?.name ?? "Wine"} signal`,
-          text: spotlightSignalJson,
-        });
-        setStatusMessage("Spotlight signal shared.");
+        await navigator.share({ title, text: json });
+        setStatusMessage(successMessage);
         return;
       }
-      await handleCopySpotlightSignal();
+      await fallback();
     } catch {
       setStatusMessage("Share cancelled.");
     }
+  }
+
+  async function handleCopySpotlightSignal() {
+    await copyJsonPayload(
+      spotlightSignalJson,
+      "Spotlight signal JSON copied.",
+      "Copy failed. Use download or the API URL.",
+    );
+  }
+
+  function handleDownloadSpotlightSignal() {
+    if (!spotlightSignalWine) return;
+    downloadJsonPayload(
+      spotlightSignalJson,
+      buildSpotlightSignalFilename(spotlightSignalWine),
+      "Spotlight signal JSON downloaded.",
+    );
+  }
+
+  async function handleShareSpotlightSignal() {
+    await shareJsonPayload(
+      spotlightSignalJson,
+      `${spotlightSignalWine?.name ?? "Wine"} signal`,
+      "Spotlight signal shared.",
+      handleCopySpotlightSignal,
+    );
+  }
+
+  async function handleCopyStoreSelectionSignal() {
+    await copyJsonPayload(
+      storeDisplaySignalJson,
+      "Store wine signal JSON copied.",
+      "Copy failed. Use download or the API URL.",
+    );
+  }
+
+  function handleDownloadStoreSelectionSignal() {
+    if (!storeDisplayWine) return;
+    downloadJsonPayload(
+      storeDisplaySignalJson,
+      buildSpotlightSignalFilename(storeDisplayWine),
+      "Store wine signal JSON downloaded.",
+    );
+  }
+
+  async function handleShareStoreSelectionSignal() {
+    await shareJsonPayload(
+      storeDisplaySignalJson,
+      `${storeDisplayWine?.name ?? "Wine"} signal`,
+      "Store wine signal shared.",
+      handleCopyStoreSelectionSignal,
+    );
+  }
+
+  async function handleCopyStoreSignals() {
+    await copyJsonPayload(
+      storeSignalJson,
+      "In-store signal bundle copied.",
+      "Copy failed. Use download or the API URL.",
+    );
+  }
+
+  function handleDownloadStoreSignals() {
+    downloadJsonPayload(
+      storeSignalJson,
+      buildSpotlightSignalBundleFilename("tennai"),
+      "In-store signal bundle downloaded.",
+    );
+  }
+
+  async function handleShareStoreSignals() {
+    await shareJsonPayload(
+      storeSignalJson,
+      "In-store wine signals",
+      "In-store signal bundle shared.",
+      handleCopyStoreSignals,
+    );
+  }
+
+  if (viewMode === "store") {
+    return (
+      <div className="app-shell store-mode">
+        <header className="app-header">
+          <div>
+            <div className="eyebrow">NATURAL WINE RESEARCH — IN-STORE INVENTORY</div>
+            <h1>VIN NATUREL OS</h1>
+            <div className="subhead">ONLY THE WINES CURRENTLY IN `店内`, WITH SIGNALS AND JSON OUTPUT FOR OTHER APPS</div>
+          </div>
+          <div className="stats-grid">
+            {[
+              ["LOCATION", "店内"],
+              ["WINES", `${storeSignalBundle?.summary.uniqueWineCount ?? 0}`],
+              ["BOTTLES", `${storeSignalBundle?.summary.totalQuantity ?? 0}`],
+              ["AVG BPM", storeSignalBundle?.summary.averageBpm ?? "—"],
+              ["PRIMARY MODE", storeSignalBundle?.summary.primaryGenres?.[0] ?? "—"],
+            ].map(([label, value]) => (
+              <div key={label} className="stat-block">
+                <div className="stat-label">{label}</div>
+                <div className="stat-value">{value}</div>
+              </div>
+            ))}
+          </div>
+        </header>
+
+        {storeSignalBundle && storeDisplayWine && storeDisplaySignal ? (
+          <div className="workspace-grid">
+            <section className="store-summary-layout">
+              <div className="module-panel store-summary-panel">
+                <div className="panel-head">
+                  <div className="section-label">CURRENTLY SELECTED</div>
+                  <div className="micro-copy">
+                    {storeDisplayInventoryItem ? `qty ${storeDisplayInventoryItem.quantity} · ${storeDisplayInventoryItem.location}` : "Inventory linked"}
+                  </div>
+                </div>
+                <div className="signal-gradient-band" style={{ backgroundImage: storeDisplaySignal.palette.gradient }} />
+                <div className="store-summary-copy">
+                  <div className="spotlight-kicker">Store Focus</div>
+                  <h2 className="store-summary-title">{storeDisplayWine.name}</h2>
+                  <div className="spotlight-card-subtitle">{storeDisplayWine.producer}</div>
+                  <div className="spotlight-meta-row">
+                    <span>{COLOR_MAP[storeDisplayWine.color]?.label ?? storeDisplayWine.color}</span>
+                    <span>{storeDisplayWine.country || "UNKNOWN"}</span>
+                    <span>{storeDisplayWine.region || "Unknown region"}</span>
+                    <span>{formatYen(storeDisplayWine.price)}</span>
+                    <span>{storeDisplaySignal.music.primaryGenre}</span>
+                    <span>{storeDisplaySignal.music.bpm} BPM</span>
+                  </div>
+                  <p className="spotlight-description">
+                    {excerptText(storeDisplayWine.notes || storeDisplaySignal.scene.setting, 280)}
+                  </p>
+                  <div className="tag-row">
+                    {storeDisplaySignal.scene.moodTags.map((tag) => (
+                      <span key={tag} className="tag-chip">{tag}</span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="module-panel store-summary-metrics">
+                <div className="panel-head">
+                  <div className="section-label">ROOM SNAPSHOT</div>
+                  <div className="micro-copy">Bundle-level summary for the wines currently on the floor.</div>
+                </div>
+                <div className="signal-metrics-grid">
+                  {[
+                    ["WINES", `${storeSignalBundle.summary.uniqueWineCount}`],
+                    ["BOTTLES", `${storeSignalBundle.summary.totalQuantity}`],
+                    ["AVG BPM", storeSignalBundle.summary.averageBpm ?? "—"],
+                    ["AVG ENERGY", storeSignalBundle.summary.averageEnergy ?? "—"],
+                  ].map(([label, value]) => (
+                    <div key={label} className="signal-metric-card">
+                      <div className="signal-metric-label">{label}</div>
+                      <div className="signal-metric-value">{value}</div>
+                    </div>
+                  ))}
+                </div>
+                <div className="signal-block">
+                  <div className="signal-subhead">PRIMARY GENRES</div>
+                  <div className="tag-row">
+                    {storeSignalBundle.summary.primaryGenres.map((genre) => (
+                      <span key={genre} className="tag-chip">{genre}</span>
+                    ))}
+                  </div>
+                </div>
+                <div className="signal-block">
+                  <div className="signal-subhead">DELIVERY</div>
+                  <div className="signal-api-meta">
+                    <div className="signal-inline-label">BUNDLE API</div>
+                    <code>{storeSignalApiUrl}</code>
+                  </div>
+                  <div className="signal-api-meta">
+                    <div className="signal-inline-label">LIVE EVENT</div>
+                    <code>{storeSignalBundle.transport.eventName}</code>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <StoreSignalBundleSection
+              bundle={storeSignalBundle}
+              items={storeSignalItems}
+              selectedWineId={storeDisplayWine.id}
+              onSelect={setSelected}
+              bundleApiUrl={storeSignalApiUrl}
+              bundleJson={storeSignalJson}
+              onCopy={handleCopyStoreSignals}
+              onDownload={handleDownloadStoreSignals}
+              onShare={handleShareStoreSignals}
+            />
+
+            <SpotlightSignalSection
+              signal={storeDisplaySignal}
+              signalWine={storeDisplayWine}
+              featuredWine={spotlightWine}
+              signalJson={storeDisplaySignalJson}
+              signalApiUrl={storeDisplaySignalApiUrl}
+              onCopy={handleCopyStoreSelectionSignal}
+              onDownload={handleDownloadStoreSelectionSignal}
+              onShare={handleShareStoreSelectionSignal}
+              featuredCopy="Store featured bottle output"
+              selectedCopy="Selected store bottle output"
+            />
+
+            <aside className="detail-panel spotlight-detail-panel">
+              <div className="panel-head">
+                <div className="section-label">STORE WINE DETAIL</div>
+                <div className="micro-copy">
+                  {storeDisplayWine ? `ID: ${storeDisplayWine.id}` : "No wine selected"}
+                </div>
+              </div>
+              <WineDetail wine={storeDisplayWine} />
+            </aside>
+          </div>
+        ) : (
+          <section className="module-panel store-empty-panel">
+            <div className="empty-card">`店内` location currently has no linked inventory items.</div>
+          </section>
+        )}
+      </div>
+    );
   }
 
   if (viewMode === "spotlight") {
@@ -1272,124 +1800,28 @@ export default function App() {
             </section>
 
             <section className="spotlight-results-layout">
-              {spotlightSignal ? (
-                <section className="spotlight-signal-layout">
-                  <div className="module-panel spotlight-signal-panel">
-                    <div className="panel-head">
-                      <div className="section-label">WINE SIGNAL</div>
-                      <div className="micro-copy">
-                        {spotlightSignalWine?.id === spotlightWine?.id ? "Featured bottle output" : "Selected match output"}
-                      </div>
-                    </div>
-                    <div className="signal-gradient-band" style={{ backgroundImage: spotlightSignal.palette.gradient }} />
+              <SpotlightSignalSection
+                signal={spotlightSignal}
+                signalWine={spotlightSignalWine}
+                featuredWine={spotlightWine}
+                signalJson={spotlightSignalJson}
+                signalApiUrl={spotlightSignalApiUrl}
+                onCopy={handleCopySpotlightSignal}
+                onDownload={handleDownloadSpotlightSignal}
+                onShare={handleShareSpotlightSignal}
+              />
 
-                    <div className="signal-block">
-                      <div className="signal-subhead">COLORMAP</div>
-                      <div className="signal-palette-grid">
-                        {spotlightSignal.palette.colors.map((color) => (
-                          <div key={color.role} className="signal-swatch-card">
-                            <div className="signal-swatch" style={{ background: color.hex }} />
-                            <div className="signal-swatch-copy">
-                              <div className="signal-swatch-label">{color.label}</div>
-                              <div className="micro-copy">{color.role} · {color.hex}</div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="signal-two-column">
-                      <div className="signal-block">
-                        <div className="signal-subhead">ATMOSPHERE</div>
-                        <div className="tag-row">
-                          {spotlightSignal.scene.moodTags.map((tag) => (
-                            <span key={tag} className="tag-chip">{tag}</span>
-                          ))}
-                        </div>
-                        <div className="signal-copy">{spotlightSignal.scene.setting}</div>
-                        <div className="signal-copy">{spotlightSignal.scene.lighting}</div>
-                        <div className="signal-copy">{spotlightSignal.scene.atmosphere.join(" · ")}</div>
-                        <div className="signal-copy">{spotlightSignal.scene.materials.join(" · ")}</div>
-                      </div>
-
-                      <div className="signal-block">
-                        <div className="signal-subhead">MUSIC</div>
-                        <div className="signal-metrics-grid">
-                          {[
-                            ["GENRE", spotlightSignal.music.primaryGenre],
-                            ["BPM", `${spotlightSignal.music.bpm}`],
-                            ["RANGE", `${spotlightSignal.music.bpmRange[0]}–${spotlightSignal.music.bpmRange[1]}`],
-                            ["ENERGY", `${spotlightSignal.music.energy}`],
-                          ].map(([label, value]) => (
-                            <div key={label} className="signal-metric-card">
-                              <div className="signal-metric-label">{label}</div>
-                              <div className="signal-metric-value">{value}</div>
-                            </div>
-                          ))}
-                        </div>
-                        <div className="tag-row">
-                          {spotlightSignal.music.supportingGenres.map((genre) => (
-                            <span key={genre} className="tag-chip">{genre}</span>
-                          ))}
-                        </div>
-                        <div className="signal-copy">{spotlightSignal.music.textures.join(" · ")}</div>
-                        <div className="signal-copy">{spotlightSignal.music.instruments.join(" · ")}</div>
-                      </div>
-                    </div>
-
-                    <div className="signal-block">
-                      <div className="signal-subhead">RATIONALE</div>
-                      <div className="tag-row">
-                        {spotlightSignal.context.derivedFrom.map((item) => (
-                          <span key={item} className="tag-chip">{item}</span>
-                        ))}
-                      </div>
-                      <p className="signal-copy">{spotlightSignal.context.rationale}</p>
-                    </div>
-                  </div>
-
-                  <div className="module-panel spotlight-export-panel">
-                    <div className="panel-head">
-                      <div className="section-label">JSON EXPORT</div>
-                      <div className="micro-copy">Fetch, copy, share, or download the same payload other apps can consume.</div>
-                    </div>
-                    <div className="inline-actions signal-action-row">
-                      <button type="button" className="action-button" onClick={handleCopySpotlightSignal}>
-                        Copy JSON
-                      </button>
-                      <button type="button" className="secondary-button" onClick={handleDownloadSpotlightSignal}>
-                        Download JSON
-                      </button>
-                      <button type="button" className="secondary-button" onClick={handleShareSpotlightSignal}>
-                        Share JSON
-                      </button>
-                      <a className="secondary-button spotlight-link-button" href={spotlightSignalApiUrl} target="_blank" rel="noreferrer">
-                        Open API JSON
-                      </a>
-                    </div>
-                    <div className="signal-api-meta">
-                      <div className="signal-inline-label">API</div>
-                      <code>{spotlightSignalApiUrl}</code>
-                    </div>
-                    <div className="signal-api-meta">
-                      <div className="signal-inline-label">EVENT</div>
-                      <code>{spotlightSignal.transport.eventName}</code>
-                    </div>
-                    <div className="signal-api-meta">
-                      <div className="signal-inline-label">GLOBAL</div>
-                      <code>window.{spotlightSignal.transport.globalKey}</code>
-                    </div>
-                    <div className="signal-block">
-                      <div className="signal-subhead">PROMPT</div>
-                      <p className="signal-copy">{spotlightSignal.prompt}</p>
-                    </div>
-                    <div className="signal-block">
-                      <div className="signal-subhead">PAYLOAD</div>
-                      <pre className="signal-code-block">{spotlightSignalJson}</pre>
-                    </div>
-                  </div>
-                </section>
-              ) : null}
+              <StoreSignalBundleSection
+                bundle={storeSignalBundle}
+                items={storeSignalItems}
+                selectedWineId={spotlightSignalWine?.id ?? ""}
+                onSelect={setSelected}
+                bundleApiUrl={storeSignalApiUrl}
+                bundleJson={storeSignalJson}
+                onCopy={handleCopyStoreSignals}
+                onDownload={handleDownloadStoreSignals}
+                onShare={handleShareStoreSignals}
+              />
 
               <div className="module-panel">
                 <div className="panel-head">
@@ -1422,7 +1854,7 @@ export default function App() {
               <aside className="detail-panel spotlight-detail-panel">
                 <div className="panel-head">
                   <div className="section-label">
-                    {spotlightSelection?.id === spotlightWine.id ? "FEATURED WINE DETAIL" : "SELECTED MATCH DETAIL"}
+                    {spotlightSelection?.id === spotlightWine.id ? "FEATURED WINE DETAIL" : "SELECTED WINE DETAIL"}
                   </div>
                   <div className="micro-copy">
                     {spotlightSelection ? `ID: ${spotlightSelection.id}` : "No wine selected"}

@@ -1,5 +1,6 @@
 import { COLOR_MAP, FARMING_MAP, FLAG_MAP } from "../data/wines.js";
 import { naturalness } from "./naturalness.js";
+import { findSimilarWines } from "./similarWines.js";
 
 export const SPOTLIGHT_WINE_MATCH = {
   name: "ミルー 2023",
@@ -395,7 +396,7 @@ function derivedFeatureList(wine, modifiers, natScore, similarCount) {
     wine.farming && wine.farming !== "unknown" ? farmingLabel(wine.farming) : null,
     wine.addedSo2 === false ? "no added SO2" : null,
     wine.filtration && wine.filtration !== "unknown" ? `${wine.filtration} filtration` : null,
-    modifiers.slice(0, 3).map((modifier) => modifier.key),
+    ...modifiers.slice(0, 3).map((modifier) => modifier.key),
     Number.isFinite(natScore) ? `naturalness ${natScore.toFixed(1)}/10` : null,
     similarCount ? `${similarCount} related catalog matches` : null,
   ]);
@@ -411,6 +412,30 @@ function buildPrompt(wine, payload) {
     `Music in ${genres} around ${payload.music.bpm} BPM`,
     `with ${payload.music.textures.join(", ")} textures and ${payload.music.instruments.join(", ")} instrumentation.`,
   ].join(" ");
+}
+
+function normalizeLocation(value) {
+  return String(value ?? "").trim();
+}
+
+function compareText(left, right) {
+  return String(left ?? "").localeCompare(String(right ?? ""), "ja");
+}
+
+function summarizeBundle(items = []) {
+  const primaryGenres = unique(items.map((item) => item.signal?.music?.primaryGenre).filter(Boolean));
+  const bpms = items.map((item) => item.signal?.music?.bpm).filter(Number.isFinite);
+  const energies = items.map((item) => item.signal?.music?.energy).filter(Number.isFinite);
+  const totalQuantity = items.reduce((sum, item) => sum + (Number(item.inventory?.quantity ?? 0) || 0), 0);
+
+  return {
+    uniqueWineCount: items.length,
+    totalQuantity,
+    primaryGenres: primaryGenres.slice(0, 8),
+    bpmRange: bpms.length ? [Math.min(...bpms), Math.max(...bpms)] : [null, null],
+    averageBpm: bpms.length ? Math.round(bpms.reduce((sum, value) => sum + value, 0) / bpms.length) : null,
+    averageEnergy: energies.length ? Math.round(energies.reduce((sum, value) => sum + value, 0) / energies.length) : null,
+  };
 }
 
 export function findSpotlightWine(catalog = [], inventory = []) {
@@ -587,6 +612,93 @@ export function buildSpotlightSignal(wine, options = {}) {
   return payload;
 }
 
+export function buildSpotlightSignalBundle({ inventory = [], catalog = [], location = "", featuredWineId = null } = {}) {
+  const targetLocation = normalizeLocation(location);
+  const grouped = new Map();
+  const filteredInventory = (inventory ?? []).filter((item) => {
+    if (!item?.wine?.id) return false;
+    if (!targetLocation) return true;
+    return normalizeLocation(item.location) === targetLocation;
+  });
+
+  for (const item of filteredInventory) {
+    const wine = item.wine;
+    const key = wine.id;
+    const existing = grouped.get(key) ?? {
+      wine,
+      inventoryIds: [],
+      quantity: 0,
+      entryCount: 0,
+      location: normalizeLocation(item.location) || "Unknown",
+      imagePath: item.imagePath || "",
+      customLabel: item.customLabel || wine.name,
+      lastMatchedAt: item.matchedAt || "",
+    };
+
+    existing.inventoryIds.push(item.id);
+    existing.quantity += Number(item.quantity ?? 1) || 1;
+    existing.entryCount += 1;
+    if (!existing.imagePath && item.imagePath) existing.imagePath = item.imagePath;
+    if (item.customLabel) existing.customLabel = item.customLabel;
+    if ((item.matchedAt || "") > existing.lastMatchedAt) {
+      existing.lastMatchedAt = item.matchedAt || "";
+    }
+    grouped.set(key, existing);
+  }
+
+  const items = [...grouped.values()]
+    .map((entry) => {
+      const similar = findSimilarWines(entry.wine, catalog, { limit: 4 });
+      return {
+        wine: {
+          id: entry.wine.id,
+          name: entry.wine.name,
+          producer: entry.wine.producer,
+          country: entry.wine.country,
+          region: entry.wine.region,
+          color: entry.wine.color,
+          vintage: entry.wine.vintage ?? null,
+          price: Number.isFinite(entry.wine.price) ? entry.wine.price : null,
+          imagePath: entry.imagePath || "",
+        },
+        inventory: {
+          quantity: entry.quantity,
+          entryCount: entry.entryCount,
+          location: entry.location,
+          customLabel: entry.customLabel,
+          inventoryIds: entry.inventoryIds,
+          lastMatchedAt: entry.lastMatchedAt,
+        },
+        signal: buildSpotlightSignal(entry.wine, { similar }),
+      };
+    })
+    .sort((left, right) => {
+      if (left.wine.id === featuredWineId) return -1;
+      if (right.wine.id === featuredWineId) return 1;
+      if ((right.inventory.quantity ?? 0) !== (left.inventory.quantity ?? 0)) {
+        return (right.inventory.quantity ?? 0) - (left.inventory.quantity ?? 0);
+      }
+      return compareText(left.wine.name, right.wine.name);
+    });
+
+  return {
+    schema: "natural-wine-research/spotlight-signal-bundle@1",
+    generatedAt: new Date().toISOString(),
+    location: targetLocation || null,
+    featuredWineId: featuredWineId || null,
+    summary: summarizeBundle(items),
+    items,
+    transport: {
+      apiPath: targetLocation
+        ? `/api/spotlight/signals?location=${encodeURIComponent(targetLocation)}`
+        : "/api/spotlight/signals",
+      eventName: "natural-wine-research:inventory-signals",
+      globalKey: "__NATURAL_WINE_SPOTLIGHT_SIGNAL_BUNDLE__",
+      messageType: "natural-wine-research:inventory-signals",
+    },
+  };
+}
+
 export function buildSpotlightSignalFilename(wine) {
   const parts = [
     wine?.producer,
@@ -598,6 +710,15 @@ export function buildSpotlightSignalFilename(wine) {
     .join("-");
 
   return `${parts || "wine-signal"}`.toLowerCase()
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .concat(".json");
+}
+
+export function buildSpotlightSignalBundleFilename(location = "inventory") {
+  return `${String(location || "inventory")}-signal-bundle`.toLowerCase()
     .normalize("NFKD")
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/[^a-z0-9]+/g, "-")

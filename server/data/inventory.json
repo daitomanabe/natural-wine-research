@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "inventory-1777554368305-ef3zb6",
+    "catalogWineId": "catalog-1777554368214-2ggcgy",
+    "customLabel": "プルミエ・ジュ 2024",
+    "quantity": 1,
+    "location": "店内",
+    "notes": "Bottle registered from label photos. Front label: Premier jus 2024. Back label: PREMIER JUS 2024 / VIN DE FRANCE / Rodolphe Gianesini / Laetitia Ourliac / 12.5% vol / 750ml / Vins Coeur importer code 043890. Photo files: S__14532617_0.jpg(front), S__14532618_0.jpg(back).",
+    "imagePath": "/uploads/1777554368302-fond-cypres-premier-jus-2024-inventory.jpg",
+    "ocrText": "PREMIER JUS\n2024\nVIN DE FRANCE\nRodolphe Gianesini\nLaetitia Ourliac\n12.5% vol\n750ml\n043890",
+    "confidence": "high",
+    "matchedAt": "2026-04-30T13:06:08.305Z"
+  },
+  {
+    "id": "inventory-1777554130326-l3gmv1",
+    "catalogWineId": "catalog-1777554130232-n199za",
+    "customLabel": "ブルゴーニュ・ルージュ・ドゥ・スーザ 2022",
+    "quantity": 1,
+    "location": "店内",
+    "notes": "Bottle registered from label photos. Front label: Pinot Noir with dancing couple illustration. Back label: 2022 / DE SOUSA / PETIT-ROY / 750ml. Photo files: S__14532611_0.jpg(front), S__14532615_0.jpg(back).",
+    "imagePath": "/uploads/1777554130325-petit-roy-bourgogne-rouge-de-sousa-2022-inventory.jpg",
+    "ocrText": "Pinot Noir\n2022\nDE SOUSA\nPETIT-ROY\n750ml",
+    "confidence": "high",
+    "matchedAt": "2026-04-30T13:02:10.326Z"
+  },
+  {
+    "id": "inventory-1777553982057-g1qrxl",
+    "catalogWineId": "catalog-1777553981967-fj717k",
+    "customLabel": "ピストゥス 2022",
+    "quantity": 1,
+    "location": "店内",
+    "notes": "Bottle registered from label photos. Front label matched as I CUSTODI / PISTUS / ETNA ROSSO / 2022. Back label included 750ml, 13% vol, importer sticker with Racines and code 097265. Photo files: S__14524421.jpg(front), S__14524422.jpg(back).",
+    "imagePath": "/uploads/1777553982057-i-custodi-pistus-etna-rosso-2022-inventory.jpg",
+    "ocrText": "I CUSTODI\nPISTUS\nETNA ROSSO\n2022\n750ml\n13% vol\nRacines\n097265",
+    "confidence": "high",
+    "matchedAt": "2026-04-30T12:59:42.057Z"
+  },
+  {
+    "id": "inventory-1777553883846-k5ns4w",
+    "catalogWineId": "catalog-1777553883737-4wdtgh",
+    "customLabel": "ママ・ムシ",
+    "quantity": 1,
+    "location": "店内",
+    "notes": "Bottle registered from label photos. Front label: Mama Mouchi / sheep illustration / \"Quelle bite est ce la ? -Melie\". Back sticker: France, 750ml, VINS COEUR importer, code 042688. Vintage not visible in provided photos, so catalog record keeps vintage blank pending confirmation. Photo files: S__14524419.jpg(front), S__14524420.jpg(back).",
+    "imagePath": "/uploads/1777553883845-domaine-le-briseau-mama-mouchi-inventory.jpg",
+    "ocrText": "Mama Mouchi\nQuelle bite est ce la ?\nMelie\nFrance\n750ml\nVINS COEUR\n042688",
+    "confidence": "high",
+    "matchedAt": "2026-04-30T12:58:03.846Z"
+  },
+  {
+    "id": "inventory-1777553132004-mjdo8d",
+    "catalogWineId": "catalog-1775697953662-j5p35x",
+    "customLabel": "ミルー 2023",
+    "quantity": 1,
+    "location": "店内",
+    "notes": "Bottle registered from label photos. Front label matched as COL TAMARIE MILU / BIANCO FERMO. Back label included lot L GANESH2023 and 0.75L 12% vol. Photo files: IMG_8275.JPG(front), IMG_8274.JPG(back).",
+    "imagePath": "/uploads/1777553132004-col-tamarie-milu-2023-inventory.JPG",
+    "ocrText": "COL TAMARIE MILU\nBIANCO FERMO\nMilu\nVINO BIANCO\nVITTORIO VENETO (TV) ITALIA\n0.75L\n12% vol\nL GANESH2023\n043588",
+    "confidence": "high",
+    "matchedAt": "2026-04-30T12:45:32.004Z"
+  }
+]

@@ -1,6 +1,12 @@
 import express from "express";
 import multer from "multer";
 import path from "node:path";
+import { findSimilarWines } from "../src/lib/similarWines.js";
+import {
+  buildSpotlightSignal,
+  buildSpotlightSignalBundle,
+  findSpotlightWine,
+} from "../src/lib/spotlightSignal.js";
 import { addCatalogRecord, buildCatalogStats, listCatalog, mapCatalogById } from "./lib/catalog.mjs";
 import {
   buildContextSnapshot,
@@ -109,6 +115,34 @@ app.get("/api/stats", async (_req, res) => {
     ...buildCatalogStats(catalog, inventory, labels),
     sourceWatchlist: watchlist,
   });
+});
+
+app.get("/api/spotlight/signal", async (req, res) => {
+  const { catalog, materializedInventory } = await getState();
+  const wineId = req.query?.wineId ? String(req.query.wineId) : "";
+  const wine = wineId
+    ? catalog.find((entry) => entry.id === wineId) ?? null
+    : findSpotlightWine(catalog, materializedInventory);
+
+  if (!wine) {
+    res.status(404).json({ error: "spotlight wine not found" });
+    return;
+  }
+
+  const similar = findSimilarWines(wine, catalog, { limit: 6 });
+  res.json(buildSpotlightSignal(wine, { similar }));
+});
+
+app.get("/api/spotlight/signals", async (req, res) => {
+  const { catalog, materializedInventory } = await getState();
+  const location = req.query?.location ? String(req.query.location) : "店内";
+  const featuredWine = findSpotlightWine(catalog, materializedInventory);
+  res.json(buildSpotlightSignalBundle({
+    inventory: materializedInventory,
+    catalog,
+    location,
+    featuredWineId: featuredWine?.id ?? null,
+  }));
 });
 
 app.get("/api/sources", async (_req, res) => {

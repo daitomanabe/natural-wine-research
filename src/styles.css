@@ -1364,6 +1364,105 @@ tbody tr {
   line-height: 1.6;
 }
 
+.signal-code-compact {
+  min-height: 180px;
+  max-height: 320px;
+}
+
+.store-summary-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+  gap: 18px;
+}
+
+.store-summary-panel,
+.store-summary-metrics {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+}
+
+.store-summary-copy {
+  display: grid;
+  gap: 10px;
+}
+
+.store-summary-title {
+  margin: 0;
+  color: #eef4f7;
+  font-size: clamp(24px, 3vw, 36px);
+  line-height: 1.2;
+  letter-spacing: 0.06em;
+  font-weight: 400;
+}
+
+.store-empty-panel {
+  margin: 18px 28px 0;
+}
+
+.spotlight-store-layout {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+  gap: 18px;
+}
+
+.spotlight-store-panel,
+.spotlight-store-export-panel {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+}
+
+.spotlight-store-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.spotlight-store-card {
+  text-align: left;
+  border: 1px solid #112132;
+  background: rgba(5, 10, 16, 0.78);
+  padding: 0;
+  display: grid;
+  gap: 0;
+  cursor: pointer;
+  transition: border-color 0.15s ease, transform 0.15s ease, background 0.15s ease;
+}
+
+.spotlight-store-card:hover,
+.spotlight-store-card-active {
+  border-color: #7eb8b0;
+  background: rgba(10, 20, 24, 0.92);
+  transform: translateY(-1px);
+}
+
+.spotlight-store-card-band {
+  min-height: 42px;
+  border-bottom: 1px solid #112132;
+}
+
+.spotlight-store-card-body {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+}
+
+.spotlight-store-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 12px;
+}
+
+.spotlight-store-qty {
+  color: #7eb8b0;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  white-space: nowrap;
+}
+
 .spotlight-card-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1430,6 +1529,8 @@ tbody tr {
   .spotlight-hero,
   .spotlight-results-layout,
   .spotlight-signal-layout,
+  .store-summary-layout,
+  .spotlight-store-layout,
   .signal-two-column,
   .spotlight-target-layout {
     grid-template-columns: 1fr;
@@ -1458,6 +1559,11 @@ tbody tr {
 
   .signal-palette-grid,
   .signal-metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .spotlight-store-grid,
+  .spotlight-card-grid {
     grid-template-columns: 1fr;
   }
 
