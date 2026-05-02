@@ -1,65 +1,523 @@
 {
-  "generatedAt": "2026-05-01T15:55:43.550Z",
+  "schema": "natural-wine-research/store-signal-page@2",
+  "generatedAt": "2026-05-02T13:01:13.698Z",
   "location": "店内",
   "totalWines": 5,
   "totalBottles": 5,
-  "primaryGenres": [],
+  "primaryGenres": [
+    "dub",
+    "balearic dub"
+  ],
+  "transport": {
+    "downloadPath": "./store.json",
+    "eventName": "natural-wine-research:store-signal-bundle",
+    "globalKey": "__NATURAL_WINE_STORE_SIGNAL_BUNDLE__",
+    "messageType": "natural-wine-research:store-signal-bundle"
+  },
+  "storeProfile": {
+    "palette": {
+      "colors": [
+        {
+          "role": "background",
+          "label": "Base",
+          "hex": "#4d4140"
+        },
+        {
+          "role": "surface",
+          "label": "Surface",
+          "hex": "#baa38d"
+        },
+        {
+          "role": "accent",
+          "label": "Accent",
+          "hex": "#a4766a"
+        },
+        {
+          "role": "highlight",
+          "label": "Highlight",
+          "hex": "#ac9665"
+        },
+        {
+          "role": "anchor",
+          "label": "Anchor",
+          "hex": "#11141a"
+        }
+      ],
+      "gradient": "linear-gradient(135deg, #4d4140 0%, #baa38d 25%, #a4766a 50%, #ac9665 75%, #11141a 100%)"
+    },
+    "averageBpm": 97,
+    "averageEnergy": 56.2,
+    "averageBrightness": 24.1,
+    "averageWarmth": 68.5,
+    "averageContrast": 53.9,
+    "averageNaturalness": 72.8,
+    "topGenres": [
+      {
+        "genre": "dub",
+        "count": 4
+      },
+      {
+        "genre": "balearic dub",
+        "count": 1
+      }
+    ],
+    "topMoodTags": [
+      {
+        "tag": "grounded",
+        "count": 5
+      },
+      {
+        "tag": "slow-burn",
+        "count": 4
+      },
+      {
+        "tag": "vinyl-warm",
+        "count": 4
+      },
+      {
+        "tag": "bistro-lit",
+        "count": 3
+      },
+      {
+        "tag": "clean-grown",
+        "count": 3
+      },
+      {
+        "tag": "composed",
+        "count": 3
+      },
+      {
+        "tag": "convivial",
+        "count": 2
+      },
+      {
+        "tag": "Mediterranean",
+        "count": 2
+      }
+    ],
+    "colorDistribution": [
+      {
+        "colorLabel": "RED",
+        "count": 4
+      },
+      {
+        "colorLabel": "WHITE",
+        "count": 1
+      }
+    ],
+    "countryDistribution": [
+      {
+        "country": "フランス",
+        "count": 3
+      },
+      {
+        "country": "イタリア",
+        "count": 2
+      }
+    ],
+    "dominantFeatures": [
+      {
+        "id": "earthiness",
+        "label": "Earthiness",
+        "shortLabel": "earth",
+        "color": "#86744f",
+        "value": 100
+      },
+      {
+        "id": "naturalness",
+        "label": "Naturalness",
+        "shortLabel": "natural",
+        "color": "#7cc38b",
+        "value": 72.8
+      },
+      {
+        "id": "depth",
+        "label": "Depth",
+        "shortLabel": "depth",
+        "color": "#8f6a72",
+        "value": 70.8
+      },
+      {
+        "id": "warmth",
+        "label": "Warmth",
+        "shortLabel": "warm",
+        "color": "#d59263",
+        "value": 68.5
+      },
+      {
+        "id": "minerality",
+        "label": "Minerality",
+        "shortLabel": "mineral",
+        "color": "#87bfc0",
+        "value": 59.2
+      },
+      {
+        "id": "energy",
+        "label": "Energy",
+        "shortLabel": "energy",
+        "color": "#dd7e5d",
+        "value": 56.2
+      }
+    ],
+    "narrative": "The room currently reads as red-leaning, earthiness, naturalness, depth, and grounded, slow-burn, vinyl-warm, landing around 97 BPM with dub / balearic dub cues."
+  },
+  "embedding": {
+    "method": "pca-zscore-v1",
+    "featureOrder": [
+      {
+        "id": "brightness",
+        "label": "Brightness",
+        "shortLabel": "bright"
+      },
+      {
+        "id": "warmth",
+        "label": "Warmth",
+        "shortLabel": "warm"
+      },
+      {
+        "id": "contrast",
+        "label": "Contrast",
+        "shortLabel": "contrast"
+      },
+      {
+        "id": "pace",
+        "label": "Pace",
+        "shortLabel": "pace"
+      },
+      {
+        "id": "energy",
+        "label": "Energy",
+        "shortLabel": "energy"
+      },
+      {
+        "id": "danceability",
+        "label": "Danceability",
+        "shortLabel": "dance"
+      },
+      {
+        "id": "depth",
+        "label": "Depth",
+        "shortLabel": "depth"
+      },
+      {
+        "id": "naturalness",
+        "label": "Naturalness",
+        "shortLabel": "natural"
+      },
+      {
+        "id": "minerality",
+        "label": "Minerality",
+        "shortLabel": "mineral"
+      },
+      {
+        "id": "florality",
+        "label": "Florality",
+        "shortLabel": "floral"
+      },
+      {
+        "id": "earthiness",
+        "label": "Earthiness",
+        "shortLabel": "earth"
+      },
+      {
+        "id": "juiciness",
+        "label": "Juiciness",
+        "shortLabel": "juicy"
+      },
+      {
+        "id": "texturality",
+        "label": "Texturality",
+        "shortLabel": "texture"
+      },
+      {
+        "id": "volcanicity",
+        "label": "Volcanicity",
+        "shortLabel": "volcanic"
+      },
+      {
+        "id": "sparkle",
+        "label": "Sparkle",
+        "shortLabel": "spark"
+      }
+    ],
+    "axes": [
+      {
+        "id": "pc1",
+        "label": "depth + energy vs bright + contrast",
+        "explainedVariance": 70.1,
+        "positive": [
+          "depth",
+          "energy"
+        ],
+        "negative": [
+          "bright",
+          "contrast"
+        ],
+        "loadings": [
+          {
+            "id": "depth",
+            "label": "Depth",
+            "shortLabel": "depth",
+            "loading": 0.3431
+          },
+          {
+            "id": "energy",
+            "label": "Energy",
+            "shortLabel": "energy",
+            "loading": 0.3428
+          },
+          {
+            "id": "brightness",
+            "label": "Brightness",
+            "shortLabel": "bright",
+            "loading": -0.3383
+          },
+          {
+            "id": "contrast",
+            "label": "Contrast",
+            "shortLabel": "contrast",
+            "loading": -0.338
+          },
+          {
+            "id": "danceability",
+            "label": "Danceability",
+            "shortLabel": "dance",
+            "loading": 0.3378
+          },
+          {
+            "id": "sparkle",
+            "label": "Sparkle",
+            "shortLabel": "spark",
+            "loading": -0.3378
+          }
+        ]
+      },
+      {
+        "id": "pc2",
+        "label": "juicy + mineral vs warm + volcanic",
+        "explainedVariance": 20.6,
+        "positive": [
+          "juicy",
+          "mineral"
+        ],
+        "negative": [
+          "warm",
+          "volcanic"
+        ],
+        "loadings": [
+          {
+            "id": "juiciness",
+            "label": "Juiciness",
+            "shortLabel": "juicy",
+            "loading": 0.6255
+          },
+          {
+            "id": "warmth",
+            "label": "Warmth",
+            "shortLabel": "warm",
+            "loading": -0.5144
+          },
+          {
+            "id": "minerality",
+            "label": "Minerality",
+            "shortLabel": "mineral",
+            "loading": 0.4172
+          },
+          {
+            "id": "naturalness",
+            "label": "Naturalness",
+            "shortLabel": "natural",
+            "loading": 0.2871
+          },
+          {
+            "id": "volcanicity",
+            "label": "Volcanicity",
+            "shortLabel": "volcanic",
+            "loading": -0.2245
+          },
+          {
+            "id": "pace",
+            "label": "Pace",
+            "shortLabel": "pace",
+            "loading": -0.1357
+          }
+        ]
+      },
+      {
+        "id": "pc3",
+        "label": "volcanic + mineral vs contrast + bright",
+        "explainedVariance": 8.4,
+        "positive": [
+          "volcanic",
+          "mineral"
+        ],
+        "negative": [
+          "contrast",
+          "bright"
+        ],
+        "loadings": [
+          {
+            "id": "volcanicity",
+            "label": "Volcanicity",
+            "shortLabel": "volcanic",
+            "loading": 0.8221
+          },
+          {
+            "id": "minerality",
+            "label": "Minerality",
+            "shortLabel": "mineral",
+            "loading": 0.4252
+          },
+          {
+            "id": "contrast",
+            "label": "Contrast",
+            "shortLabel": "contrast",
+            "loading": -0.192
+          },
+          {
+            "id": "brightness",
+            "label": "Brightness",
+            "shortLabel": "bright",
+            "loading": -0.1653
+          },
+          {
+            "id": "danceability",
+            "label": "Danceability",
+            "shortLabel": "dance",
+            "loading": -0.1542
+          },
+          {
+            "id": "sparkle",
+            "label": "Sparkle",
+            "shortLabel": "spark",
+            "loading": 0.1542
+          }
+        ]
+      }
+    ],
+    "points": [
+      {
+        "id": "catalog-1777553981967-fj717k",
+        "slug": "2022-2022-catalog-1777553981967-fj717k",
+        "index": 1,
+        "name": "ピストゥス 2022",
+        "producer": "イ・クストディ・デッレ・ヴィーニェ・デル・エトナ",
+        "flag": "🇮🇹",
+        "color": "red",
+        "accentHex": "#b55a31",
+        "x2d": 0.4402,
+        "y2d": -0.3589,
+        "x3d": 0.4402,
+        "y3d": -0.3589,
+        "z3d": 1,
+        "dominantTraits": [
+          "Earthiness",
+          "Volcanicity",
+          "Depth",
+          "Naturalness"
+        ]
+      },
+      {
+        "id": "catalog-1777554130232-n199za",
+        "slug": "2022-2022-catalog-1777554130232-n199za",
+        "index": 2,
+        "name": "ブルゴーニュ・ルージュ・ドゥ・スーザ 2022",
+        "producer": "ドメーヌ・プティ・ロワ",
+        "flag": "🇫🇷",
+        "color": "red",
+        "accentHex": "#7faeab",
+        "x2d": 0.1559,
+        "y2d": 1,
+        "x3d": 0.1559,
+        "y3d": 1,
+        "z3d": 0.0308,
+        "dominantTraits": [
+          "Earthiness",
+          "Minerality",
+          "Naturalness",
+          "Depth"
+        ]
+      },
+      {
+        "id": "catalog-1777554368214-2ggcgy",
+        "slug": "2024-2024-catalog-1777554368214-2ggcgy",
+        "index": 3,
+        "name": "プルミエ・ジュ 2024",
+        "producer": "ドメーヌ・フォン・シプレ",
+        "flag": "🇫🇷",
+        "color": "red",
+        "accentHex": "#b94843",
+        "x2d": 0.2358,
+        "y2d": -0.3481,
+        "x3d": 0.2358,
+        "y3d": -0.3481,
+        "z3d": -0.7773,
+        "dominantTraits": [
+          "Earthiness",
+          "Depth",
+          "Naturalness",
+          "Warmth"
+        ]
+      },
+      {
+        "id": "catalog-1777553883737-4wdtgh",
+        "slug": "nv-catalog-1777553883737-4wdtgh",
+        "index": 4,
+        "name": "ママ・ムシ",
+        "producer": "ドメーヌ・ル・ブリゾー",
+        "flag": "🇫🇷",
+        "color": "red",
+        "accentHex": "#b94843",
+        "x2d": 0.1681,
+        "y2d": -0.1788,
+        "x3d": 0.1681,
+        "y3d": -0.1788,
+        "z3d": -0.441,
+        "dominantTraits": [
+          "Earthiness",
+          "Depth",
+          "Naturalness",
+          "Warmth"
+        ]
+      },
+      {
+        "id": "catalog-1775697953662-j5p35x",
+        "slug": "2023-2023-catalog-1775697953662-j5p35x",
+        "index": 5,
+        "name": "ミルー 2023",
+        "producer": "コル・タマリエ",
+        "flag": "🇮🇹",
+        "color": "white",
+        "accentHex": "#8db8b1",
+        "x2d": -1,
+        "y2d": -0.1142,
+        "x3d": -1,
+        "y3d": -0.1142,
+        "z3d": 0.1875,
+        "dominantTraits": [
+          "Earthiness",
+          "Minerality",
+          "Contrast",
+          "Warmth"
+        ]
+      }
+    ]
+  },
   "wines": [
-    {
-      "id": "catalog-1777554368214-2ggcgy",
-      "inventoryId": "inventory-1777554368305-ef3zb6",
-      "name": "プルミエ・ジュ 2024",
-      "producer": "ドメーヌ・フォン・シプレ",
-      "vintage": 2024,
-      "country": "フランス",
-      "region": "ラングドック",
-      "color": "red",
-      "colorLabel": "RED",
-      "grapes": [
-        "グルナッシュ",
-        "カリニャン"
-      ],
-      "styles": [],
-      "flavors": [],
-      "price": 0,
-      "bottleMl": 750,
-      "location": "店内",
-      "quantity": 1,
-      "imagePath": "./assets/1777554368302-fond-cypres-premier-jus-2024-inventory.webp",
-      "notes": "Label-matched from in-store bottle photos. Front label reads \"Premier jus 2024\" and back label reads \"PREMIER JUS 2024 / VIN DE FRANCE\" with Rodolphe Gianesini and Laetitia Ourliac, Fond Cyprès website, and importer Vins Coeur code 043890.\nExternal shop descriptions for Fond Cyprès Premier Jus 2024 identify it as a Vin de France from Languedoc made from Grenache and Carignan, intended to be served slightly chilled.\nABV is read from the bottle back label as 12.5% vol.",
-      "inventoryNotes": "Bottle registered from label photos. Front label: Premier jus 2024. Back label: PREMIER JUS 2024 / VIN DE FRANCE / Rodolphe Gianesini / Laetitia Ourliac / 12.5% vol / 750ml / Vins Coeur importer code 043890. Photo files: S__14532617_0.jpg(front), S__14532618_0.jpg(back)."
-    },
-    {
-      "id": "catalog-1777554130232-n199za",
-      "inventoryId": "inventory-1777554130326-l3gmv1",
-      "name": "ブルゴーニュ・ルージュ・ドゥ・スーザ 2022",
-      "producer": "ドメーヌ・プティ・ロワ",
-      "vintage": 2022,
-      "country": "フランス",
-      "region": "ブルゴーニュ",
-      "color": "red",
-      "colorLabel": "RED",
-      "grapes": [
-        "ピノ・ノワール100%"
-      ],
-      "styles": [],
-      "flavors": [],
-      "price": 0,
-      "bottleMl": 750,
-      "location": "店内",
-      "quantity": 1,
-      "imagePath": "./assets/1777554130325-petit-roy-bourgogne-rouge-de-sousa-2022-inventory.webp",
-      "notes": "Label-matched from in-store bottle photos. Front label reads \"Pinot Noir\" and back label reads \"2022 / DE SOUSA / PETIT-ROY\".\nRaffine importer sheet lists this cuvee as Bourgogne Rouge De Sousa 2022 from Domaine Petit Roy, Pinot Noir 100%, biodynamic/organic farming, 12.0% abv, 100% whole cluster, aged 12 months in 228L barrels plus 5 months in tank, unfined and unfiltered.\nThe De Sousa parcel is described there as clay-limestone soils, about 0.2ha, planted in 1949.",
-      "inventoryNotes": "Bottle registered from label photos. Front label: Pinot Noir with dancing couple illustration. Back label: 2022 / DE SOUSA / PETIT-ROY / 750ml. Photo files: S__14532611_0.jpg(front), S__14532615_0.jpg(back)."
-    },
     {
       "id": "catalog-1777553981967-fj717k",
       "inventoryId": "inventory-1777553982057-g1qrxl",
+      "inventoryIds": [
+        "inventory-1777553982057-g1qrxl"
+      ],
+      "slug": "2022-2022-catalog-1777553981967-fj717k",
       "name": "ピストゥス 2022",
       "producer": "イ・クストディ・デッレ・ヴィーニェ・デル・エトナ",
       "vintage": 2022,
       "country": "イタリア",
+      "flag": "🇮🇹",
       "region": "シチリア",
+      "appellation": "Etna Rosso DOC",
       "color": "red",
       "colorLabel": "RED",
       "grapes": [
@@ -70,20 +528,1672 @@
       "flavors": [],
       "price": 0,
       "bottleMl": 750,
+      "abv": 13,
+      "farming": "organic",
+      "farmingLabel": "Organic",
+      "filtration": "unknown",
+      "addedSo2": null,
       "location": "店内",
       "quantity": 1,
       "imagePath": "./assets/1777553982057-i-custodi-pistus-etna-rosso-2022-inventory.webp",
       "notes": "Label-matched from in-store bottle photos. Front label reads \"I Custodi delle vigne dell'Etna / Pistus / Etna Rosso / 2022\". Back label shows 750ml, 13% vol, importer sticker with code 097265 and Racines.\nOfficial producer page describes Pistus as an Etna Rosso from Contrada Moganazzi Cantina on Etna's northern slope, made from Nerello Mascalese (80%) and Nerello Cappuccio, aged about 9 months in steel and at least 6 months in bottle.\nRegion was normalized to Sicily in the local catalog; Etna Rosso DOC is preserved in appellation.",
-      "inventoryNotes": "Bottle registered from label photos. Front label matched as I CUSTODI / PISTUS / ETNA ROSSO / 2022. Back label included 750ml, 13% vol, importer sticker with Racines and code 097265. Photo files: S__14524421.jpg(front), S__14524422.jpg(back)."
+      "inventoryNotes": "Bottle registered from label photos. Front label matched as I CUSTODI / PISTUS / ETNA ROSSO / 2022. Back label included 750ml, 13% vol, importer sticker with Racines and code 097265. Photo files: S__14524421.jpg(front), S__14524422.jpg(back).",
+      "signal": {
+        "schema": "natural-wine-research/spotlight-signal@1",
+        "generatedAt": "2026-05-02T13:01:13.421Z",
+        "wine": {
+          "id": "catalog-1777553981967-fj717k",
+          "name": "ピストゥス 2022",
+          "producer": "イ・クストディ・デッレ・ヴィーニェ・デル・エトナ",
+          "country": "イタリア",
+          "flag": "",
+          "region": "シチリア",
+          "appellation": "Etna Rosso DOC",
+          "vintage": 2022,
+          "color": "red",
+          "colorLabel": "RED",
+          "price": null,
+          "priceLabel": null,
+          "bottleMl": 750,
+          "abv": 13,
+          "grapes": [
+            "ネレッロ・マスカレーゼ80%",
+            "ネレッロ・カップッチョ20%"
+          ],
+          "farming": "organic",
+          "farmingLabel": "Organic",
+          "filtration": "unknown",
+          "addedSo2": null,
+          "naturalnessScore": null,
+          "naturalnessBand": "unknown"
+        },
+        "palette": {
+          "gradient": "linear-gradient(135deg, #241619 0%, #613030 32%, #b55a31 68%, #18181d 100%)",
+          "colors": [
+            {
+              "role": "background",
+              "label": "Base",
+              "hex": "#241619"
+            },
+            {
+              "role": "surface",
+              "label": "Surface",
+              "hex": "#613030"
+            },
+            {
+              "role": "accent",
+              "label": "Accent",
+              "hex": "#b55a31"
+            },
+            {
+              "role": "highlight",
+              "label": "Highlight",
+              "hex": "#b6a06d"
+            },
+            {
+              "role": "anchor",
+              "label": "Anchor",
+              "hex": "#18181d"
+            }
+          ]
+        },
+        "scene": {
+          "moodTags": [
+            "grounded",
+            "vinyl-warm",
+            "slow-burn",
+            "Mediterranean",
+            "convivial",
+            "charged",
+            "volcanic",
+            "clean-grown"
+          ],
+          "atmosphere": [
+            "garnet low light",
+            "deep table conversation",
+            "aperitivo dusk",
+            "warm ceramic surfaces",
+            "ash glow",
+            "subterranean pressure"
+          ],
+          "lighting": "garnet glow, umber spill, and smoked-black edges",
+          "setting": "late-night service with weight and warmth",
+          "materials": [
+            "dark wood",
+            "smoked glass",
+            "heavy linen",
+            "ceramic",
+            "stone",
+            "basalt"
+          ],
+          "motion": "measured sway"
+        },
+        "music": {
+          "primaryGenre": "dub",
+          "supportingGenres": [
+            "cosmic jazz",
+            "slow house",
+            "Mediterranean jazz",
+            "balearic"
+          ],
+          "bpm": 95,
+          "bpmRange": [
+            89,
+            101
+          ],
+          "energy": 61,
+          "danceability": 52,
+          "textures": [
+            "grainy",
+            "earthy",
+            "low-end",
+            "heat shimmer",
+            "stone dust"
+          ],
+          "instruments": [
+            "double bass",
+            "tape echo",
+            "muted trumpet",
+            "modular synth",
+            "taiko-like toms"
+          ]
+        },
+        "context": {
+          "derivedFrom": [
+            "RED profile",
+            "イタリア / シチリア",
+            "ネレッロ・マスカレーゼ80% / ネレッロ・カップッチョ20%",
+            "Organic",
+            "volcanic",
+            "4 related catalog matches"
+          ],
+          "relatedWines": [
+            {
+              "id": "catalog-1775699166006-wooczf",
+              "name": "ロッソ・ディ・マルコ 2022",
+              "producer": "デ・バルトリ",
+              "region": "シチリア",
+              "color": "red",
+              "score": 64,
+              "reasons": [
+                "RED profile",
+                "イタリア",
+                "region シチリア"
+              ]
+            },
+            {
+              "id": "catalog-1775699278221-hm55wn",
+              "name": "ヴィーノ・ロッソ 2024",
+              "producer": "マッフレイ",
+              "region": "ピエモンテ",
+              "color": "red",
+              "score": 60,
+              "reasons": [
+                "RED profile",
+                "イタリア",
+                "grapes 80/20"
+              ]
+            },
+            {
+              "id": "catalog-1776087552252-18zzd9",
+              "name": "アンルージュ 2022",
+              "producer": "ヴィーニ・ボッサノーヴァ（アンドレア・クアリア & ナット・コラントニオ）",
+              "region": "その他イタリア",
+              "color": "red",
+              "score": 58,
+              "reasons": [
+                "RED profile",
+                "イタリア",
+                "grapes 80/20"
+              ]
+            },
+            {
+              "id": "catalog-1775697965830-pplw21",
+              "name": "イル・フラッパート 2022",
+              "producer": "アリアンナ・オッキピンティ",
+              "region": "シチリア",
+              "color": "red",
+              "score": 58,
+              "reasons": [
+                "RED profile",
+                "イタリア",
+                "region シチリア"
+              ]
+            }
+          ],
+          "rationale": "Mapped from RED profile, イタリア / シチリア, ネレッロ・マスカレーゼ80% / ネレッロ・カップッチョ20%, Organic, volcanic into dub at 95 BPM with grounded, vinyl-warm, slow-burn, Mediterranean cues."
+        },
+        "transport": {
+          "apiPath": "/api/spotlight/signal?wineId=catalog-1777553981967-fj717k",
+          "eventName": "natural-wine-research:spotlight-signal",
+          "globalKey": "__NATURAL_WINE_SPOTLIGHT_SIGNAL__",
+          "messageType": "natural-wine-research:spotlight-signal"
+        },
+        "prompt": "Wine signal for ピストゥス 2022 by イ・クストディ・デッレ・ヴィーニェ・デル・エトナ. Build a scene with grounded, vinyl-warm, slow-burn, Mediterranean, convivial, charged, volcanic, clean-grown energy. Palette Base:#241619, Surface:#613030, Accent:#b55a31, Highlight:#b6a06d, Anchor:#18181d. Music in dub, cosmic jazz, slow house, Mediterranean jazz, balearic around 95 BPM with grainy, earthy, low-end, heat shimmer, stone dust textures and double bass, tape echo, muted trumpet, modular synth, taiko-like toms instrumentation."
+      },
+      "transforms": {
+        "sound": {
+          "primaryGenre": "dub",
+          "supportingGenres": [
+            "cosmic jazz",
+            "slow house",
+            "Mediterranean jazz",
+            "balearic"
+          ],
+          "bpm": 95,
+          "bpmRange": [
+            89,
+            101
+          ],
+          "energy": 61,
+          "danceability": 52,
+          "density": 70.7,
+          "textures": [
+            "grainy",
+            "earthy",
+            "low-end",
+            "heat shimmer",
+            "stone dust"
+          ],
+          "instruments": [
+            "double bass",
+            "tape echo",
+            "muted trumpet",
+            "modular synth",
+            "taiko-like toms"
+          ]
+        },
+        "light": {
+          "brightness": 12.1,
+          "warmth": 75.4,
+          "saturation": 31.6,
+          "contrast": 35.3,
+          "diffusion": 95.8,
+          "motion": 51.2,
+          "colorTemperatureK": 3581,
+          "pulseBpm": 95
+        },
+        "color": {
+          "gradient": "linear-gradient(135deg, #241619 0%, #613030 32%, #b55a31 68%, #18181d 100%)",
+          "swatches": [
+            {
+              "role": "background",
+              "label": "Base",
+              "hex": "#241619"
+            },
+            {
+              "role": "surface",
+              "label": "Surface",
+              "hex": "#613030"
+            },
+            {
+              "role": "accent",
+              "label": "Accent",
+              "hex": "#b55a31"
+            },
+            {
+              "role": "highlight",
+              "label": "Highlight",
+              "hex": "#b6a06d"
+            },
+            {
+              "role": "anchor",
+              "label": "Anchor",
+              "hex": "#18181d"
+            }
+          ],
+          "brightness": 12.1,
+          "warmth": 75.4,
+          "saturation": 31.6,
+          "contrast": 35.3,
+          "dominantHex": "#b55a31"
+        },
+        "atmosphere": {
+          "moodTags": [
+            "grounded",
+            "vinyl-warm",
+            "slow-burn",
+            "Mediterranean",
+            "convivial",
+            "charged",
+            "volcanic",
+            "clean-grown"
+          ],
+          "atmosphere": [
+            "garnet low light",
+            "deep table conversation",
+            "aperitivo dusk",
+            "warm ceramic surfaces",
+            "ash glow",
+            "subterranean pressure"
+          ],
+          "setting": "late-night service with weight and warmth",
+          "lighting": "garnet glow, umber spill, and smoked-black edges",
+          "materials": [
+            "dark wood",
+            "smoked glass",
+            "heavy linen",
+            "ceramic",
+            "stone",
+            "basalt"
+          ],
+          "motion": "measured sway"
+        }
+      },
+      "features": {
+        "vector": [
+          {
+            "id": "brightness",
+            "label": "Brightness",
+            "shortLabel": "bright",
+            "value": 12.1,
+            "color": "#d8dbc2"
+          },
+          {
+            "id": "warmth",
+            "label": "Warmth",
+            "shortLabel": "warm",
+            "value": 75.4,
+            "color": "#d59263"
+          },
+          {
+            "id": "contrast",
+            "label": "Contrast",
+            "shortLabel": "contrast",
+            "value": 35.3,
+            "color": "#84aec4"
+          },
+          {
+            "id": "pace",
+            "label": "Pace",
+            "shortLabel": "pace",
+            "value": 26.8,
+            "color": "#8fd0c5"
+          },
+          {
+            "id": "energy",
+            "label": "Energy",
+            "shortLabel": "energy",
+            "value": 61,
+            "color": "#dd7e5d"
+          },
+          {
+            "id": "danceability",
+            "label": "Danceability",
+            "shortLabel": "dance",
+            "value": 52,
+            "color": "#d5a96d"
+          },
+          {
+            "id": "depth",
+            "label": "Depth",
+            "shortLabel": "depth",
+            "value": 91,
+            "color": "#8f6a72"
+          },
+          {
+            "id": "naturalness",
+            "label": "Naturalness",
+            "shortLabel": "natural",
+            "value": 76,
+            "color": "#7cc38b"
+          },
+          {
+            "id": "minerality",
+            "label": "Minerality",
+            "shortLabel": "mineral",
+            "value": 48,
+            "color": "#87bfc0"
+          },
+          {
+            "id": "florality",
+            "label": "Florality",
+            "shortLabel": "floral",
+            "value": 0,
+            "color": "#c694bf"
+          },
+          {
+            "id": "earthiness",
+            "label": "Earthiness",
+            "shortLabel": "earth",
+            "value": 100,
+            "color": "#86744f"
+          },
+          {
+            "id": "juiciness",
+            "label": "Juiciness",
+            "shortLabel": "juicy",
+            "value": 0,
+            "color": "#cf6373"
+          },
+          {
+            "id": "texturality",
+            "label": "Texturality",
+            "shortLabel": "texture",
+            "value": 48,
+            "color": "#bd8b54"
+          },
+          {
+            "id": "volcanicity",
+            "label": "Volcanicity",
+            "shortLabel": "volcanic",
+            "value": 100,
+            "color": "#b65b38"
+          },
+          {
+            "id": "sparkle",
+            "label": "Sparkle",
+            "shortLabel": "spark",
+            "value": 0,
+            "color": "#8ad2cb"
+          }
+        ],
+        "dominantTraits": [
+          {
+            "id": "earthiness",
+            "label": "Earthiness",
+            "shortLabel": "earth",
+            "value": 100,
+            "color": "#86744f"
+          },
+          {
+            "id": "volcanicity",
+            "label": "Volcanicity",
+            "shortLabel": "volcanic",
+            "value": 100,
+            "color": "#b65b38"
+          },
+          {
+            "id": "depth",
+            "label": "Depth",
+            "shortLabel": "depth",
+            "value": 91,
+            "color": "#8f6a72"
+          },
+          {
+            "id": "naturalness",
+            "label": "Naturalness",
+            "shortLabel": "natural",
+            "value": 76,
+            "color": "#7cc38b"
+          },
+          {
+            "id": "warmth",
+            "label": "Warmth",
+            "shortLabel": "warm",
+            "value": 75.4,
+            "color": "#d59263"
+          },
+          {
+            "id": "energy",
+            "label": "Energy",
+            "shortLabel": "energy",
+            "value": 61,
+            "color": "#dd7e5d"
+          }
+        ]
+      },
+      "relatedWines": [
+        {
+          "id": "catalog-1775699166006-wooczf",
+          "name": "ロッソ・ディ・マルコ 2022",
+          "producer": "デ・バルトリ",
+          "region": "シチリア",
+          "color": "red",
+          "score": 64,
+          "reasons": [
+            "RED profile",
+            "イタリア",
+            "region シチリア"
+          ]
+        },
+        {
+          "id": "catalog-1775699278221-hm55wn",
+          "name": "ヴィーノ・ロッソ 2024",
+          "producer": "マッフレイ",
+          "region": "ピエモンテ",
+          "color": "red",
+          "score": 60,
+          "reasons": [
+            "RED profile",
+            "イタリア",
+            "grapes 80/20"
+          ]
+        },
+        {
+          "id": "catalog-1776087552252-18zzd9",
+          "name": "アンルージュ 2022",
+          "producer": "ヴィーニ・ボッサノーヴァ（アンドレア・クアリア & ナット・コラントニオ）",
+          "region": "その他イタリア",
+          "color": "red",
+          "score": 58,
+          "reasons": [
+            "RED profile",
+            "イタリア",
+            "grapes 80/20"
+          ]
+        },
+        {
+          "id": "catalog-1775697965830-pplw21",
+          "name": "イル・フラッパート 2022",
+          "producer": "アリアンナ・オッキピンティ",
+          "region": "シチリア",
+          "color": "red",
+          "score": 58,
+          "reasons": [
+            "RED profile",
+            "イタリア",
+            "region シチリア"
+          ]
+        }
+      ],
+      "embedding": {
+        "id": "catalog-1777553981967-fj717k",
+        "slug": "2022-2022-catalog-1777553981967-fj717k",
+        "index": 1,
+        "name": "ピストゥス 2022",
+        "producer": "イ・クストディ・デッレ・ヴィーニェ・デル・エトナ",
+        "flag": "🇮🇹",
+        "color": "red",
+        "accentHex": "#b55a31",
+        "x2d": 0.4402,
+        "y2d": -0.3589,
+        "x3d": 0.4402,
+        "y3d": -0.3589,
+        "z3d": 1,
+        "dominantTraits": [
+          "Earthiness",
+          "Volcanicity",
+          "Depth",
+          "Naturalness"
+        ]
+      }
+    },
+    {
+      "id": "catalog-1777554130232-n199za",
+      "inventoryId": "inventory-1777554130326-l3gmv1",
+      "inventoryIds": [
+        "inventory-1777554130326-l3gmv1"
+      ],
+      "slug": "2022-2022-catalog-1777554130232-n199za",
+      "name": "ブルゴーニュ・ルージュ・ドゥ・スーザ 2022",
+      "producer": "ドメーヌ・プティ・ロワ",
+      "vintage": 2022,
+      "country": "フランス",
+      "flag": "🇫🇷",
+      "region": "ブルゴーニュ",
+      "appellation": "Bourgogne Rouge",
+      "color": "red",
+      "colorLabel": "RED",
+      "grapes": [
+        "ピノ・ノワール100%"
+      ],
+      "styles": [],
+      "flavors": [],
+      "price": 0,
+      "bottleMl": 750,
+      "abv": 12,
+      "farming": "biodynamic",
+      "farmingLabel": "Biodynamic",
+      "filtration": "unknown",
+      "addedSo2": null,
+      "location": "店内",
+      "quantity": 1,
+      "imagePath": "./assets/1777554130325-petit-roy-bourgogne-rouge-de-sousa-2022-inventory.webp",
+      "notes": "Label-matched from in-store bottle photos. Front label reads \"Pinot Noir\" and back label reads \"2022 / DE SOUSA / PETIT-ROY\".\nRaffine importer sheet lists this cuvee as Bourgogne Rouge De Sousa 2022 from Domaine Petit Roy, Pinot Noir 100%, biodynamic/organic farming, 12.0% abv, 100% whole cluster, aged 12 months in 228L barrels plus 5 months in tank, unfined and unfiltered.\nThe De Sousa parcel is described there as clay-limestone soils, about 0.2ha, planted in 1949.",
+      "inventoryNotes": "Bottle registered from label photos. Front label: Pinot Noir with dancing couple illustration. Back label: 2022 / DE SOUSA / PETIT-ROY / 750ml. Photo files: S__14532611_0.jpg(front), S__14532615_0.jpg(back).",
+      "signal": {
+        "schema": "natural-wine-research/spotlight-signal@1",
+        "generatedAt": "2026-05-02T13:01:13.487Z",
+        "wine": {
+          "id": "catalog-1777554130232-n199za",
+          "name": "ブルゴーニュ・ルージュ・ドゥ・スーザ 2022",
+          "producer": "ドメーヌ・プティ・ロワ",
+          "country": "フランス",
+          "flag": "",
+          "region": "ブルゴーニュ",
+          "appellation": "Bourgogne Rouge",
+          "vintage": 2022,
+          "color": "red",
+          "colorLabel": "RED",
+          "price": null,
+          "priceLabel": null,
+          "bottleMl": 750,
+          "abv": 12,
+          "grapes": [
+            "ピノ・ノワール100%"
+          ],
+          "farming": "biodynamic",
+          "farmingLabel": "Biodynamic",
+          "filtration": "unknown",
+          "addedSo2": null,
+          "naturalnessScore": null,
+          "naturalnessBand": "unknown"
+        },
+        "palette": {
+          "gradient": "linear-gradient(135deg, #241619 0%, #cdbb9f 32%, #7faeab 68%, #12161c 100%)",
+          "colors": [
+            {
+              "role": "background",
+              "label": "Base",
+              "hex": "#241619"
+            },
+            {
+              "role": "surface",
+              "label": "Surface",
+              "hex": "#cdbb9f"
+            },
+            {
+              "role": "accent",
+              "label": "Accent",
+              "hex": "#7faeab"
+            },
+            {
+              "role": "highlight",
+              "label": "Highlight",
+              "hex": "#7f8c55"
+            },
+            {
+              "role": "anchor",
+              "label": "Anchor",
+              "hex": "#12161c"
+            }
+          ]
+        },
+        "scene": {
+          "moodTags": [
+            "grounded",
+            "vinyl-warm",
+            "slow-burn",
+            "bistro-lit",
+            "composed",
+            "mineral",
+            "coastal",
+            "fresh"
+          ],
+          "atmosphere": [
+            "garnet low light",
+            "deep table conversation",
+            "after-service candle edge",
+            "quiet city pressure",
+            "sea-glass chill",
+            "stony restraint"
+          ],
+          "lighting": "garnet glow, umber spill, and smoked-black edges",
+          "setting": "late-night service with weight and warmth",
+          "materials": [
+            "dark wood",
+            "smoked glass",
+            "heavy linen",
+            "oak",
+            "glass",
+            "limestone"
+          ],
+          "motion": "measured sway"
+        },
+        "music": {
+          "primaryGenre": "dub",
+          "supportingGenres": [
+            "cosmic jazz",
+            "slow house",
+            "minimal jazz",
+            "leftfield lounge"
+          ],
+          "bpm": 95,
+          "bpmRange": [
+            89,
+            101
+          ],
+          "energy": 59,
+          "danceability": 52,
+          "textures": [
+            "grainy",
+            "earthy",
+            "low-end",
+            "saline",
+            "clean transients"
+          ],
+          "instruments": [
+            "double bass",
+            "tape echo",
+            "muted trumpet",
+            "sub bass",
+            "brush percussion"
+          ]
+        },
+        "context": {
+          "derivedFrom": [
+            "RED profile",
+            "フランス / ブルゴーニュ",
+            "ピノ・ノワール100%",
+            "Biodynamic",
+            "mineral",
+            "fresh",
+            "earthy",
+            "4 related catalog matches"
+          ],
+          "relatedWines": [
+            {
+              "id": "catalog-1775697971752-m5f0d1",
+              "name": "ブルゴーニュ・ルージュ・レ・キャレル 2022",
+              "producer": "アントワーヌ・プティプレ",
+              "region": "ブルゴーニュ",
+              "color": "red",
+              "score": 64,
+              "reasons": [
+                "RED profile",
+                "フランス",
+                "region ブルゴーニュ"
+              ]
+            },
+            {
+              "id": "catalog-1775697971801-8lwws1",
+              "name": "ブルゴーニュ・ルージュ・レ・ソルバン 2022",
+              "producer": "アントワーヌ・プティプレ",
+              "region": "ブルゴーニュ",
+              "color": "red",
+              "score": 64,
+              "reasons": [
+                "RED profile",
+                "フランス",
+                "region ブルゴーニュ"
+              ]
+            },
+            {
+              "id": "catalog-1775743084436-3j0y6d",
+              "name": "ボージョレ・ヌーヴォー・ル・ボジョ・ストラ 2022",
+              "producer": "サルナン・ベリュー",
+              "region": "ブルゴーニュ",
+              "color": "red",
+              "score": 64,
+              "reasons": [
+                "RED profile",
+                "フランス",
+                "region ブルゴーニュ"
+              ]
+            },
+            {
+              "id": "catalog-1775635566426-6w4wps",
+              "name": "ボーヌ・プルミエ・クリュ・シャンピモン 2022",
+              "producer": "ドメーヌ・アミ",
+              "region": "ブルゴーニュ",
+              "color": "red",
+              "score": 64,
+              "reasons": [
+                "RED profile",
+                "フランス",
+                "region ブルゴーニュ"
+              ]
+            }
+          ],
+          "rationale": "Mapped from RED profile, フランス / ブルゴーニュ, ピノ・ノワール100%, Biodynamic, mineral into dub at 95 BPM with grounded, vinyl-warm, slow-burn, bistro-lit cues."
+        },
+        "transport": {
+          "apiPath": "/api/spotlight/signal?wineId=catalog-1777554130232-n199za",
+          "eventName": "natural-wine-research:spotlight-signal",
+          "globalKey": "__NATURAL_WINE_SPOTLIGHT_SIGNAL__",
+          "messageType": "natural-wine-research:spotlight-signal"
+        },
+        "prompt": "Wine signal for ブルゴーニュ・ルージュ・ドゥ・スーザ 2022 by ドメーヌ・プティ・ロワ. Build a scene with grounded, vinyl-warm, slow-burn, bistro-lit, composed, mineral, coastal, fresh energy. Palette Base:#241619, Surface:#cdbb9f, Accent:#7faeab, Highlight:#7f8c55, Anchor:#12161c. Music in dub, cosmic jazz, slow house, minimal jazz, leftfield lounge around 95 BPM with grainy, earthy, low-end, saline, clean transients textures and double bass, tape echo, muted trumpet, sub bass, brush percussion instrumentation."
+      },
+      "transforms": {
+        "sound": {
+          "primaryGenre": "dub",
+          "supportingGenres": [
+            "cosmic jazz",
+            "slow house",
+            "minimal jazz",
+            "leftfield lounge"
+          ],
+          "bpm": 95,
+          "bpmRange": [
+            89,
+            101
+          ],
+          "energy": 59,
+          "danceability": 52,
+          "density": 65.8,
+          "textures": [
+            "grainy",
+            "earthy",
+            "low-end",
+            "saline",
+            "clean transients"
+          ],
+          "instruments": [
+            "double bass",
+            "tape echo",
+            "muted trumpet",
+            "sub bass",
+            "brush percussion"
+          ]
+        },
+        "light": {
+          "brightness": 22.9,
+          "warmth": 56.7,
+          "saturation": 24.9,
+          "contrast": 50.2,
+          "diffusion": 88.3,
+          "motion": 50.9,
+          "colorTemperatureK": 4478,
+          "pulseBpm": 95
+        },
+        "color": {
+          "gradient": "linear-gradient(135deg, #241619 0%, #cdbb9f 32%, #7faeab 68%, #12161c 100%)",
+          "swatches": [
+            {
+              "role": "background",
+              "label": "Base",
+              "hex": "#241619"
+            },
+            {
+              "role": "surface",
+              "label": "Surface",
+              "hex": "#cdbb9f"
+            },
+            {
+              "role": "accent",
+              "label": "Accent",
+              "hex": "#7faeab"
+            },
+            {
+              "role": "highlight",
+              "label": "Highlight",
+              "hex": "#7f8c55"
+            },
+            {
+              "role": "anchor",
+              "label": "Anchor",
+              "hex": "#12161c"
+            }
+          ],
+          "brightness": 22.9,
+          "warmth": 56.7,
+          "saturation": 24.9,
+          "contrast": 50.2,
+          "dominantHex": "#7faeab"
+        },
+        "atmosphere": {
+          "moodTags": [
+            "grounded",
+            "vinyl-warm",
+            "slow-burn",
+            "bistro-lit",
+            "composed",
+            "mineral",
+            "coastal",
+            "fresh"
+          ],
+          "atmosphere": [
+            "garnet low light",
+            "deep table conversation",
+            "after-service candle edge",
+            "quiet city pressure",
+            "sea-glass chill",
+            "stony restraint"
+          ],
+          "setting": "late-night service with weight and warmth",
+          "lighting": "garnet glow, umber spill, and smoked-black edges",
+          "materials": [
+            "dark wood",
+            "smoked glass",
+            "heavy linen",
+            "oak",
+            "glass",
+            "limestone"
+          ],
+          "motion": "measured sway"
+        }
+      },
+      "features": {
+        "vector": [
+          {
+            "id": "brightness",
+            "label": "Brightness",
+            "shortLabel": "bright",
+            "value": 22.9,
+            "color": "#d8dbc2"
+          },
+          {
+            "id": "warmth",
+            "label": "Warmth",
+            "shortLabel": "warm",
+            "value": 56.7,
+            "color": "#d59263"
+          },
+          {
+            "id": "contrast",
+            "label": "Contrast",
+            "shortLabel": "contrast",
+            "value": 50.2,
+            "color": "#84aec4"
+          },
+          {
+            "id": "pace",
+            "label": "Pace",
+            "shortLabel": "pace",
+            "value": 26.8,
+            "color": "#8fd0c5"
+          },
+          {
+            "id": "energy",
+            "label": "Energy",
+            "shortLabel": "energy",
+            "value": 59,
+            "color": "#dd7e5d"
+          },
+          {
+            "id": "danceability",
+            "label": "Danceability",
+            "shortLabel": "dance",
+            "value": 52,
+            "color": "#d5a96d"
+          },
+          {
+            "id": "depth",
+            "label": "Depth",
+            "shortLabel": "depth",
+            "value": 81,
+            "color": "#8f6a72"
+          },
+          {
+            "id": "naturalness",
+            "label": "Naturalness",
+            "shortLabel": "natural",
+            "value": 88,
+            "color": "#7cc38b"
+          },
+          {
+            "id": "minerality",
+            "label": "Minerality",
+            "shortLabel": "mineral",
+            "value": 100,
+            "color": "#87bfc0"
+          },
+          {
+            "id": "florality",
+            "label": "Florality",
+            "shortLabel": "floral",
+            "value": 0,
+            "color": "#c694bf"
+          },
+          {
+            "id": "earthiness",
+            "label": "Earthiness",
+            "shortLabel": "earth",
+            "value": 100,
+            "color": "#86744f"
+          },
+          {
+            "id": "juiciness",
+            "label": "Juiciness",
+            "shortLabel": "juicy",
+            "value": 48,
+            "color": "#cf6373"
+          },
+          {
+            "id": "texturality",
+            "label": "Texturality",
+            "shortLabel": "texture",
+            "value": 48,
+            "color": "#bd8b54"
+          },
+          {
+            "id": "volcanicity",
+            "label": "Volcanicity",
+            "shortLabel": "volcanic",
+            "value": 0,
+            "color": "#b65b38"
+          },
+          {
+            "id": "sparkle",
+            "label": "Sparkle",
+            "shortLabel": "spark",
+            "value": 0,
+            "color": "#8ad2cb"
+          }
+        ],
+        "dominantTraits": [
+          {
+            "id": "earthiness",
+            "label": "Earthiness",
+            "shortLabel": "earth",
+            "value": 100,
+            "color": "#86744f"
+          },
+          {
+            "id": "minerality",
+            "label": "Minerality",
+            "shortLabel": "mineral",
+            "value": 100,
+            "color": "#87bfc0"
+          },
+          {
+            "id": "naturalness",
+            "label": "Naturalness",
+            "shortLabel": "natural",
+            "value": 88,
+            "color": "#7cc38b"
+          },
+          {
+            "id": "depth",
+            "label": "Depth",
+            "shortLabel": "depth",
+            "value": 81,
+            "color": "#8f6a72"
+          },
+          {
+            "id": "energy",
+            "label": "Energy",
+            "shortLabel": "energy",
+            "value": 59,
+            "color": "#dd7e5d"
+          },
+          {
+            "id": "warmth",
+            "label": "Warmth",
+            "shortLabel": "warm",
+            "value": 56.7,
+            "color": "#d59263"
+          }
+        ]
+      },
+      "relatedWines": [
+        {
+          "id": "catalog-1775697971752-m5f0d1",
+          "name": "ブルゴーニュ・ルージュ・レ・キャレル 2022",
+          "producer": "アントワーヌ・プティプレ",
+          "region": "ブルゴーニュ",
+          "color": "red",
+          "score": 64,
+          "reasons": [
+            "RED profile",
+            "フランス",
+            "region ブルゴーニュ"
+          ]
+        },
+        {
+          "id": "catalog-1775697971801-8lwws1",
+          "name": "ブルゴーニュ・ルージュ・レ・ソルバン 2022",
+          "producer": "アントワーヌ・プティプレ",
+          "region": "ブルゴーニュ",
+          "color": "red",
+          "score": 64,
+          "reasons": [
+            "RED profile",
+            "フランス",
+            "region ブルゴーニュ"
+          ]
+        },
+        {
+          "id": "catalog-1775743084436-3j0y6d",
+          "name": "ボージョレ・ヌーヴォー・ル・ボジョ・ストラ 2022",
+          "producer": "サルナン・ベリュー",
+          "region": "ブルゴーニュ",
+          "color": "red",
+          "score": 64,
+          "reasons": [
+            "RED profile",
+            "フランス",
+            "region ブルゴーニュ"
+          ]
+        },
+        {
+          "id": "catalog-1775635566426-6w4wps",
+          "name": "ボーヌ・プルミエ・クリュ・シャンピモン 2022",
+          "producer": "ドメーヌ・アミ",
+          "region": "ブルゴーニュ",
+          "color": "red",
+          "score": 64,
+          "reasons": [
+            "RED profile",
+            "フランス",
+            "region ブルゴーニュ"
+          ]
+        }
+      ],
+      "embedding": {
+        "id": "catalog-1777554130232-n199za",
+        "slug": "2022-2022-catalog-1777554130232-n199za",
+        "index": 2,
+        "name": "ブルゴーニュ・ルージュ・ドゥ・スーザ 2022",
+        "producer": "ドメーヌ・プティ・ロワ",
+        "flag": "🇫🇷",
+        "color": "red",
+        "accentHex": "#7faeab",
+        "x2d": 0.1559,
+        "y2d": 1,
+        "x3d": 0.1559,
+        "y3d": 1,
+        "z3d": 0.0308,
+        "dominantTraits": [
+          "Earthiness",
+          "Minerality",
+          "Naturalness",
+          "Depth"
+        ]
+      }
+    },
+    {
+      "id": "catalog-1777554368214-2ggcgy",
+      "inventoryId": "inventory-1777554368305-ef3zb6",
+      "inventoryIds": [
+        "inventory-1777554368305-ef3zb6"
+      ],
+      "slug": "2024-2024-catalog-1777554368214-2ggcgy",
+      "name": "プルミエ・ジュ 2024",
+      "producer": "ドメーヌ・フォン・シプレ",
+      "vintage": 2024,
+      "country": "フランス",
+      "flag": "🇫🇷",
+      "region": "ラングドック",
+      "appellation": "Vin de France",
+      "color": "red",
+      "colorLabel": "RED",
+      "grapes": [
+        "グルナッシュ",
+        "カリニャン"
+      ],
+      "styles": [],
+      "flavors": [],
+      "price": 0,
+      "bottleMl": 750,
+      "abv": 12.5,
+      "farming": "organic",
+      "farmingLabel": "Organic",
+      "filtration": "unknown",
+      "addedSo2": null,
+      "location": "店内",
+      "quantity": 1,
+      "imagePath": "./assets/1777554368302-fond-cypres-premier-jus-2024-inventory.webp",
+      "notes": "Label-matched from in-store bottle photos. Front label reads \"Premier jus 2024\" and back label reads \"PREMIER JUS 2024 / VIN DE FRANCE\" with Rodolphe Gianesini and Laetitia Ourliac, Fond Cyprès website, and importer Vins Coeur code 043890.\nExternal shop descriptions for Fond Cyprès Premier Jus 2024 identify it as a Vin de France from Languedoc made from Grenache and Carignan, intended to be served slightly chilled.\nABV is read from the bottle back label as 12.5% vol.",
+      "inventoryNotes": "Bottle registered from label photos. Front label: Premier jus 2024. Back label: PREMIER JUS 2024 / VIN DE FRANCE / Rodolphe Gianesini / Laetitia Ourliac / 12.5% vol / 750ml / Vins Coeur importer code 043890. Photo files: S__14532617_0.jpg(front), S__14532618_0.jpg(back).",
+      "signal": {
+        "schema": "natural-wine-research/spotlight-signal@1",
+        "generatedAt": "2026-05-02T13:01:13.554Z",
+        "wine": {
+          "id": "catalog-1777554368214-2ggcgy",
+          "name": "プルミエ・ジュ 2024",
+          "producer": "ドメーヌ・フォン・シプレ",
+          "country": "フランス",
+          "flag": "",
+          "region": "ラングドック",
+          "appellation": "Vin de France",
+          "vintage": 2024,
+          "color": "red",
+          "colorLabel": "RED",
+          "price": null,
+          "priceLabel": null,
+          "bottleMl": 750,
+          "abv": 12.5,
+          "grapes": [
+            "グルナッシュ",
+            "カリニャン"
+          ],
+          "farming": "organic",
+          "farmingLabel": "Organic",
+          "filtration": "unknown",
+          "addedSo2": null,
+          "naturalnessScore": null,
+          "naturalnessBand": "unknown"
+        },
+        "palette": {
+          "gradient": "linear-gradient(135deg, #241619 0%, #cdbb9f 32%, #b94843 68%, #0d1116 100%)",
+          "colors": [
+            {
+              "role": "background",
+              "label": "Base",
+              "hex": "#241619"
+            },
+            {
+              "role": "surface",
+              "label": "Surface",
+              "hex": "#cdbb9f"
+            },
+            {
+              "role": "accent",
+              "label": "Accent",
+              "hex": "#b94843"
+            },
+            {
+              "role": "highlight",
+              "label": "Highlight",
+              "hex": "#d49a72"
+            },
+            {
+              "role": "anchor",
+              "label": "Anchor",
+              "hex": "#0d1116"
+            }
+          ]
+        },
+        "scene": {
+          "moodTags": [
+            "grounded",
+            "vinyl-warm",
+            "slow-burn",
+            "bistro-lit",
+            "composed",
+            "clean-grown"
+          ],
+          "atmosphere": [
+            "garnet low light",
+            "deep table conversation",
+            "after-service candle edge",
+            "quiet city pressure"
+          ],
+          "lighting": "garnet glow, umber spill, and smoked-black edges",
+          "setting": "late-night service with weight and warmth",
+          "materials": [
+            "dark wood",
+            "smoked glass",
+            "heavy linen",
+            "oak",
+            "glass"
+          ],
+          "motion": "measured sway"
+        },
+        "music": {
+          "primaryGenre": "dub",
+          "supportingGenres": [
+            "cosmic jazz",
+            "slow house",
+            "minimal jazz",
+            "leftfield lounge"
+          ],
+          "bpm": 96,
+          "bpmRange": [
+            90,
+            102
+          ],
+          "energy": 58,
+          "danceability": 52,
+          "textures": [
+            "grainy",
+            "earthy",
+            "low-end"
+          ],
+          "instruments": [
+            "double bass",
+            "tape echo",
+            "muted trumpet"
+          ]
+        },
+        "context": {
+          "derivedFrom": [
+            "RED profile",
+            "フランス / ラングドック",
+            "グルナッシュ / カリニャン",
+            "Organic",
+            "4 related catalog matches"
+          ],
+          "relatedWines": [
+            {
+              "id": "catalog-1775635574925-o4vwn1",
+              "name": "イドワンヌ 2024",
+              "producer": "マタブロ（ロラン・ロジェ）",
+              "region": "ラングドック",
+              "color": "red",
+              "score": 64,
+              "reasons": [
+                "RED profile",
+                "フランス",
+                "region ラングドック"
+              ]
+            },
+            {
+              "id": "catalog-1775635574972-z3ju4m",
+              "name": "オティウム 2024",
+              "producer": "マタブロ（ロラン・ロジェ）",
+              "region": "ラングドック",
+              "color": "red",
+              "score": 64,
+              "reasons": [
+                "RED profile",
+                "フランス",
+                "region ラングドック"
+              ]
+            },
+            {
+              "id": "catalog-1775635575050-jzuyi5",
+              "name": "ミュラミュラ 2024",
+              "producer": "マタブロ（ロラン・ロジェ）",
+              "region": "ラングドック",
+              "color": "red",
+              "score": 64,
+              "reasons": [
+                "RED profile",
+                "フランス",
+                "region ラングドック"
+              ]
+            },
+            {
+              "id": "catalog-1775699262857-relv9k",
+              "name": "モラ・モラ 2024",
+              "producer": "ラ・ヴォルタ",
+              "region": "ラングドック",
+              "color": "red",
+              "score": 64,
+              "reasons": [
+                "RED profile",
+                "フランス",
+                "region ラングドック"
+              ]
+            }
+          ],
+          "rationale": "Mapped from RED profile, フランス / ラングドック, グルナッシュ / カリニャン, Organic, 4 related catalog matches into dub at 96 BPM with grounded, vinyl-warm, slow-burn, bistro-lit cues."
+        },
+        "transport": {
+          "apiPath": "/api/spotlight/signal?wineId=catalog-1777554368214-2ggcgy",
+          "eventName": "natural-wine-research:spotlight-signal",
+          "globalKey": "__NATURAL_WINE_SPOTLIGHT_SIGNAL__",
+          "messageType": "natural-wine-research:spotlight-signal"
+        },
+        "prompt": "Wine signal for プルミエ・ジュ 2024 by ドメーヌ・フォン・シプレ. Build a scene with grounded, vinyl-warm, slow-burn, bistro-lit, composed, clean-grown energy. Palette Base:#241619, Surface:#cdbb9f, Accent:#b94843, Highlight:#d49a72, Anchor:#0d1116. Music in dub, cosmic jazz, slow house, minimal jazz, leftfield lounge around 96 BPM with grainy, earthy, low-end textures and double bass, tape echo, muted trumpet instrumentation."
+      },
+      "transforms": {
+        "sound": {
+          "primaryGenre": "dub",
+          "supportingGenres": [
+            "cosmic jazz",
+            "slow house",
+            "minimal jazz",
+            "leftfield lounge"
+          ],
+          "bpm": 96,
+          "bpmRange": [
+            90,
+            102
+          ],
+          "energy": 58,
+          "danceability": 52,
+          "density": 67.6,
+          "textures": [
+            "grainy",
+            "earthy",
+            "low-end"
+          ],
+          "instruments": [
+            "double bass",
+            "tape echo",
+            "muted trumpet"
+          ]
+        },
+        "light": {
+          "brightness": 21.3,
+          "warmth": 75,
+          "saturation": 36.3,
+          "contrast": 50.5,
+          "diffusion": 88.2,
+          "motion": 51.9,
+          "colorTemperatureK": 3600,
+          "pulseBpm": 96
+        },
+        "color": {
+          "gradient": "linear-gradient(135deg, #241619 0%, #cdbb9f 32%, #b94843 68%, #0d1116 100%)",
+          "swatches": [
+            {
+              "role": "background",
+              "label": "Base",
+              "hex": "#241619"
+            },
+            {
+              "role": "surface",
+              "label": "Surface",
+              "hex": "#cdbb9f"
+            },
+            {
+              "role": "accent",
+              "label": "Accent",
+              "hex": "#b94843"
+            },
+            {
+              "role": "highlight",
+              "label": "Highlight",
+              "hex": "#d49a72"
+            },
+            {
+              "role": "anchor",
+              "label": "Anchor",
+              "hex": "#0d1116"
+            }
+          ],
+          "brightness": 21.3,
+          "warmth": 75,
+          "saturation": 36.3,
+          "contrast": 50.5,
+          "dominantHex": "#b94843"
+        },
+        "atmosphere": {
+          "moodTags": [
+            "grounded",
+            "vinyl-warm",
+            "slow-burn",
+            "bistro-lit",
+            "composed",
+            "clean-grown"
+          ],
+          "atmosphere": [
+            "garnet low light",
+            "deep table conversation",
+            "after-service candle edge",
+            "quiet city pressure"
+          ],
+          "setting": "late-night service with weight and warmth",
+          "lighting": "garnet glow, umber spill, and smoked-black edges",
+          "materials": [
+            "dark wood",
+            "smoked glass",
+            "heavy linen",
+            "oak",
+            "glass"
+          ],
+          "motion": "measured sway"
+        }
+      },
+      "features": {
+        "vector": [
+          {
+            "id": "brightness",
+            "label": "Brightness",
+            "shortLabel": "bright",
+            "value": 21.3,
+            "color": "#d8dbc2"
+          },
+          {
+            "id": "warmth",
+            "label": "Warmth",
+            "shortLabel": "warm",
+            "value": 75,
+            "color": "#d59263"
+          },
+          {
+            "id": "contrast",
+            "label": "Contrast",
+            "shortLabel": "contrast",
+            "value": 50.5,
+            "color": "#84aec4"
+          },
+          {
+            "id": "pace",
+            "label": "Pace",
+            "shortLabel": "pace",
+            "value": 28.6,
+            "color": "#8fd0c5"
+          },
+          {
+            "id": "energy",
+            "label": "Energy",
+            "shortLabel": "energy",
+            "value": 58,
+            "color": "#dd7e5d"
+          },
+          {
+            "id": "danceability",
+            "label": "Danceability",
+            "shortLabel": "dance",
+            "value": 52,
+            "color": "#d5a96d"
+          },
+          {
+            "id": "depth",
+            "label": "Depth",
+            "shortLabel": "depth",
+            "value": 86,
+            "color": "#8f6a72"
+          },
+          {
+            "id": "naturalness",
+            "label": "Naturalness",
+            "shortLabel": "natural",
+            "value": 76,
+            "color": "#7cc38b"
+          },
+          {
+            "id": "minerality",
+            "label": "Minerality",
+            "shortLabel": "mineral",
+            "value": 0,
+            "color": "#87bfc0"
+          },
+          {
+            "id": "florality",
+            "label": "Florality",
+            "shortLabel": "floral",
+            "value": 0,
+            "color": "#c694bf"
+          },
+          {
+            "id": "earthiness",
+            "label": "Earthiness",
+            "shortLabel": "earth",
+            "value": 100,
+            "color": "#86744f"
+          },
+          {
+            "id": "juiciness",
+            "label": "Juiciness",
+            "shortLabel": "juicy",
+            "value": 0,
+            "color": "#cf6373"
+          },
+          {
+            "id": "texturality",
+            "label": "Texturality",
+            "shortLabel": "texture",
+            "value": 48,
+            "color": "#bd8b54"
+          },
+          {
+            "id": "volcanicity",
+            "label": "Volcanicity",
+            "shortLabel": "volcanic",
+            "value": 0,
+            "color": "#b65b38"
+          },
+          {
+            "id": "sparkle",
+            "label": "Sparkle",
+            "shortLabel": "spark",
+            "value": 0,
+            "color": "#8ad2cb"
+          }
+        ],
+        "dominantTraits": [
+          {
+            "id": "earthiness",
+            "label": "Earthiness",
+            "shortLabel": "earth",
+            "value": 100,
+            "color": "#86744f"
+          },
+          {
+            "id": "depth",
+            "label": "Depth",
+            "shortLabel": "depth",
+            "value": 86,
+            "color": "#8f6a72"
+          },
+          {
+            "id": "naturalness",
+            "label": "Naturalness",
+            "shortLabel": "natural",
+            "value": 76,
+            "color": "#7cc38b"
+          },
+          {
+            "id": "warmth",
+            "label": "Warmth",
+            "shortLabel": "warm",
+            "value": 75,
+            "color": "#d59263"
+          },
+          {
+            "id": "energy",
+            "label": "Energy",
+            "shortLabel": "energy",
+            "value": 58,
+            "color": "#dd7e5d"
+          },
+          {
+            "id": "danceability",
+            "label": "Danceability",
+            "shortLabel": "dance",
+            "value": 52,
+            "color": "#d5a96d"
+          }
+        ]
+      },
+      "relatedWines": [
+        {
+          "id": "catalog-1775635574925-o4vwn1",
+          "name": "イドワンヌ 2024",
+          "producer": "マタブロ（ロラン・ロジェ）",
+          "region": "ラングドック",
+          "color": "red",
+          "score": 64,
+          "reasons": [
+            "RED profile",
+            "フランス",
+            "region ラングドック"
+          ]
+        },
+        {
+          "id": "catalog-1775635574972-z3ju4m",
+          "name": "オティウム 2024",
+          "producer": "マタブロ（ロラン・ロジェ）",
+          "region": "ラングドック",
+          "color": "red",
+          "score": 64,
+          "reasons": [
+            "RED profile",
+            "フランス",
+            "region ラングドック"
+          ]
+        },
+        {
+          "id": "catalog-1775635575050-jzuyi5",
+          "name": "ミュラミュラ 2024",
+          "producer": "マタブロ（ロラン・ロジェ）",
+          "region": "ラングドック",
+          "color": "red",
+          "score": 64,
+          "reasons": [
+            "RED profile",
+            "フランス",
+            "region ラングドック"
+          ]
+        },
+        {
+          "id": "catalog-1775699262857-relv9k",
+          "name": "モラ・モラ 2024",
+          "producer": "ラ・ヴォルタ",
+          "region": "ラングドック",
+          "color": "red",
+          "score": 64,
+          "reasons": [
+            "RED profile",
+            "フランス",
+            "region ラングドック"
+          ]
+        }
+      ],
+      "embedding": {
+        "id": "catalog-1777554368214-2ggcgy",
+        "slug": "2024-2024-catalog-1777554368214-2ggcgy",
+        "index": 3,
+        "name": "プルミエ・ジュ 2024",
+        "producer": "ドメーヌ・フォン・シプレ",
+        "flag": "🇫🇷",
+        "color": "red",
+        "accentHex": "#b94843",
+        "x2d": 0.2358,
+        "y2d": -0.3481,
+        "x3d": 0.2358,
+        "y3d": -0.3481,
+        "z3d": -0.7773,
+        "dominantTraits": [
+          "Earthiness",
+          "Depth",
+          "Naturalness",
+          "Warmth"
+        ]
+      }
     },
     {
       "id": "catalog-1777553883737-4wdtgh",
       "inventoryId": "inventory-1777553883846-k5ns4w",
+      "inventoryIds": [
+        "inventory-1777553883846-k5ns4w"
+      ],
+      "slug": "nv-catalog-1777553883737-4wdtgh",
       "name": "ママ・ムシ",
       "producer": "ドメーヌ・ル・ブリゾー",
       "vintage": null,
       "country": "フランス",
+      "flag": "🇫🇷",
       "region": "ロワール",
+      "appellation": "Vin de France",
       "color": "red",
       "colorLabel": "RED",
       "grapes": [
@@ -93,20 +2203,541 @@
       "flavors": [],
       "price": 0,
       "bottleMl": 750,
+      "abv": 0,
+      "farming": "organic",
+      "farmingLabel": "Organic",
+      "filtration": "unknown",
+      "addedSo2": null,
       "location": "店内",
       "quantity": 1,
       "imagePath": "./assets/1777553883845-domaine-le-briseau-mama-mouchi-inventory.webp",
       "notes": "Label-matched from in-store bottle photos. Front label reads \"Mama Mouchi\" with the sheep illustration and \"Quelle bite est ce la ? -Melie\"; back importer sticker shows France, 750ml, importer VINS COEUR, code 042688.\nVintage is intentionally left blank because the provided bottle photos do not show the year clearly.\nOfficial VinsCœur sheets confirm Domaine Le Briseau / VdF Mama Mouchi rouge exists at least as 2021 and 2023 vintages, made from Pineau d'Aunis in Loire.",
-      "inventoryNotes": "Bottle registered from label photos. Front label: Mama Mouchi / sheep illustration / \"Quelle bite est ce la ? -Melie\". Back sticker: France, 750ml, VINS COEUR importer, code 042688. Vintage not visible in provided photos, so catalog record keeps vintage blank pending confirmation. Photo files: S__14524419.jpg(front), S__14524420.jpg(back)."
+      "inventoryNotes": "Bottle registered from label photos. Front label: Mama Mouchi / sheep illustration / \"Quelle bite est ce la ? -Melie\". Back sticker: France, 750ml, VINS COEUR importer, code 042688. Vintage not visible in provided photos, so catalog record keeps vintage blank pending confirmation. Photo files: S__14524419.jpg(front), S__14524420.jpg(back).",
+      "signal": {
+        "schema": "natural-wine-research/spotlight-signal@1",
+        "generatedAt": "2026-05-02T13:01:13.619Z",
+        "wine": {
+          "id": "catalog-1777553883737-4wdtgh",
+          "name": "ママ・ムシ",
+          "producer": "ドメーヌ・ル・ブリゾー",
+          "country": "フランス",
+          "flag": "",
+          "region": "ロワール",
+          "appellation": "Vin de France",
+          "vintage": null,
+          "color": "red",
+          "colorLabel": "RED",
+          "price": null,
+          "priceLabel": null,
+          "bottleMl": 750,
+          "abv": null,
+          "grapes": [
+            "ピノドニス"
+          ],
+          "farming": "organic",
+          "farmingLabel": "Organic",
+          "filtration": "unknown",
+          "addedSo2": null,
+          "naturalnessScore": null,
+          "naturalnessBand": "unknown"
+        },
+        "palette": {
+          "gradient": "linear-gradient(135deg, #241619 0%, #cdbb9f 32%, #b94843 68%, #0d1116 100%)",
+          "colors": [
+            {
+              "role": "background",
+              "label": "Base",
+              "hex": "#241619"
+            },
+            {
+              "role": "surface",
+              "label": "Surface",
+              "hex": "#cdbb9f"
+            },
+            {
+              "role": "accent",
+              "label": "Accent",
+              "hex": "#b94843"
+            },
+            {
+              "role": "highlight",
+              "label": "Highlight",
+              "hex": "#d49a72"
+            },
+            {
+              "role": "anchor",
+              "label": "Anchor",
+              "hex": "#0d1116"
+            }
+          ]
+        },
+        "scene": {
+          "moodTags": [
+            "grounded",
+            "vinyl-warm",
+            "slow-burn",
+            "bistro-lit",
+            "composed",
+            "clean-grown"
+          ],
+          "atmosphere": [
+            "garnet low light",
+            "deep table conversation",
+            "after-service candle edge",
+            "quiet city pressure"
+          ],
+          "lighting": "garnet glow, umber spill, and smoked-black edges",
+          "setting": "late-night service with weight and warmth",
+          "materials": [
+            "dark wood",
+            "smoked glass",
+            "heavy linen",
+            "oak",
+            "glass"
+          ],
+          "motion": "measured sway"
+        },
+        "music": {
+          "primaryGenre": "dub",
+          "supportingGenres": [
+            "cosmic jazz",
+            "slow house",
+            "minimal jazz",
+            "leftfield lounge"
+          ],
+          "bpm": 96,
+          "bpmRange": [
+            90,
+            102
+          ],
+          "energy": 58,
+          "danceability": 52,
+          "textures": [
+            "grainy",
+            "earthy",
+            "low-end"
+          ],
+          "instruments": [
+            "double bass",
+            "tape echo",
+            "muted trumpet"
+          ]
+        },
+        "context": {
+          "derivedFrom": [
+            "RED profile",
+            "フランス / ロワール",
+            "ピノドニス",
+            "Organic",
+            "4 related catalog matches"
+          ],
+          "relatedWines": [
+            {
+              "id": "catalog-1775743238185-xjlzvk",
+              "name": "ア・ラ・ヴォレ 2020",
+              "producer": "シモン・ルイヤール",
+              "region": "ロワール",
+              "color": "red",
+              "score": 58,
+              "reasons": [
+                "RED profile",
+                "フランス",
+                "region ロワール"
+              ]
+            },
+            {
+              "id": "catalog-1775635561881-vjpuar",
+              "name": "アドニス 2023",
+              "producer": "ラ・グラップリ",
+              "region": "ロワール",
+              "color": "red",
+              "score": 58,
+              "reasons": [
+                "RED profile",
+                "フランス",
+                "region ロワール"
+              ]
+            },
+            {
+              "id": "catalog-1775743238432-llqg38",
+              "name": "アプレ・ラ・プリュイ 2021",
+              "producer": "シモン・ルイヤール",
+              "region": "ロワール",
+              "color": "red",
+              "score": 58,
+              "reasons": [
+                "RED profile",
+                "フランス",
+                "region ロワール"
+              ]
+            },
+            {
+              "id": "catalog-1775699166687-glap7q",
+              "name": "アプレ・ラ・プリュイ 2023",
+              "producer": "シモン・ルイヤール",
+              "region": "ロワール",
+              "color": "red",
+              "score": 58,
+              "reasons": [
+                "RED profile",
+                "フランス",
+                "region ロワール"
+              ]
+            }
+          ],
+          "rationale": "Mapped from RED profile, フランス / ロワール, ピノドニス, Organic, 4 related catalog matches into dub at 96 BPM with grounded, vinyl-warm, slow-burn, bistro-lit cues."
+        },
+        "transport": {
+          "apiPath": "/api/spotlight/signal?wineId=catalog-1777553883737-4wdtgh",
+          "eventName": "natural-wine-research:spotlight-signal",
+          "globalKey": "__NATURAL_WINE_SPOTLIGHT_SIGNAL__",
+          "messageType": "natural-wine-research:spotlight-signal"
+        },
+        "prompt": "Wine signal for ママ・ムシ by ドメーヌ・ル・ブリゾー. Build a scene with grounded, vinyl-warm, slow-burn, bistro-lit, composed, clean-grown energy. Palette Base:#241619, Surface:#cdbb9f, Accent:#b94843, Highlight:#d49a72, Anchor:#0d1116. Music in dub, cosmic jazz, slow house, minimal jazz, leftfield lounge around 96 BPM with grainy, earthy, low-end textures and double bass, tape echo, muted trumpet instrumentation."
+      },
+      "transforms": {
+        "sound": {
+          "primaryGenre": "dub",
+          "supportingGenres": [
+            "cosmic jazz",
+            "slow house",
+            "minimal jazz",
+            "leftfield lounge"
+          ],
+          "bpm": 96,
+          "bpmRange": [
+            90,
+            102
+          ],
+          "energy": 58,
+          "danceability": 52,
+          "density": 63.4,
+          "textures": [
+            "grainy",
+            "earthy",
+            "low-end"
+          ],
+          "instruments": [
+            "double bass",
+            "tape echo",
+            "muted trumpet"
+          ]
+        },
+        "light": {
+          "brightness": 21.3,
+          "warmth": 75,
+          "saturation": 36.3,
+          "contrast": 50.5,
+          "diffusion": 88.2,
+          "motion": 51.9,
+          "colorTemperatureK": 3600,
+          "pulseBpm": 96
+        },
+        "color": {
+          "gradient": "linear-gradient(135deg, #241619 0%, #cdbb9f 32%, #b94843 68%, #0d1116 100%)",
+          "swatches": [
+            {
+              "role": "background",
+              "label": "Base",
+              "hex": "#241619"
+            },
+            {
+              "role": "surface",
+              "label": "Surface",
+              "hex": "#cdbb9f"
+            },
+            {
+              "role": "accent",
+              "label": "Accent",
+              "hex": "#b94843"
+            },
+            {
+              "role": "highlight",
+              "label": "Highlight",
+              "hex": "#d49a72"
+            },
+            {
+              "role": "anchor",
+              "label": "Anchor",
+              "hex": "#0d1116"
+            }
+          ],
+          "brightness": 21.3,
+          "warmth": 75,
+          "saturation": 36.3,
+          "contrast": 50.5,
+          "dominantHex": "#b94843"
+        },
+        "atmosphere": {
+          "moodTags": [
+            "grounded",
+            "vinyl-warm",
+            "slow-burn",
+            "bistro-lit",
+            "composed",
+            "clean-grown"
+          ],
+          "atmosphere": [
+            "garnet low light",
+            "deep table conversation",
+            "after-service candle edge",
+            "quiet city pressure"
+          ],
+          "setting": "late-night service with weight and warmth",
+          "lighting": "garnet glow, umber spill, and smoked-black edges",
+          "materials": [
+            "dark wood",
+            "smoked glass",
+            "heavy linen",
+            "oak",
+            "glass"
+          ],
+          "motion": "measured sway"
+        }
+      },
+      "features": {
+        "vector": [
+          {
+            "id": "brightness",
+            "label": "Brightness",
+            "shortLabel": "bright",
+            "value": 21.3,
+            "color": "#d8dbc2"
+          },
+          {
+            "id": "warmth",
+            "label": "Warmth",
+            "shortLabel": "warm",
+            "value": 75,
+            "color": "#d59263"
+          },
+          {
+            "id": "contrast",
+            "label": "Contrast",
+            "shortLabel": "contrast",
+            "value": 50.5,
+            "color": "#84aec4"
+          },
+          {
+            "id": "pace",
+            "label": "Pace",
+            "shortLabel": "pace",
+            "value": 28.6,
+            "color": "#8fd0c5"
+          },
+          {
+            "id": "energy",
+            "label": "Energy",
+            "shortLabel": "energy",
+            "value": 58,
+            "color": "#dd7e5d"
+          },
+          {
+            "id": "danceability",
+            "label": "Danceability",
+            "shortLabel": "dance",
+            "value": 52,
+            "color": "#d5a96d"
+          },
+          {
+            "id": "depth",
+            "label": "Depth",
+            "shortLabel": "depth",
+            "value": 76,
+            "color": "#8f6a72"
+          },
+          {
+            "id": "naturalness",
+            "label": "Naturalness",
+            "shortLabel": "natural",
+            "value": 76,
+            "color": "#7cc38b"
+          },
+          {
+            "id": "minerality",
+            "label": "Minerality",
+            "shortLabel": "mineral",
+            "value": 48,
+            "color": "#87bfc0"
+          },
+          {
+            "id": "florality",
+            "label": "Florality",
+            "shortLabel": "floral",
+            "value": 0,
+            "color": "#c694bf"
+          },
+          {
+            "id": "earthiness",
+            "label": "Earthiness",
+            "shortLabel": "earth",
+            "value": 100,
+            "color": "#86744f"
+          },
+          {
+            "id": "juiciness",
+            "label": "Juiciness",
+            "shortLabel": "juicy",
+            "value": 0,
+            "color": "#cf6373"
+          },
+          {
+            "id": "texturality",
+            "label": "Texturality",
+            "shortLabel": "texture",
+            "value": 48,
+            "color": "#bd8b54"
+          },
+          {
+            "id": "volcanicity",
+            "label": "Volcanicity",
+            "shortLabel": "volcanic",
+            "value": 0,
+            "color": "#b65b38"
+          },
+          {
+            "id": "sparkle",
+            "label": "Sparkle",
+            "shortLabel": "spark",
+            "value": 0,
+            "color": "#8ad2cb"
+          }
+        ],
+        "dominantTraits": [
+          {
+            "id": "earthiness",
+            "label": "Earthiness",
+            "shortLabel": "earth",
+            "value": 100,
+            "color": "#86744f"
+          },
+          {
+            "id": "depth",
+            "label": "Depth",
+            "shortLabel": "depth",
+            "value": 76,
+            "color": "#8f6a72"
+          },
+          {
+            "id": "naturalness",
+            "label": "Naturalness",
+            "shortLabel": "natural",
+            "value": 76,
+            "color": "#7cc38b"
+          },
+          {
+            "id": "warmth",
+            "label": "Warmth",
+            "shortLabel": "warm",
+            "value": 75,
+            "color": "#d59263"
+          },
+          {
+            "id": "energy",
+            "label": "Energy",
+            "shortLabel": "energy",
+            "value": 58,
+            "color": "#dd7e5d"
+          },
+          {
+            "id": "danceability",
+            "label": "Danceability",
+            "shortLabel": "dance",
+            "value": 52,
+            "color": "#d5a96d"
+          }
+        ]
+      },
+      "relatedWines": [
+        {
+          "id": "catalog-1775743238185-xjlzvk",
+          "name": "ア・ラ・ヴォレ 2020",
+          "producer": "シモン・ルイヤール",
+          "region": "ロワール",
+          "color": "red",
+          "score": 58,
+          "reasons": [
+            "RED profile",
+            "フランス",
+            "region ロワール"
+          ]
+        },
+        {
+          "id": "catalog-1775635561881-vjpuar",
+          "name": "アドニス 2023",
+          "producer": "ラ・グラップリ",
+          "region": "ロワール",
+          "color": "red",
+          "score": 58,
+          "reasons": [
+            "RED profile",
+            "フランス",
+            "region ロワール"
+          ]
+        },
+        {
+          "id": "catalog-1775743238432-llqg38",
+          "name": "アプレ・ラ・プリュイ 2021",
+          "producer": "シモン・ルイヤール",
+          "region": "ロワール",
+          "color": "red",
+          "score": 58,
+          "reasons": [
+            "RED profile",
+            "フランス",
+            "region ロワール"
+          ]
+        },
+        {
+          "id": "catalog-1775699166687-glap7q",
+          "name": "アプレ・ラ・プリュイ 2023",
+          "producer": "シモン・ルイヤール",
+          "region": "ロワール",
+          "color": "red",
+          "score": 58,
+          "reasons": [
+            "RED profile",
+            "フランス",
+            "region ロワール"
+          ]
+        }
+      ],
+      "embedding": {
+        "id": "catalog-1777553883737-4wdtgh",
+        "slug": "nv-catalog-1777553883737-4wdtgh",
+        "index": 4,
+        "name": "ママ・ムシ",
+        "producer": "ドメーヌ・ル・ブリゾー",
+        "flag": "🇫🇷",
+        "color": "red",
+        "accentHex": "#b94843",
+        "x2d": 0.1681,
+        "y2d": -0.1788,
+        "x3d": 0.1681,
+        "y3d": -0.1788,
+        "z3d": -0.441,
+        "dominantTraits": [
+          "Earthiness",
+          "Depth",
+          "Naturalness",
+          "Warmth"
+        ]
+      }
     },
     {
       "id": "catalog-1775697953662-j5p35x",
       "inventoryId": "inventory-1777553132004-mjdo8d",
+      "inventoryIds": [
+        "inventory-1777553132004-mjdo8d"
+      ],
+      "slug": "2023-2023-catalog-1775697953662-j5p35x",
       "name": "ミルー 2023",
       "producer": "コル・タマリエ",
       "vintage": 2023,
       "country": "イタリア",
+      "flag": "🇮🇹",
       "region": "ヴェネト",
+      "appellation": "",
       "color": "white",
       "colorLabel": "WHITE",
       "grapes": [
@@ -118,11 +2749,545 @@
       "flavors": [],
       "price": 4510,
       "bottleMl": 750,
+      "abv": 0,
+      "farming": "unknown",
+      "farmingLabel": "Unknown",
+      "filtration": "filtered",
+      "addedSo2": null,
       "location": "店内",
       "quantity": 1,
       "imagePath": "./assets/1777553132004-col-tamarie-milu-2023-inventory.webp",
       "notes": "Milu 2023 / Col Tamarie\nヴァルドビアッデーネ近郊の町、ヴィットーリオ・ヴェネトの西側。自然の森に囲まれひっそりと暮らすアルベルトとマルタ夫婦。2000年よりブドウ造りを開始し、2003年初収穫。出来たブドウはそのまま知人のワイナリーへ販売していた。2007年より実験的に醸造を開始するが、すぐにリリースはせず、納得のいくワインができるまで6年もの年月をかけ完成させた。少量の初リリースとなった 2013 年ヴィンテージ、そして2ヴィンテージ目となった2014年は15.000本を生産。順調にカンティーナとしての歩みを始めている。畑では農薬や化学肥料は使用せず、9haある土地のうち、半分の4.5haをブドウ畑、残り半分は森のまま、自然 環境を保つ事を最重要にしている。栽培する品種は、主要品種であるグレラとその他の補助品種。ブドウ品種によって区画を分けず、乱雑に品種を混ぜて栽培する事で、より自然な状態でブドウが育つという考え。丁寧に手作業で育てられたブドウは収穫も一房一房丁寧に行 われ、ブドウが傷つかないよう、慎重にカセットに並べられ醸造へ。自然酵母にて発酵。全ての段階でフィルターや清澄作業は行わない。\nモストフィオーレ（プレスしないフリーランジュース）のみ使用。ステン発酵。SO2は瓶詰前に2mg/L添加。ラベルにはマルタとミルーちゃん（飼っている猫）、やはりアルナチャラ山、マントラ、そしてアルベルトが描かれています。(インポーター資料より)\nStock count: 1\nStatus: available",
-      "inventoryNotes": "Bottle registered from label photos. Front label matched as COL TAMARIE MILU / BIANCO FERMO. Back label included lot L GANESH2023 and 0.75L 12% vol. Photo files: IMG_8275.JPG(front), IMG_8274.JPG(back)."
+      "inventoryNotes": "Bottle registered from label photos. Front label matched as COL TAMARIE MILU / BIANCO FERMO. Back label included lot L GANESH2023 and 0.75L 12% vol. Photo files: IMG_8275.JPG(front), IMG_8274.JPG(back).",
+      "signal": {
+        "schema": "natural-wine-research/spotlight-signal@1",
+        "generatedAt": "2026-05-02T13:01:13.694Z",
+        "wine": {
+          "id": "catalog-1775697953662-j5p35x",
+          "name": "ミルー 2023",
+          "producer": "コル・タマリエ",
+          "country": "イタリア",
+          "flag": "",
+          "region": "ヴェネト",
+          "appellation": null,
+          "vintage": 2023,
+          "color": "white",
+          "colorLabel": "WHITE",
+          "price": 4510,
+          "priceLabel": "¥4,510",
+          "bottleMl": 750,
+          "abv": null,
+          "grapes": [
+            "グレラ",
+            "プロセッコルンゴ",
+            "マルヴァージアをメインにその他"
+          ],
+          "farming": "unknown",
+          "farmingLabel": "Unknown",
+          "filtration": "filtered",
+          "addedSo2": null,
+          "naturalnessScore": null,
+          "naturalnessBand": "unknown"
+        },
+        "palette": {
+          "gradient": "linear-gradient(135deg, #f3ebdd 0%, #dccfb2 32%, #8db8b1 68%, #12161c 100%)",
+          "colors": [
+            {
+              "role": "background",
+              "label": "Base",
+              "hex": "#f3ebdd"
+            },
+            {
+              "role": "surface",
+              "label": "Surface",
+              "hex": "#dccfb2"
+            },
+            {
+              "role": "accent",
+              "label": "Accent",
+              "hex": "#8db8b1"
+            },
+            {
+              "role": "highlight",
+              "label": "Highlight",
+              "hex": "#7f8c55"
+            },
+            {
+              "role": "anchor",
+              "label": "Anchor",
+              "hex": "#12161c"
+            }
+          ]
+        },
+        "scene": {
+          "moodTags": [
+            "lifted",
+            "precise",
+            "daylight",
+            "Mediterranean",
+            "convivial",
+            "earthy",
+            "grounded"
+          ],
+          "atmosphere": [
+            "clean mineral glow",
+            "quiet counter energy",
+            "aperitivo dusk",
+            "warm ceramic surfaces",
+            "forest-floor depth",
+            "dry herb air"
+          ],
+          "lighting": "chalk ivory, sea-glass teal, and olive-shadow edges",
+          "setting": "cool aperitivo hour with open windows",
+          "materials": [
+            "limestone",
+            "linen",
+            "frosted glass",
+            "ceramic",
+            "stone",
+            "raw timber"
+          ],
+          "motion": "slow lateral drift"
+        },
+        "music": {
+          "primaryGenre": "balearic dub",
+          "supportingGenres": [
+            "ambient jazz",
+            "minimal house",
+            "Mediterranean jazz",
+            "balearic"
+          ],
+          "bpm": 101,
+          "bpmRange": [
+            95,
+            107
+          ],
+          "energy": 45,
+          "danceability": 48,
+          "textures": [
+            "airy",
+            "transparent",
+            "saline",
+            "grain",
+            "dry finish"
+          ],
+          "instruments": [
+            "electric piano",
+            "soft percussion",
+            "upright bass",
+            "tom drum",
+            "bass clarinet"
+          ]
+        },
+        "context": {
+          "derivedFrom": [
+            "WHITE profile",
+            "イタリア / ヴェネト",
+            "グレラ / プロセッコルンゴ",
+            "filtered filtration",
+            "earthy",
+            "4 related catalog matches"
+          ],
+          "relatedWines": [
+            {
+              "id": "catalog-1775697953709-umj7n0",
+              "name": "コル・タマリエ 2023",
+              "producer": "コル・タマリエ",
+              "region": "ヴェネト",
+              "color": "white",
+              "score": 81,
+              "reasons": [
+                "WHITE profile",
+                "イタリア",
+                "region ヴェネト"
+              ]
+            },
+            {
+              "id": "catalog-1775697949452-5l6dsa",
+              "name": "ガルガーネガ 2023",
+              "producer": "ダニエーレ・ポルティナーリ",
+              "region": "ヴェネト",
+              "color": "white",
+              "score": 68,
+              "reasons": [
+                "WHITE profile",
+                "イタリア",
+                "region ヴェネト"
+              ]
+            },
+            {
+              "id": "catalog-1775699364499-i48ffz",
+              "name": "サッサイア・エディツィオーネ・スペチャーレ 2022",
+              "producer": "ラ・ビアンカーラ",
+              "region": "ヴェネト",
+              "color": "white",
+              "score": 66,
+              "reasons": [
+                "WHITE profile",
+                "イタリア",
+                "region ヴェネト"
+              ]
+            },
+            {
+              "id": "catalog-1776087552252-9j36rj",
+              "name": "セルヴァデガ 2022",
+              "producer": "アナンダ・ディ・エドアルド・サッケット",
+              "region": "ヴェネト",
+              "color": "white",
+              "score": 66,
+              "reasons": [
+                "WHITE profile",
+                "イタリア",
+                "region ヴェネト"
+              ]
+            }
+          ],
+          "rationale": "Mapped from WHITE profile, イタリア / ヴェネト, グレラ / プロセッコルンゴ, filtered filtration, earthy into balearic dub at 101 BPM with lifted, precise, daylight, Mediterranean cues."
+        },
+        "transport": {
+          "apiPath": "/api/spotlight/signal?wineId=catalog-1775697953662-j5p35x",
+          "eventName": "natural-wine-research:spotlight-signal",
+          "globalKey": "__NATURAL_WINE_SPOTLIGHT_SIGNAL__",
+          "messageType": "natural-wine-research:spotlight-signal"
+        },
+        "prompt": "Wine signal for ミルー 2023 by コル・タマリエ. Build a scene with lifted, precise, daylight, Mediterranean, convivial, earthy, grounded energy. Palette Base:#f3ebdd, Surface:#dccfb2, Accent:#8db8b1, Highlight:#7f8c55, Anchor:#12161c. Music in balearic dub, ambient jazz, minimal house, Mediterranean jazz, balearic around 101 BPM with airy, transparent, saline, grain, dry finish textures and electric piano, soft percussion, upright bass, tom drum, bass clarinet instrumentation."
+      },
+      "transforms": {
+        "sound": {
+          "primaryGenre": "balearic dub",
+          "supportingGenres": [
+            "ambient jazz",
+            "minimal house",
+            "Mediterranean jazz",
+            "balearic"
+          ],
+          "bpm": 101,
+          "bpmRange": [
+            95,
+            107
+          ],
+          "energy": 45,
+          "danceability": 48,
+          "density": 35.2,
+          "textures": [
+            "airy",
+            "transparent",
+            "saline",
+            "grain",
+            "dry finish"
+          ],
+          "instruments": [
+            "electric piano",
+            "soft percussion",
+            "upright bass",
+            "tom drum",
+            "bass clarinet"
+          ]
+        },
+        "light": {
+          "brightness": 42.9,
+          "warmth": 60.6,
+          "saturation": 31,
+          "contrast": 82.9,
+          "diffusion": 72,
+          "motion": 54.8,
+          "colorTemperatureK": 4291,
+          "pulseBpm": 101
+        },
+        "color": {
+          "gradient": "linear-gradient(135deg, #f3ebdd 0%, #dccfb2 32%, #8db8b1 68%, #12161c 100%)",
+          "swatches": [
+            {
+              "role": "background",
+              "label": "Base",
+              "hex": "#f3ebdd"
+            },
+            {
+              "role": "surface",
+              "label": "Surface",
+              "hex": "#dccfb2"
+            },
+            {
+              "role": "accent",
+              "label": "Accent",
+              "hex": "#8db8b1"
+            },
+            {
+              "role": "highlight",
+              "label": "Highlight",
+              "hex": "#7f8c55"
+            },
+            {
+              "role": "anchor",
+              "label": "Anchor",
+              "hex": "#12161c"
+            }
+          ],
+          "brightness": 42.9,
+          "warmth": 60.6,
+          "saturation": 31,
+          "contrast": 82.9,
+          "dominantHex": "#8db8b1"
+        },
+        "atmosphere": {
+          "moodTags": [
+            "lifted",
+            "precise",
+            "daylight",
+            "Mediterranean",
+            "convivial",
+            "earthy",
+            "grounded"
+          ],
+          "atmosphere": [
+            "clean mineral glow",
+            "quiet counter energy",
+            "aperitivo dusk",
+            "warm ceramic surfaces",
+            "forest-floor depth",
+            "dry herb air"
+          ],
+          "setting": "cool aperitivo hour with open windows",
+          "lighting": "chalk ivory, sea-glass teal, and olive-shadow edges",
+          "materials": [
+            "limestone",
+            "linen",
+            "frosted glass",
+            "ceramic",
+            "stone",
+            "raw timber"
+          ],
+          "motion": "slow lateral drift"
+        }
+      },
+      "features": {
+        "vector": [
+          {
+            "id": "brightness",
+            "label": "Brightness",
+            "shortLabel": "bright",
+            "value": 42.9,
+            "color": "#d8dbc2"
+          },
+          {
+            "id": "warmth",
+            "label": "Warmth",
+            "shortLabel": "warm",
+            "value": 60.6,
+            "color": "#d59263"
+          },
+          {
+            "id": "contrast",
+            "label": "Contrast",
+            "shortLabel": "contrast",
+            "value": 82.9,
+            "color": "#84aec4"
+          },
+          {
+            "id": "pace",
+            "label": "Pace",
+            "shortLabel": "pace",
+            "value": 37.5,
+            "color": "#8fd0c5"
+          },
+          {
+            "id": "energy",
+            "label": "Energy",
+            "shortLabel": "energy",
+            "value": 45,
+            "color": "#dd7e5d"
+          },
+          {
+            "id": "danceability",
+            "label": "Danceability",
+            "shortLabel": "dance",
+            "value": 48,
+            "color": "#d5a96d"
+          },
+          {
+            "id": "depth",
+            "label": "Depth",
+            "shortLabel": "depth",
+            "value": 20,
+            "color": "#8f6a72"
+          },
+          {
+            "id": "naturalness",
+            "label": "Naturalness",
+            "shortLabel": "natural",
+            "value": 48,
+            "color": "#7cc38b"
+          },
+          {
+            "id": "minerality",
+            "label": "Minerality",
+            "shortLabel": "mineral",
+            "value": 100,
+            "color": "#87bfc0"
+          },
+          {
+            "id": "florality",
+            "label": "Florality",
+            "shortLabel": "floral",
+            "value": 0,
+            "color": "#c694bf"
+          },
+          {
+            "id": "earthiness",
+            "label": "Earthiness",
+            "shortLabel": "earth",
+            "value": 100,
+            "color": "#86744f"
+          },
+          {
+            "id": "juiciness",
+            "label": "Juiciness",
+            "shortLabel": "juicy",
+            "value": 0,
+            "color": "#cf6373"
+          },
+          {
+            "id": "texturality",
+            "label": "Texturality",
+            "shortLabel": "texture",
+            "value": 48,
+            "color": "#bd8b54"
+          },
+          {
+            "id": "volcanicity",
+            "label": "Volcanicity",
+            "shortLabel": "volcanic",
+            "value": 0,
+            "color": "#b65b38"
+          },
+          {
+            "id": "sparkle",
+            "label": "Sparkle",
+            "shortLabel": "spark",
+            "value": 48,
+            "color": "#8ad2cb"
+          }
+        ],
+        "dominantTraits": [
+          {
+            "id": "earthiness",
+            "label": "Earthiness",
+            "shortLabel": "earth",
+            "value": 100,
+            "color": "#86744f"
+          },
+          {
+            "id": "minerality",
+            "label": "Minerality",
+            "shortLabel": "mineral",
+            "value": 100,
+            "color": "#87bfc0"
+          },
+          {
+            "id": "contrast",
+            "label": "Contrast",
+            "shortLabel": "contrast",
+            "value": 82.9,
+            "color": "#84aec4"
+          },
+          {
+            "id": "warmth",
+            "label": "Warmth",
+            "shortLabel": "warm",
+            "value": 60.6,
+            "color": "#d59263"
+          },
+          {
+            "id": "danceability",
+            "label": "Danceability",
+            "shortLabel": "dance",
+            "value": 48,
+            "color": "#d5a96d"
+          },
+          {
+            "id": "naturalness",
+            "label": "Naturalness",
+            "shortLabel": "natural",
+            "value": 48,
+            "color": "#7cc38b"
+          }
+        ]
+      },
+      "relatedWines": [
+        {
+          "id": "catalog-1775697953709-umj7n0",
+          "name": "コル・タマリエ 2023",
+          "producer": "コル・タマリエ",
+          "region": "ヴェネト",
+          "color": "white",
+          "score": 81,
+          "reasons": [
+            "WHITE profile",
+            "イタリア",
+            "region ヴェネト"
+          ]
+        },
+        {
+          "id": "catalog-1775697949452-5l6dsa",
+          "name": "ガルガーネガ 2023",
+          "producer": "ダニエーレ・ポルティナーリ",
+          "region": "ヴェネト",
+          "color": "white",
+          "score": 68,
+          "reasons": [
+            "WHITE profile",
+            "イタリア",
+            "region ヴェネト"
+          ]
+        },
+        {
+          "id": "catalog-1775699364499-i48ffz",
+          "name": "サッサイア・エディツィオーネ・スペチャーレ 2022",
+          "producer": "ラ・ビアンカーラ",
+          "region": "ヴェネト",
+          "color": "white",
+          "score": 66,
+          "reasons": [
+            "WHITE profile",
+            "イタリア",
+            "region ヴェネト"
+          ]
+        },
+        {
+          "id": "catalog-1776087552252-9j36rj",
+          "name": "セルヴァデガ 2022",
+          "producer": "アナンダ・ディ・エドアルド・サッケット",
+          "region": "ヴェネト",
+          "color": "white",
+          "score": 66,
+          "reasons": [
+            "WHITE profile",
+            "イタリア",
+            "region ヴェネト"
+          ]
+        }
+      ],
+      "embedding": {
+        "id": "catalog-1775697953662-j5p35x",
+        "slug": "2023-2023-catalog-1775697953662-j5p35x",
+        "index": 5,
+        "name": "ミルー 2023",
+        "producer": "コル・タマリエ",
+        "flag": "🇮🇹",
+        "color": "white",
+        "accentHex": "#8db8b1",
+        "x2d": -1,
+        "y2d": -0.1142,
+        "x3d": -1,
+        "y3d": -0.1142,
+        "z3d": 0.1875,
+        "dominantTraits": [
+          "Earthiness",
+          "Minerality",
+          "Contrast",
+          "Warmth"
+        ]
+      }
     }
   ]
 }
