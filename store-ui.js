@@ -15,6 +15,15 @@
       front: "",
       back: "",
     },
+    selectedFiles: {
+      front: null,
+      back: null,
+    },
+    draft: {
+      location: "店内",
+      quantity: 1,
+      notes: "",
+    },
   };
 
   const config = window.__STORE_PAGE_CONFIG__ || {};
@@ -367,6 +376,7 @@
   function renderStoreConsole() {
     const previewFront = state.previews.front ? `<img src="${esc(state.previews.front)}" alt="front preview" class="image-thumb">` : "";
     const previewBack = state.previews.back ? `<img src="${esc(state.previews.back)}" alt="back preview" class="image-thumb">` : "";
+    const pairReady = Boolean(state.selectedFiles.front && state.selectedFiles.back);
     return `
       <section class="module-panel console-panel">
         <div class="store-console-head">
@@ -374,7 +384,7 @@
             <div class="section-label">Ingest Console</div>
             <h2>表面 / 裏面 upload から自動追加</h2>
           </div>
-          <div class="micro-copy">GitHub Pages is static. Writeback works only when an API base is configured.</div>
+          <div class="micro-copy">2枚1組で upload して、確認ボタンを押すと OCR → 特定 → database 更新 → UMAP 再計算 → webpage 更新まで進みます。</div>
         </div>
         <div class="console-grid">
           <div class="api-grid">
@@ -391,6 +401,7 @@
               API status: ${esc(state.apiConnected ? "connected" : "static-only")} ${state.apiMessage ? `· ${esc(state.apiMessage)}` : ""}
             </div>
             <div class="micro-note">For secure writeback from the public page, use an HTTPS API endpoint. GitHub Pages itself cannot update the repository database.</div>
+            <div class="micro-note">公開ページでは front / back の2枚ペアが必須です。処理後は現在のページ表示を自動更新し、API 側の live dataset にも反映します。</div>
             ${state.ingestResult ? `
               <div class="narrative-block">
                 Last ingest: ${esc(state.ingestResult.matchedWine?.name || "unmatched")} · confidence ${esc(state.ingestResult.confidence || "unknown")} · ${state.ingestResult.provisionalCreated ? "provisional catalog created" : "matched existing catalog"}
@@ -401,31 +412,36 @@
             <div class="input-grid">
               <div class="field-group">
                 <label class="subsection-label" for="location-input">Location</label>
-                <input id="location-input" name="location" type="text" value="${esc(state.payload?.location || "店内")}">
+                <input id="location-input" name="location" type="text" value="${esc(state.draft.location || state.payload?.location || "店内")}" data-draft-field="location">
               </div>
               <div class="field-group">
                 <label class="subsection-label" for="quantity-input">Quantity</label>
-                <input id="quantity-input" name="quantity" type="number" min="1" value="1">
+                <input id="quantity-input" name="quantity" type="number" min="1" value="${esc(state.draft.quantity || 1)}" data-draft-field="quantity">
               </div>
             </div>
             <div class="field-group">
               <label class="subsection-label" for="notes-input">Notes</label>
-              <textarea id="notes-input" name="notes" placeholder="Optional note about this bottle."></textarea>
+              <textarea id="notes-input" name="notes" placeholder="Optional note about this bottle." data-draft-field="notes">${esc(state.draft.notes || "")}</textarea>
             </div>
             <div class="input-grid">
               <div class="upload-drop">
-                <div class="subsection-label">Front Label</div>
+                <div class="subsection-label">Front Label 1/2</div>
                 <input type="file" accept="image/*" name="frontImage" data-file-front>
                 ${previewFront}
+                <div class="micro-note">${esc(state.selectedFiles.front?.name || "表面ラベル画像を選択")}</div>
               </div>
               <div class="upload-drop">
-                <div class="subsection-label">Back Label</div>
+                <div class="subsection-label">Back Label 2/2</div>
                 <input type="file" accept="image/*" name="backImage" data-file-back>
                 ${previewBack}
+                <div class="micro-note">${esc(state.selectedFiles.back?.name || "裏面ラベル画像を選択")}</div>
               </div>
             </div>
+            <div class="narrative-block">
+              Pair status: ${pairReady ? "ready" : "waiting for 2 images"} · ${esc(state.selectedFiles.front?.name || "front missing")} / ${esc(state.selectedFiles.back?.name || "back missing")}
+            </div>
             <div class="action-row">
-              <button type="submit" class="action-button" ${state.apiBase ? "" : "disabled"}>Analyze, Add, Re-embed</button>
+              <button type="submit" class="action-button" ${(state.apiBase && pairReady) ? "" : "disabled"}>2枚を確認して処理を実行</button>
             </div>
           </form>
         </div>
@@ -541,6 +557,13 @@
     return new URL(path, state.apiBase).toString();
   }
 
+  function revokePreview(side) {
+    const preview = state.previews[side];
+    if (preview?.startsWith("blob:")) {
+      URL.revokeObjectURL(preview);
+    }
+  }
+
   async function loadStaticPayload() {
     state.payload = await fetchJson("./store.json");
     window[state.payload.transport.globalKey] = state.payload;
@@ -576,13 +599,26 @@
   function handleFilePreview(event, side) {
     const file = event.currentTarget.files?.[0];
     if (!file) {
+      revokePreview(side);
       state.previews[side] = "";
+      state.selectedFiles[side] = null;
       render();
       return;
     }
+    revokePreview(side);
     const url = URL.createObjectURL(file);
+    state.selectedFiles[side] = file;
     state.previews[side] = url;
     render();
+  }
+
+  function handleDraftField(event) {
+    const field = event.currentTarget.dataset.draftField;
+    if (!field) return;
+    const value = field === "quantity"
+      ? Math.max(1, Number(event.currentTarget.value || 1) || 1)
+      : event.currentTarget.value;
+    state.draft[field] = value;
   }
 
   async function handleIngestSubmit(event) {
@@ -593,10 +629,8 @@
       return;
     }
 
-    const form = event.currentTarget;
-    const formData = new FormData(form);
-    const frontImage = form.querySelector('[data-file-front]')?.files?.[0];
-    const backImage = form.querySelector('[data-file-back]')?.files?.[0];
+    const frontImage = state.selectedFiles.front;
+    const backImage = state.selectedFiles.back;
 
     if (!frontImage || !backImage) {
       state.error = "Front and back label images are required.";
@@ -604,6 +638,10 @@
       return;
     }
 
+    const formData = new FormData();
+    formData.set("location", String(state.draft.location || state.payload?.location || "店内"));
+    formData.set("quantity", String(state.draft.quantity || 1));
+    formData.set("notes", String(state.draft.notes || ""));
     formData.set("frontImage", frontImage);
     formData.set("backImage", backImage);
     state.status = "Uploading bottle pair, OCR in progress…";
@@ -619,11 +657,17 @@
       state.payload = result.dataset;
       state.apiConnected = true;
       state.apiMessage = "writeback succeeded";
-      state.status = `Bottle added: ${result.matchedWine?.name || "unidentified"} (${result.confidence || "unknown"}).`;
+      state.status = `Bottle added: ${result.matchedWine?.name || "unidentified"} (${result.confidence || "unknown"}). OCR, matching, database update, UMAP re-embed, and webpage refresh completed.`;
       state.error = "";
+      revokePreview("front");
+      revokePreview("back");
       state.previews.front = "";
       state.previews.back = "";
-      form.reset();
+      state.selectedFiles.front = null;
+      state.selectedFiles.back = null;
+      state.draft.quantity = 1;
+      state.draft.notes = "";
+      state.draft.location = result.location || state.draft.location || "店内";
       window[result.dataset.transport.globalKey] = result.dataset;
       window.dispatchEvent(new CustomEvent(result.dataset.transport.eventName, { detail: result.dataset }));
       render();
@@ -797,6 +841,10 @@
     document.querySelector("[data-ingest-form]")?.addEventListener("submit", handleIngestSubmit);
     document.querySelector("[data-file-front]")?.addEventListener("change", (event) => handleFilePreview(event, "front"));
     document.querySelector("[data-file-back]")?.addEventListener("change", (event) => handleFilePreview(event, "back"));
+    document.querySelectorAll("[data-draft-field]").forEach((input) => {
+      input.addEventListener("input", handleDraftField);
+      input.addEventListener("change", handleDraftField);
+    });
 
     document.querySelectorAll("[data-copy-wine]").forEach((button) => {
       button.addEventListener("click", async (event) => {
@@ -873,6 +921,7 @@
     const queryApi = new URLSearchParams(window.location.search).get("api") || "";
     state.apiBase = queryApi || localStorage.getItem(apiStorageKey) || defaultApiBase || "";
     await loadStaticPayload();
+    state.draft.location = state.payload?.location || state.draft.location || "店内";
     state.unlocked = sessionStorage.getItem(sessionKey) === "ok";
 
     if (!state.unlocked) {
