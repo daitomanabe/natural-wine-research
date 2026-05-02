@@ -1,6 +1,6 @@
 {
-  "schema": "natural-wine-research/store-signal-page@2",
-  "generatedAt": "2026-05-02T13:01:13.698Z",
+  "schema": "natural-wine-research/store-signal-page@3",
+  "generatedAt": "2026-05-02T13:19:11.174Z",
   "location": "店内",
   "totalWines": 5,
   "totalBottles": 5,
@@ -162,7 +162,7 @@
     "narrative": "The room currently reads as red-leaning, earthiness, naturalness, depth, and grounded, slow-burn, vinyl-warm, landing around 97 BPM with dub / balearic dub cues."
   },
   "embedding": {
-    "method": "pca-zscore-v1",
+    "method": "umap-js-v1",
     "featureOrder": [
       {
         "id": "brightness",
@@ -242,155 +242,131 @@
     ],
     "axes": [
       {
-        "id": "pc1",
-        "label": "depth + energy vs bright + contrast",
-        "explainedVariance": 70.1,
-        "positive": [
-          "depth",
-          "energy"
-        ],
-        "negative": [
-          "bright",
-          "contrast"
-        ],
+        "id": "umap-x",
+        "label": "earth + natural field",
+        "explainedVariance": null,
         "loadings": [
           {
-            "id": "depth",
-            "label": "Depth",
-            "shortLabel": "depth",
-            "loading": 0.3431
-          },
-          {
-            "id": "energy",
-            "label": "Energy",
-            "shortLabel": "energy",
-            "loading": 0.3428
-          },
-          {
-            "id": "brightness",
-            "label": "Brightness",
-            "shortLabel": "bright",
-            "loading": -0.3383
-          },
-          {
-            "id": "contrast",
-            "label": "Contrast",
-            "shortLabel": "contrast",
-            "loading": -0.338
-          },
-          {
-            "id": "danceability",
-            "label": "Danceability",
-            "shortLabel": "dance",
-            "loading": 0.3378
-          },
-          {
-            "id": "sparkle",
-            "label": "Sparkle",
-            "shortLabel": "spark",
-            "loading": -0.3378
-          }
-        ]
-      },
-      {
-        "id": "pc2",
-        "label": "juicy + mineral vs warm + volcanic",
-        "explainedVariance": 20.6,
-        "positive": [
-          "juicy",
-          "mineral"
-        ],
-        "negative": [
-          "warm",
-          "volcanic"
-        ],
-        "loadings": [
-          {
-            "id": "juiciness",
-            "label": "Juiciness",
-            "shortLabel": "juicy",
-            "loading": 0.6255
-          },
-          {
-            "id": "warmth",
-            "label": "Warmth",
-            "shortLabel": "warm",
-            "loading": -0.5144
-          },
-          {
-            "id": "minerality",
-            "label": "Minerality",
-            "shortLabel": "mineral",
-            "loading": 0.4172
+            "id": "earthiness",
+            "label": "Earthiness",
+            "shortLabel": "earth",
+            "average": 100
           },
           {
             "id": "naturalness",
             "label": "Naturalness",
             "shortLabel": "natural",
-            "loading": 0.2871
+            "average": 72.8
           },
           {
-            "id": "volcanicity",
-            "label": "Volcanicity",
-            "shortLabel": "volcanic",
-            "loading": -0.2245
+            "id": "depth",
+            "label": "Depth",
+            "shortLabel": "depth",
+            "average": 70.8
           },
           {
-            "id": "pace",
-            "label": "Pace",
-            "shortLabel": "pace",
-            "loading": -0.1357
-          }
-        ]
-      },
-      {
-        "id": "pc3",
-        "label": "volcanic + mineral vs contrast + bright",
-        "explainedVariance": 8.4,
-        "positive": [
-          "volcanic",
-          "mineral"
-        ],
-        "negative": [
-          "contrast",
-          "bright"
-        ],
-        "loadings": [
-          {
-            "id": "volcanicity",
-            "label": "Volcanicity",
-            "shortLabel": "volcanic",
-            "loading": 0.8221
+            "id": "warmth",
+            "label": "Warmth",
+            "shortLabel": "warm",
+            "average": 68.5
           },
           {
             "id": "minerality",
             "label": "Minerality",
             "shortLabel": "mineral",
-            "loading": 0.4252
+            "average": 59.2
+          },
+          {
+            "id": "energy",
+            "label": "Energy",
+            "shortLabel": "energy",
+            "average": 56.2
+          }
+        ]
+      },
+      {
+        "id": "umap-y",
+        "label": "depth + warm field",
+        "explainedVariance": null,
+        "loadings": [
+          {
+            "id": "depth",
+            "label": "Depth",
+            "shortLabel": "depth",
+            "average": 70.8
+          },
+          {
+            "id": "warmth",
+            "label": "Warmth",
+            "shortLabel": "warm",
+            "average": 68.5
+          },
+          {
+            "id": "minerality",
+            "label": "Minerality",
+            "shortLabel": "mineral",
+            "average": 59.2
+          },
+          {
+            "id": "energy",
+            "label": "Energy",
+            "shortLabel": "energy",
+            "average": 56.2
           },
           {
             "id": "contrast",
             "label": "Contrast",
             "shortLabel": "contrast",
-            "loading": -0.192
-          },
-          {
-            "id": "brightness",
-            "label": "Brightness",
-            "shortLabel": "bright",
-            "loading": -0.1653
+            "average": 53.9
           },
           {
             "id": "danceability",
             "label": "Danceability",
             "shortLabel": "dance",
-            "loading": -0.1542
+            "average": 51.2
+          }
+        ]
+      },
+      {
+        "id": "umap-z",
+        "label": "mineral + energy field",
+        "explainedVariance": null,
+        "loadings": [
+          {
+            "id": "minerality",
+            "label": "Minerality",
+            "shortLabel": "mineral",
+            "average": 59.2
           },
           {
-            "id": "sparkle",
-            "label": "Sparkle",
-            "shortLabel": "spark",
-            "loading": 0.1542
+            "id": "energy",
+            "label": "Energy",
+            "shortLabel": "energy",
+            "average": 56.2
+          },
+          {
+            "id": "contrast",
+            "label": "Contrast",
+            "shortLabel": "contrast",
+            "average": 53.9
+          },
+          {
+            "id": "danceability",
+            "label": "Danceability",
+            "shortLabel": "dance",
+            "average": 51.2
+          },
+          {
+            "id": "texturality",
+            "label": "Texturality",
+            "shortLabel": "texture",
+            "average": 48
+          },
+          {
+            "id": "pace",
+            "label": "Pace",
+            "shortLabel": "pace",
+            "average": 29.7
           }
         ]
       }
@@ -405,10 +381,10 @@
         "flag": "🇮🇹",
         "color": "red",
         "accentHex": "#b55a31",
-        "x2d": 0.4402,
-        "y2d": -0.3589,
-        "x3d": 0.4402,
-        "y3d": -0.3589,
+        "x2d": -1,
+        "y2d": -0.387,
+        "x3d": -1,
+        "y3d": -0.387,
         "z3d": 1,
         "dominantTraits": [
           "Earthiness",
@@ -426,11 +402,11 @@
         "flag": "🇫🇷",
         "color": "red",
         "accentHex": "#7faeab",
-        "x2d": 0.1559,
+        "x2d": 0.9772,
         "y2d": 1,
-        "x3d": 0.1559,
+        "x3d": 0.9772,
         "y3d": 1,
-        "z3d": 0.0308,
+        "z3d": -0.0115,
         "dominantTraits": [
           "Earthiness",
           "Minerality",
@@ -447,11 +423,11 @@
         "flag": "🇫🇷",
         "color": "red",
         "accentHex": "#b94843",
-        "x2d": 0.2358,
-        "y2d": -0.3481,
-        "x3d": 0.2358,
-        "y3d": -0.3481,
-        "z3d": -0.7773,
+        "x2d": 1,
+        "y2d": -0.7627,
+        "x3d": 1,
+        "y3d": -0.7627,
+        "z3d": 0.7295,
         "dominantTraits": [
           "Earthiness",
           "Depth",
@@ -468,11 +444,11 @@
         "flag": "🇫🇷",
         "color": "red",
         "accentHex": "#b94843",
-        "x2d": 0.1681,
-        "y2d": -0.1788,
-        "x3d": 0.1681,
-        "y3d": -0.1788,
-        "z3d": -0.441,
+        "x2d": -0.8567,
+        "y2d": -1,
+        "x3d": -0.8567,
+        "y3d": -1,
+        "z3d": -0.21,
         "dominantTraits": [
           "Earthiness",
           "Depth",
@@ -489,11 +465,11 @@
         "flag": "🇮🇹",
         "color": "white",
         "accentHex": "#8db8b1",
-        "x2d": -1,
-        "y2d": -0.1142,
-        "x3d": -1,
-        "y3d": -0.1142,
-        "z3d": 0.1875,
+        "x2d": 0.2564,
+        "y2d": 0.1857,
+        "x3d": 0.2564,
+        "y3d": 0.1857,
+        "z3d": -1,
         "dominantTraits": [
           "Earthiness",
           "Minerality",
@@ -540,7 +516,7 @@
       "inventoryNotes": "Bottle registered from label photos. Front label matched as I CUSTODI / PISTUS / ETNA ROSSO / 2022. Back label included 750ml, 13% vol, importer sticker with Racines and code 097265. Photo files: S__14524421.jpg(front), S__14524422.jpg(back).",
       "signal": {
         "schema": "natural-wine-research/spotlight-signal@1",
-        "generatedAt": "2026-05-02T13:01:13.421Z",
+        "generatedAt": "2026-05-02T13:19:10.836Z",
         "wine": {
           "id": "catalog-1777553981967-fj717k",
           "name": "ピストゥス 2022",
@@ -1056,10 +1032,10 @@
         "flag": "🇮🇹",
         "color": "red",
         "accentHex": "#b55a31",
-        "x2d": 0.4402,
-        "y2d": -0.3589,
-        "x3d": 0.4402,
-        "y3d": -0.3589,
+        "x2d": -1,
+        "y2d": -0.387,
+        "x3d": -1,
+        "y3d": -0.387,
         "z3d": 1,
         "dominantTraits": [
           "Earthiness",
@@ -1104,7 +1080,7 @@
       "inventoryNotes": "Bottle registered from label photos. Front label: Pinot Noir with dancing couple illustration. Back label: 2022 / DE SOUSA / PETIT-ROY / 750ml. Photo files: S__14532611_0.jpg(front), S__14532615_0.jpg(back).",
       "signal": {
         "schema": "natural-wine-research/spotlight-signal@1",
-        "generatedAt": "2026-05-02T13:01:13.487Z",
+        "generatedAt": "2026-05-02T13:19:10.926Z",
         "wine": {
           "id": "catalog-1777554130232-n199za",
           "name": "ブルゴーニュ・ルージュ・ドゥ・スーザ 2022",
@@ -1621,11 +1597,11 @@
         "flag": "🇫🇷",
         "color": "red",
         "accentHex": "#7faeab",
-        "x2d": 0.1559,
+        "x2d": 0.9772,
         "y2d": 1,
-        "x3d": 0.1559,
+        "x3d": 0.9772,
         "y3d": 1,
-        "z3d": 0.0308,
+        "z3d": -0.0115,
         "dominantTraits": [
           "Earthiness",
           "Minerality",
@@ -1670,7 +1646,7 @@
       "inventoryNotes": "Bottle registered from label photos. Front label: Premier jus 2024. Back label: PREMIER JUS 2024 / VIN DE FRANCE / Rodolphe Gianesini / Laetitia Ourliac / 12.5% vol / 750ml / Vins Coeur importer code 043890. Photo files: S__14532617_0.jpg(front), S__14532618_0.jpg(back).",
       "signal": {
         "schema": "natural-wine-research/spotlight-signal@1",
-        "generatedAt": "2026-05-02T13:01:13.554Z",
+        "generatedAt": "2026-05-02T13:19:11.001Z",
         "wine": {
           "id": "catalog-1777554368214-2ggcgy",
           "name": "プルミエ・ジュ 2024",
@@ -2167,11 +2143,11 @@
         "flag": "🇫🇷",
         "color": "red",
         "accentHex": "#b94843",
-        "x2d": 0.2358,
-        "y2d": -0.3481,
-        "x3d": 0.2358,
-        "y3d": -0.3481,
-        "z3d": -0.7773,
+        "x2d": 1,
+        "y2d": -0.7627,
+        "x3d": 1,
+        "y3d": -0.7627,
+        "z3d": 0.7295,
         "dominantTraits": [
           "Earthiness",
           "Depth",
@@ -2215,7 +2191,7 @@
       "inventoryNotes": "Bottle registered from label photos. Front label: Mama Mouchi / sheep illustration / \"Quelle bite est ce la ? -Melie\". Back sticker: France, 750ml, VINS COEUR importer, code 042688. Vintage not visible in provided photos, so catalog record keeps vintage blank pending confirmation. Photo files: S__14524419.jpg(front), S__14524420.jpg(back).",
       "signal": {
         "schema": "natural-wine-research/spotlight-signal@1",
-        "generatedAt": "2026-05-02T13:01:13.619Z",
+        "generatedAt": "2026-05-02T13:19:11.074Z",
         "wine": {
           "id": "catalog-1777553883737-4wdtgh",
           "name": "ママ・ムシ",
@@ -2711,11 +2687,11 @@
         "flag": "🇫🇷",
         "color": "red",
         "accentHex": "#b94843",
-        "x2d": 0.1681,
-        "y2d": -0.1788,
-        "x3d": 0.1681,
-        "y3d": -0.1788,
-        "z3d": -0.441,
+        "x2d": -0.8567,
+        "y2d": -1,
+        "x3d": -0.8567,
+        "y3d": -1,
+        "z3d": -0.21,
         "dominantTraits": [
           "Earthiness",
           "Depth",
@@ -2761,7 +2737,7 @@
       "inventoryNotes": "Bottle registered from label photos. Front label matched as COL TAMARIE MILU / BIANCO FERMO. Back label included lot L GANESH2023 and 0.75L 12% vol. Photo files: IMG_8275.JPG(front), IMG_8274.JPG(back).",
       "signal": {
         "schema": "natural-wine-research/spotlight-signal@1",
-        "generatedAt": "2026-05-02T13:01:13.694Z",
+        "generatedAt": "2026-05-02T13:19:11.154Z",
         "wine": {
           "id": "catalog-1775697953662-j5p35x",
           "name": "ミルー 2023",
@@ -3276,11 +3252,11 @@
         "flag": "🇮🇹",
         "color": "white",
         "accentHex": "#8db8b1",
-        "x2d": -1,
-        "y2d": -0.1142,
-        "x3d": -1,
-        "y3d": -0.1142,
-        "z3d": 0.1875,
+        "x2d": 0.2564,
+        "y2d": 0.1857,
+        "x3d": 0.2564,
+        "y3d": 0.1857,
+        "z3d": -1,
         "dominantTraits": [
           "Earthiness",
           "Minerality",
