@@ -1,6 +1,6 @@
 {
   "schema": "natural-wine-research/store-signal-page@3",
-  "generatedAt": "2026-05-02T22:23:53.155Z",
+  "generatedAt": "2026-05-02T22:32:28.953Z",
   "location": "店内",
   "totalWines": 5,
   "totalBottles": 5,
@@ -516,7 +516,7 @@
       "inventoryNotes": "Bottle registered from label photos. Front label matched as I CUSTODI / PISTUS / ETNA ROSSO / 2022. Back label included 750ml, 13% vol, importer sticker with Racines and code 097265. Photo files: S__14524421.jpg(front), S__14524422.jpg(back).",
       "signal": {
         "schema": "natural-wine-research/spotlight-signal@1",
-        "generatedAt": "2026-05-02T22:23:52.799Z",
+        "generatedAt": "2026-05-02T22:32:28.634Z",
         "wine": {
           "id": "catalog-1777553981967-fj717k",
           "name": "ピストゥス 2022",
@@ -1080,7 +1080,7 @@
       "inventoryNotes": "Bottle registered from label photos. Front label: Pinot Noir with dancing couple illustration. Back label: 2022 / DE SOUSA / PETIT-ROY / 750ml. Photo files: S__14532611_0.jpg(front), S__14532615_0.jpg(back).",
       "signal": {
         "schema": "natural-wine-research/spotlight-signal@1",
-        "generatedAt": "2026-05-02T22:23:52.881Z",
+        "generatedAt": "2026-05-02T22:32:28.705Z",
         "wine": {
           "id": "catalog-1777554130232-n199za",
           "name": "ブルゴーニュ・ルージュ・ドゥ・スーザ 2022",
@@ -1646,7 +1646,7 @@
       "inventoryNotes": "Bottle registered from label photos. Front label: Premier jus 2024. Back label: PREMIER JUS 2024 / VIN DE FRANCE / Rodolphe Gianesini / Laetitia Ourliac / 12.5% vol / 750ml / Vins Coeur importer code 043890. Photo files: S__14532617_0.jpg(front), S__14532618_0.jpg(back).",
       "signal": {
         "schema": "natural-wine-research/spotlight-signal@1",
-        "generatedAt": "2026-05-02T22:23:52.963Z",
+        "generatedAt": "2026-05-02T22:32:28.776Z",
         "wine": {
           "id": "catalog-1777554368214-2ggcgy",
           "name": "プルミエ・ジュ 2024",
@@ -2191,7 +2191,7 @@
       "inventoryNotes": "Bottle registered from label photos. Front label: Mama Mouchi / sheep illustration / \"Quelle bite est ce la ? -Melie\". Back sticker: France, 750ml, VINS COEUR importer, code 042688. Vintage not visible in provided photos, so catalog record keeps vintage blank pending confirmation. Photo files: S__14524419.jpg(front), S__14524420.jpg(back).",
       "signal": {
         "schema": "natural-wine-research/spotlight-signal@1",
-        "generatedAt": "2026-05-02T22:23:53.039Z",
+        "generatedAt": "2026-05-02T22:32:28.852Z",
         "wine": {
           "id": "catalog-1777553883737-4wdtgh",
           "name": "ママ・ムシ",
@@ -2737,7 +2737,7 @@
       "inventoryNotes": "Bottle registered from label photos. Front label matched as COL TAMARIE MILU / BIANCO FERMO. Back label included lot L GANESH2023 and 0.75L 12% vol. Photo files: IMG_8275.JPG(front), IMG_8274.JPG(back).",
       "signal": {
         "schema": "natural-wine-research/spotlight-signal@1",
-        "generatedAt": "2026-05-02T22:23:53.137Z",
+        "generatedAt": "2026-05-02T22:32:28.934Z",
         "wine": {
           "id": "catalog-1775697953662-j5p35x",
           "name": "ミルー 2023",

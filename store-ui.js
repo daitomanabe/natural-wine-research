@@ -29,9 +29,14 @@
   const config = window.__STORE_PAGE_CONFIG__ || {};
   const root = document.querySelector("[data-store-app]");
   const overlay = document.querySelector("[data-password-overlay]");
+  const pageMode = config.mode === "admin" ? "admin" : "public";
+  const requiresAuth = pageMode === "admin" && Boolean(config.password?.hash);
   const sessionKey = config.password?.storageKey || "natural-wine-store-pages";
   const apiStorageKey = "natural-wine-store-api-base";
   const defaultApiBase = config.defaultApiBase || "";
+  const payloadPath = config.payloadPath || "./store.json";
+  const publicPath = config.links?.public || "./";
+  const adminPath = config.links?.admin || "./admin/";
 
   function esc(value) {
     return String(value ?? "")
@@ -63,6 +68,10 @@
 
   function clamp(value, min, max) {
     return Math.min(max, Math.max(min, value));
+  }
+
+  function isAdminMode() {
+    return pageMode === "admin";
   }
 
   function createSvg2d(embedding) {
@@ -450,6 +459,26 @@
   }
 
   function renderPayload(payload) {
+    const title = isAdminMode() ? "店内ワイン 管理・登録" : "店内ワインリスト";
+    const eyebrow = isAdminMode()
+      ? "VIN NATUREL OS — ADMIN / INGEST"
+      : "VIN NATUREL OS — PUBLIC STORE SIGNAL FIELD";
+    const heroCopy = isAdminMode()
+      ? "表面と裏面の 2 枚 upload から OCR・自動照合・database 追加・音/光/色生成・UMAP 再計算までを実行する管理画面です。"
+      : "店内にあるワインを、音・光・色へ変換し、特徴量ベクトルから UMAP を計算して 2D / 3D に埋め込んだ公開画面です。";
+    const primaryActions = isAdminMode()
+      ? `
+          <a class="action-link" href="${esc(publicPath)}">Open Public Page</a>
+          <a class="action-link" href="${esc(payloadPath)}" download>Download JSON</a>
+          <button type="button" class="action-button" data-copy-json>Copy JSON</button>
+          <button type="button" class="action-button secondary-button" data-share-json>Share JSON</button>
+        `
+      : `
+          <a class="action-link" href="${esc(adminPath)}">Open Admin Page</a>
+          <a class="action-link" href="${esc(payloadPath)}" download>Download JSON</a>
+          <button type="button" class="action-button" data-copy-json>Copy JSON</button>
+          <button type="button" class="action-button secondary-button" data-share-json>Share JSON</button>
+        `;
     const statusBanner = state.error
       ? `<div class="status-banner error"><div class="status-copy">Error</div><div class="status-line">${esc(state.error)}</div></div>`
       : state.status
@@ -461,23 +490,19 @@
         <section class="hero">
           <div class="hero-top">
             <div>
-              <div class="eyebrow">VIN NATUREL OS — IN-STORE SIGNAL FIELD</div>
-              <h1>店内ワインリスト</h1>
+              <div class="eyebrow">${esc(eyebrow)}</div>
+              <h1>${esc(title)}</h1>
             </div>
             <div class="action-row">
-              <a class="action-link" href="./store.json" download>Download JSON</a>
-              <button type="button" class="action-button" data-copy-json>Copy JSON</button>
-              <button type="button" class="action-button secondary-button" data-share-json>Share JSON</button>
+              ${primaryActions}
             </div>
           </div>
-          <div class="hero-copy">
-            店内にあるワインを、音・光・色へ変換し、特徴量ベクトルから UMAP を計算して 2D / 3D に埋め込んだ公開 UI です。
-            API を設定すると、表面と裏面の 2 枚 upload から OCR・自動照合・database 追加・再埋め込みまで実行できます。
-          </div>
+          <div class="hero-copy">${esc(heroCopy)}</div>
           <div class="transport-copy">
             <span>Global <code>${esc(payload.transport.globalKey)}</code></span>
             <span>Event <code>${esc(payload.transport.eventName)}</code></span>
             <span>Schema <code>${esc(payload.schema)}</code></span>
+            <span>Mode <code>${esc(pageMode)}</code></span>
           </div>
         </section>
 
@@ -491,7 +516,7 @@
         </section>
 
         <div class="module-stack">
-          ${renderStoreConsole()}
+          ${isAdminMode() ? renderStoreConsole() : ""}
           ${renderStoreProfile(payload.storeProfile || {})}
           ${renderEmbedding(payload)}
           <section class="module-panel wines-panel">
@@ -511,7 +536,8 @@
         <footer class="footer">
           <div class="footer-copy">Generated at ${esc(payload.generatedAt)}</div>
           <div class="action-row">
-            <a class="action-link" href="./store.json">Open JSON</a>
+            <a class="action-link" href="${esc(payloadPath)}">Open JSON</a>
+            <a class="action-link" href="${esc(isAdminMode() ? publicPath : adminPath)}">${isAdminMode() ? "Public Page" : "Admin Page"}</a>
             <a class="action-link" href="#embeddings">Jump to UMAP</a>
           </div>
         </footer>
@@ -565,7 +591,7 @@
   }
 
   async function loadStaticPayload() {
-    state.payload = await fetchJson("./store.json");
+    state.payload = await fetchJson(payloadPath);
     window[state.payload.transport.globalKey] = state.payload;
     window.dispatchEvent(new CustomEvent(state.payload.transport.eventName, { detail: state.payload }));
   }
@@ -816,35 +842,37 @@
       }
     });
 
-    document.querySelector("[data-save-api]")?.addEventListener("click", () => {
-      const value = document.querySelector("#api-base-input")?.value?.trim() || "";
-      state.apiBase = value;
-      localStorage.setItem(apiStorageKey, value);
-      state.status = value ? "API base saved." : "API base cleared.";
-      state.error = "";
-      render();
-      if (value) {
+    if (isAdminMode()) {
+      document.querySelector("[data-save-api]")?.addEventListener("click", () => {
+        const value = document.querySelector("#api-base-input")?.value?.trim() || "";
+        state.apiBase = value;
+        localStorage.setItem(apiStorageKey, value);
+        state.status = value ? "API base saved." : "API base cleared.";
+        state.error = "";
+        render();
+        if (value) {
+          void refreshLiveDataset();
+        }
+      });
+
+      document.querySelector("[data-refresh-live]")?.addEventListener("click", () => {
         void refreshLiveDataset();
-      }
-    });
+      });
 
-    document.querySelector("[data-refresh-live]")?.addEventListener("click", () => {
-      void refreshLiveDataset();
-    });
+      document.querySelector("[data-logout]")?.addEventListener("click", () => {
+        sessionStorage.removeItem(sessionKey);
+        state.unlocked = false;
+        renderPasswordGate();
+      });
 
-    document.querySelector("[data-logout]")?.addEventListener("click", () => {
-      sessionStorage.removeItem(sessionKey);
-      state.unlocked = false;
-      renderPasswordGate();
-    });
-
-    document.querySelector("[data-ingest-form]")?.addEventListener("submit", handleIngestSubmit);
-    document.querySelector("[data-file-front]")?.addEventListener("change", (event) => handleFilePreview(event, "front"));
-    document.querySelector("[data-file-back]")?.addEventListener("change", (event) => handleFilePreview(event, "back"));
-    document.querySelectorAll("[data-draft-field]").forEach((input) => {
-      input.addEventListener("input", handleDraftField);
-      input.addEventListener("change", handleDraftField);
-    });
+      document.querySelector("[data-ingest-form]")?.addEventListener("submit", handleIngestSubmit);
+      document.querySelector("[data-file-front]")?.addEventListener("change", (event) => handleFilePreview(event, "front"));
+      document.querySelector("[data-file-back]")?.addEventListener("change", (event) => handleFilePreview(event, "back"));
+      document.querySelectorAll("[data-draft-field]").forEach((input) => {
+        input.addEventListener("input", handleDraftField);
+        input.addEventListener("change", handleDraftField);
+      });
+    }
 
     document.querySelectorAll("[data-copy-wine]").forEach((button) => {
       button.addEventListener("click", async (event) => {
@@ -876,6 +904,7 @@
   }
 
   function renderPasswordGate(message = "") {
+    if (!requiresAuth) return;
     if (!overlay) return;
     overlay.classList.remove("hidden");
     overlay.innerHTML = `
@@ -922,7 +951,7 @@
     state.apiBase = queryApi || localStorage.getItem(apiStorageKey) || defaultApiBase || "";
     await loadStaticPayload();
     state.draft.location = state.payload?.location || state.draft.location || "店内";
-    state.unlocked = sessionStorage.getItem(sessionKey) === "ok";
+    state.unlocked = !requiresAuth || sessionStorage.getItem(sessionKey) === "ok";
 
     if (!state.unlocked) {
       renderPasswordGate();

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>店内ワインリスト</title>
-    <meta name="description" content="VIN NATUREL OS 店内ワイン signal / UMAP dashboard">
+    <meta name="description" content="VIN NATUREL OS 店内ワイン signal / UMAP public page">
     <link rel="icon" href="./favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="./store-ui.css">
   </head>
@@ -12,7 +12,7 @@
     <div class="password-overlay hidden" data-password-overlay></div>
     <main data-store-app></main>
     <script>
-      window.__STORE_PAGE_CONFIG__ = {"password":{"hash":"6b4f9675228f4f537bf07355601bbcef4126e3ed15c9183b6e6e28a4e72c380d","salt":"natural-wine-store-pages","hint":"shared password","storageKey":"natural-wine-store-pages"},"defaultApiBase":""};
+      window.__STORE_PAGE_CONFIG__ = {"mode":"public","payloadPath":"./store.json","defaultApiBase":"","links":{"public":"./","admin":"./admin/"}};
     </script>
     <script src="./store-ui.js" defer></script>
   </body>
