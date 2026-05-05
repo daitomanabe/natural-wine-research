@@ -99,11 +99,29 @@ const APP_VIEWS = [
 ];
 
 const APP_VIEW_IDS = new Set(APP_VIEWS.map((view) => view.id));
+const WINE_DETAIL_HASH_PREFIX = "wine/";
+
+function resolveInitialRoute() {
+  if (typeof window === "undefined") return { view: DEFAULT_VIEW, wineId: "" };
+  const hash = window.location.hash.replace(/^#/, "");
+  if (hash.startsWith(WINE_DETAIL_HASH_PREFIX)) {
+    return {
+      view: DEFAULT_VIEW,
+      wineId: decodeURIComponent(hash.slice(WINE_DETAIL_HASH_PREFIX.length)),
+    };
+  }
+  return {
+    view: APP_VIEW_IDS.has(hash) ? hash : DEFAULT_VIEW,
+    wineId: "",
+  };
+}
 
 function resolveInitialView() {
-  if (typeof window === "undefined") return DEFAULT_VIEW;
-  const hash = window.location.hash.replace(/^#/, "");
-  return APP_VIEW_IDS.has(hash) ? hash : DEFAULT_VIEW;
+  return resolveInitialRoute().view;
+}
+
+function buildWineDetailHash(wine) {
+  return `#${WINE_DETAIL_HASH_PREFIX}${encodeURIComponent(wine.id)}`;
 }
 
 function formatYen(value, fallback = "—") {
@@ -442,7 +460,6 @@ function SpotlightSignalSection({
 function StoreSignalBundleSection({
   bundle,
   items,
-  selectedWineId,
   onSelect,
   bundleApiUrl,
   bundleJson,
@@ -466,7 +483,7 @@ function StoreSignalBundleSection({
             <button
               key={item.wine.id}
               type="button"
-              className={`spotlight-store-card ${selectedWineId === item.wine.id ? "spotlight-store-card-active" : ""}`}
+              className="spotlight-store-card"
               onClick={() => onSelect(item.wine)}
             >
               <div className="spotlight-store-card-band" style={{ backgroundImage: item.signal.palette.gradient }} />
@@ -550,11 +567,44 @@ function StoreSignalBundleSection({
   );
 }
 
+function WineDetailPage({ wine, returnView, onBack }) {
+  return (
+    <div className="app-shell wine-detail-mode">
+      <header className="app-header">
+        <div>
+          <div className="eyebrow">NATURAL WINE RESEARCH — WINE DETAIL</div>
+          <h1>VIN NATUREL OS</h1>
+          <div className="subhead">
+            {wine ? `${wine.producer} · ${wine.region || "Unknown region"}` : "Record not found"}
+          </div>
+        </div>
+        <div className="inline-actions">
+          <button type="button" className="secondary-button" onClick={onBack}>
+            Back to {APP_VIEWS.find((view) => view.id === returnView)?.label ?? "Wine List"}
+          </button>
+        </div>
+      </header>
+
+      <main className="wine-detail-page">
+        <section className="module-panel wine-detail-sheet">
+          <div className="panel-head">
+            <div className="section-label">{wine ? "WINE DETAIL" : "MISSING RECORD"}</div>
+            <div className="micro-copy">{wine ? `ID: ${wine.id}` : "The linked wine is not in the current catalog."}</div>
+          </div>
+          <WineDetail wine={wine} />
+        </section>
+      </main>
+    </div>
+  );
+}
+
 export default function App() {
   const [catalog, setCatalog] = useState(SEED_DB);
   const [inventory, setInventory] = useState([]);
   const [stats, setStats] = useState(EMPTY_STATS);
   const [viewMode, setViewMode] = useState(resolveInitialView);
+  const [detailWineId, setDetailWineId] = useState(() => resolveInitialRoute().wineId);
+  const [detailReturnView, setDetailReturnView] = useState(() => resolveInitialRoute().view);
   const [selected, setSelected] = useState(null);
   const [search, setSearch] = useState("");
   const [sourceScope, setSourceScope] = useState("all");
@@ -646,8 +696,12 @@ export default function App() {
     if (typeof window === "undefined") return undefined;
 
     const handleHashChange = () => {
-      const nextView = resolveInitialView();
-      setViewMode((current) => (current === nextView ? current : nextView));
+      const nextRoute = resolveInitialRoute();
+      setViewMode((current) => (current === nextRoute.view ? current : nextRoute.view));
+      setDetailWineId(nextRoute.wineId);
+      if (!nextRoute.wineId) {
+        setDetailReturnView(nextRoute.view);
+      }
     };
 
     window.addEventListener("hashchange", handleHashChange);
@@ -656,10 +710,11 @@ export default function App() {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
+    if (detailWineId) return;
     const hash = window.location.hash.replace(/^#/, "");
     if (hash === viewMode) return;
     window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}#${viewMode}`);
-  }, [viewMode]);
+  }, [detailWineId, viewMode]);
 
   useEffect(() => {
     if (selected && !catalog.find((wine) => wine.id === selected.id)) {
@@ -853,7 +908,6 @@ export default function App() {
   const avgPrice = avgPriceKnown.length ? (avgPriceKnown.reduce((sum, wine) => sum + wine.price, 0) / avgPriceKnown.length).toFixed(0) : "N/A";
   const selectedCandidate = analysisResult?.candidates?.find((candidate) => candidate.wine.id === analysisSelectionId) ?? analysisResult?.candidates?.[0] ?? null;
   const labelTargetWine = selectedCandidate?.wine ?? selected;
-  const selectedInventoryQty = selected?.id ? (inventoryByWine.get(selected.id) ?? 0) : 0;
   const catalogFilteredCount = catalogFilteredForBrowse.length;
   const catalogCountryCounts = useMemo(() => {
     const counts = new Map();
@@ -1324,12 +1378,7 @@ export default function App() {
   const spotlightSimilar = useMemo(() => (
     spotlightWine ? findSimilarWines(spotlightWine, catalog, { limit: 10 }) : []
   ), [catalog, spotlightWine]);
-  const spotlightSelection = useMemo(() => {
-    if (selected && catalog.find((wine) => wine.id === selected.id)) {
-      return selected;
-    }
-    return spotlightWine;
-  }, [catalog, selected, spotlightWine]);
+  const spotlightSelection = spotlightWine;
   const spotlightSourceUrl = spotlightWine?.sourceRefs?.[0]?.sourceUrl ?? "";
   const spotlightSignalWine = spotlightSelection ?? spotlightWine;
   const spotlightSignalSimilar = useMemo(() => {
@@ -1368,37 +1417,7 @@ export default function App() {
     if (typeof window === "undefined") return relative;
     return new URL(relative, window.location.origin).toString();
   }, []);
-  const storeWineIdSet = useMemo(() => new Set(storeSignalItems.map((item) => item.wine.id)), [storeSignalItems]);
-  const storeDisplayWine = useMemo(() => {
-    if (selected && storeWineIdSet.has(selected.id)) {
-      return selected;
-    }
-    if (spotlightWine && storeWineIdSet.has(spotlightWine.id)) {
-      return spotlightWine;
-    }
-    return storeSignalItems[0]?.wine ?? null;
-  }, [selected, spotlightWine, storeSignalItems, storeWineIdSet]);
-  const storeDisplayInventoryItem = useMemo(() => (
-    storeDisplayWine ? storeSignalItems.find((item) => item.wine.id === storeDisplayWine.id)?.inventory ?? null : null
-  ), [storeDisplayWine, storeSignalItems]);
-  const storeDisplaySimilar = useMemo(() => (
-    storeDisplayWine ? findSimilarWines(storeDisplayWine, catalog, { limit: 6 }) : []
-  ), [catalog, storeDisplayWine]);
-  const storeDisplaySignal = useMemo(() => (
-    storeDisplayWine
-      ? buildSpotlightSignal(storeDisplayWine, { similar: storeDisplaySimilar })
-      : null
-  ), [storeDisplaySimilar, storeDisplayWine]);
-  const storeDisplaySignalJson = useMemo(() => (
-    storeDisplaySignal ? JSON.stringify(storeDisplaySignal, null, 2) : ""
-  ), [storeDisplaySignal]);
-  const storeDisplaySignalApiUrl = useMemo(() => {
-    if (!storeDisplayWine) return "";
-    const relative = `/api/spotlight/signal?wineId=${encodeURIComponent(storeDisplayWine.id)}`;
-    if (typeof window === "undefined") return relative;
-    return new URL(relative, window.location.origin).toString();
-  }, [storeDisplayWine]);
-  const activeSignal = viewMode === "store" ? storeDisplaySignal : spotlightSignal;
+  const activeSignal = viewMode === "spotlight" ? spotlightSignal : null;
 
   useEffect(() => {
     if (typeof window === "undefined" || !activeSignal) return;
@@ -1498,32 +1517,6 @@ export default function App() {
     );
   }
 
-  async function handleCopyStoreSelectionSignal() {
-    await copyJsonPayload(
-      storeDisplaySignalJson,
-      "Store wine signal JSON copied.",
-      "Copy failed. Use download or the API URL.",
-    );
-  }
-
-  function handleDownloadStoreSelectionSignal() {
-    if (!storeDisplayWine) return;
-    downloadJsonPayload(
-      storeDisplaySignalJson,
-      buildSpotlightSignalFilename(storeDisplayWine),
-      "Store wine signal JSON downloaded.",
-    );
-  }
-
-  async function handleShareStoreSelectionSignal() {
-    await shareJsonPayload(
-      storeDisplaySignalJson,
-      `${storeDisplayWine?.name ?? "Wine"} signal`,
-      "Store wine signal shared.",
-      handleCopyStoreSelectionSignal,
-    );
-  }
-
   async function handleCopyStoreSignals() {
     await copyJsonPayload(
       storeSignalJson,
@@ -1546,6 +1539,35 @@ export default function App() {
       "In-store wine signals",
       "In-store signal bundle shared.",
       handleCopyStoreSignals,
+    );
+  }
+
+  function openWineDetail(wine, returnView = viewMode) {
+    if (!wine?.id || typeof window === "undefined") return;
+    setSelected(wine);
+    setDetailReturnView(returnView);
+    setDetailWineId(wine.id);
+    window.location.hash = buildWineDetailHash(wine);
+  }
+
+  function closeWineDetail() {
+    const nextView = APP_VIEW_IDS.has(detailReturnView) ? detailReturnView : DEFAULT_VIEW;
+    setDetailWineId("");
+    setViewMode(nextView);
+    if (typeof window !== "undefined") {
+      window.location.hash = `#${nextView}`;
+    }
+  }
+
+  const detailWine = detailWineId ? catalog.find((wine) => wine.id === detailWineId) ?? null : null;
+
+  if (detailWineId) {
+    return (
+      <WineDetailPage
+        wine={detailWine}
+        returnView={detailReturnView}
+        onBack={closeWineDetail}
+      />
     );
   }
 
@@ -1574,114 +1596,18 @@ export default function App() {
           </div>
         </header>
 
-        {storeSignalBundle && storeDisplayWine && storeDisplaySignal ? (
+        {storeSignalBundle ? (
           <div className="workspace-grid">
-            <section className="store-summary-layout">
-              <div className="module-panel store-summary-panel">
-                <div className="panel-head">
-                  <div className="section-label">CURRENTLY SELECTED</div>
-                  <div className="micro-copy">
-                    {storeDisplayInventoryItem ? `qty ${storeDisplayInventoryItem.quantity} · ${storeDisplayInventoryItem.location}` : "Inventory linked"}
-                  </div>
-                </div>
-                <div className="signal-gradient-band" style={{ backgroundImage: storeDisplaySignal.palette.gradient }} />
-                <div className="store-summary-copy">
-                  <div className="spotlight-kicker">Store Focus</div>
-                  <h2 className="store-summary-title">{storeDisplayWine.name}</h2>
-                  <div className="spotlight-card-subtitle">{storeDisplayWine.producer}</div>
-                  <div className="spotlight-meta-row">
-                    <span>{COLOR_MAP[storeDisplayWine.color]?.label ?? storeDisplayWine.color}</span>
-                    <span>{storeDisplayWine.country || "UNKNOWN"}</span>
-                    <span>{storeDisplayWine.region || "Unknown region"}</span>
-                    <span>{formatYen(storeDisplayWine.price)}</span>
-                    <span>{storeDisplaySignal.music.primaryGenre}</span>
-                    <span>{storeDisplaySignal.music.bpm} BPM</span>
-                  </div>
-                  <p className="spotlight-description">
-                    {excerptText(storeDisplayWine.notes || storeDisplaySignal.scene.setting, 280)}
-                  </p>
-                  <div className="tag-row">
-                    {storeDisplaySignal.scene.moodTags.map((tag) => (
-                      <span key={tag} className="tag-chip">{tag}</span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              <div className="module-panel store-summary-metrics">
-                <div className="panel-head">
-                  <div className="section-label">ROOM SNAPSHOT</div>
-                  <div className="micro-copy">Bundle-level summary for the wines currently on the floor.</div>
-                </div>
-                <div className="signal-metrics-grid">
-                  {[
-                    ["WINES", `${storeSignalBundle.summary.uniqueWineCount}`],
-                    ["BOTTLES", `${storeSignalBundle.summary.totalQuantity}`],
-                    ["AVG BPM", storeSignalBundle.summary.averageBpm ?? "—"],
-                    ["AVG ENERGY", storeSignalBundle.summary.averageEnergy ?? "—"],
-                  ].map(([label, value]) => (
-                    <div key={label} className="signal-metric-card">
-                      <div className="signal-metric-label">{label}</div>
-                      <div className="signal-metric-value">{value}</div>
-                    </div>
-                  ))}
-                </div>
-                <div className="signal-block">
-                  <div className="signal-subhead">PRIMARY GENRES</div>
-                  <div className="tag-row">
-                    {storeSignalBundle.summary.primaryGenres.map((genre) => (
-                      <span key={genre} className="tag-chip">{genre}</span>
-                    ))}
-                  </div>
-                </div>
-                <div className="signal-block">
-                  <div className="signal-subhead">DELIVERY</div>
-                  <div className="signal-api-meta">
-                    <div className="signal-inline-label">BUNDLE API</div>
-                    <code>{storeSignalApiUrl}</code>
-                  </div>
-                  <div className="signal-api-meta">
-                    <div className="signal-inline-label">LIVE EVENT</div>
-                    <code>{storeSignalBundle.transport.eventName}</code>
-                  </div>
-                </div>
-              </div>
-            </section>
-
             <StoreSignalBundleSection
               bundle={storeSignalBundle}
               items={storeSignalItems}
-              selectedWineId={storeDisplayWine.id}
-              onSelect={setSelected}
+              onSelect={(wine) => openWineDetail(wine, "store")}
               bundleApiUrl={storeSignalApiUrl}
               bundleJson={storeSignalJson}
               onCopy={handleCopyStoreSignals}
               onDownload={handleDownloadStoreSignals}
               onShare={handleShareStoreSignals}
             />
-
-            <SpotlightSignalSection
-              signal={storeDisplaySignal}
-              signalWine={storeDisplayWine}
-              featuredWine={spotlightWine}
-              signalJson={storeDisplaySignalJson}
-              signalApiUrl={storeDisplaySignalApiUrl}
-              onCopy={handleCopyStoreSelectionSignal}
-              onDownload={handleDownloadStoreSelectionSignal}
-              onShare={handleShareStoreSelectionSignal}
-              featuredCopy="Store featured bottle output"
-              selectedCopy="Selected store bottle output"
-            />
-
-            <aside className="detail-panel spotlight-detail-panel">
-              <div className="panel-head">
-                <div className="section-label">STORE WINE DETAIL</div>
-                <div className="micro-copy">
-                  {storeDisplayWine ? `ID: ${storeDisplayWine.id}` : "No wine selected"}
-                </div>
-              </div>
-              <WineDetail wine={storeDisplayWine} />
-            </aside>
           </div>
         ) : (
           <section className="module-panel store-empty-panel">
@@ -1750,6 +1676,8 @@ export default function App() {
                       src={spotlightInventoryItem.imagePath}
                       alt={spotlightWine.name}
                       className="spotlight-target-image"
+                      decoding="async"
+                      fetchPriority="high"
                     />
                   ) : null}
                   <div className="spotlight-target-copy">
@@ -1774,7 +1702,7 @@ export default function App() {
                           Open Source Record
                         </a>
                       ) : null}
-                      <button type="button" className="action-button" onClick={() => setSelected(spotlightWine)}>
+                      <button type="button" className="action-button" onClick={() => openWineDetail(spotlightWine, "spotlight")}>
                         Inspect Target Detail
                       </button>
                     </div>
@@ -1791,7 +1719,7 @@ export default function App() {
                   target={spotlightWine}
                   items={spotlightSimilar}
                   selected={spotlightSelection}
-                  onSelect={setSelected}
+                  onSelect={(wine) => openWineDetail(wine, "spotlight")}
                 />
                 <div className="micro-copy spotlight-map-caption">
                   Bubble size = grape overlap · vertical line = target price · click any node to inspect that wine
@@ -1814,8 +1742,7 @@ export default function App() {
               <StoreSignalBundleSection
                 bundle={storeSignalBundle}
                 items={storeSignalItems}
-                selectedWineId={spotlightSignalWine?.id ?? ""}
-                onSelect={setSelected}
+                onSelect={(wine) => openWineDetail(wine, "spotlight")}
                 bundleApiUrl={storeSignalApiUrl}
                 bundleJson={storeSignalJson}
                 onCopy={handleCopyStoreSignals}
@@ -1833,8 +1760,8 @@ export default function App() {
                     <button
                       key={item.wine.id}
                       type="button"
-                      className={`spotlight-card ${spotlightSelection?.id === item.wine.id ? "spotlight-card-active" : ""}`}
-                      onClick={() => setSelected(item.wine)}
+                      className="spotlight-card"
+                      onClick={() => openWineDetail(item.wine, "spotlight")}
                     >
                       <div className="spotlight-card-top">
                         <span className="spotlight-rank">#{index + 1}</span>
@@ -1851,17 +1778,6 @@ export default function App() {
                 </div>
               </div>
 
-              <aside className="detail-panel spotlight-detail-panel">
-                <div className="panel-head">
-                  <div className="section-label">
-                    {spotlightSelection?.id === spotlightWine.id ? "FEATURED WINE DETAIL" : "SELECTED WINE DETAIL"}
-                  </div>
-                  <div className="micro-copy">
-                    {spotlightSelection ? `ID: ${spotlightSelection.id}` : "No wine selected"}
-                  </div>
-                </div>
-                <WineDetail wine={spotlightSelection} />
-              </aside>
             </section>
 
             {sourceWatchlist.length ? (
@@ -2152,8 +2068,35 @@ export default function App() {
 
             <section className="table-panel">
               <div className="table-head">
-                <span>CATALOG TABLE — {catalogFilteredCount} RECORDS</span>
+                <span>CATALOG GRID — {catalogFilteredCount} RECORDS</span>
                 <div className="catalog-page-controls">
+                  <label>
+                    Sort
+                    <select
+                      value={catalogSort.key}
+                      onChange={(event) => {
+                        setCatalogSort({ key: event.target.value, direction: "asc" });
+                        setCatalogPage(1);
+                      }}
+                    >
+                      {catalogBrowserHeaders.map(({ key, label }) => (
+                        <option key={key} value={key}>{label}</option>
+                      ))}
+                    </select>
+                  </label>
+                  <button
+                    type="button"
+                    className="secondary-button"
+                    onClick={() => {
+                      setCatalogSort((current) => ({
+                        ...current,
+                        direction: current.direction === "asc" ? "desc" : "asc",
+                      }));
+                      setCatalogPage(1);
+                    }}
+                  >
+                    {catalogSort.direction === "asc" ? "ASC" : "DESC"}
+                  </button>
                   <label>
                     Page size
                     <select value={catalogPageSize} onChange={(event) => setCatalogPageSizeSafe(event.target.value)}>
@@ -2165,56 +2108,39 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="table-wrap">
-                <table>
-                  <thead>
-                    <tr>
-                      {catalogBrowserHeaders.map(({ key, label }) => (
-                        <th key={key}>
-                          <button type="button" className={`sort-button ${catalogSort.key === key ? "sort-button-active" : ""}`} onClick={() => handleCatalogSort(key)}>
-                            {label}
-                            <span className="sort-arrow">
-                              {catalogSort.key === key ? (catalogSort.direction === "asc" ? "↑" : "↓") : ""}
-                            </span>
-                          </button>
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {catalogPageRows.length ? catalogPageRows.map((wine) => {
-                      const isSelected = selected?.id === wine.id;
-                      const col = COLOR_MAP[wine.color]?.dot ?? "#aaa";
-                      const sourceLabel = wine.source === "seed" ? "seed" : (getSourceLabels(wine)[0] || "custom");
-                      const inventoryCount = inventoryByWine.get(wine.id) ?? 0;
-                      return (
-                        <tr
-                          key={wine.id}
-                          onClick={() => {
-                            setSelected(wine);
-                            setCatalogPage(Math.min(catalogPage, catalogTotalPages));
-                          }}
-                          className={isSelected ? "selected-row" : ""}
-                        >
-                          <td style={{ color: col }}>{wine.name}</td>
-                          <td>{wine.producer}</td>
-                          <td>{sourceLabel}</td>
-                          <td>{FLAG_MAP[wine.country] ?? wine.country}</td>
-                          <td>{wine.region}</td>
-                          <td style={{ color: col }}>{COLOR_MAP[wine.color]?.label}</td>
-                          <td>{formatNumber(wine.so2)}</td>
-                          <td>{Number.isFinite(wine.price) ? `€${wine.price}` : formatNumber(wine.price)}</td>
-                          <td>{formatNumber(wine.intervention)}</td>
-                          <td>{formatNumber(inventoryCount, "0")}</td>
-                        </tr>
-                      );
-                    }) : (
-                      <tr>
-                        <td colSpan={catalogBrowserHeaders.length} className="empty-card">No records match current filters.</td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
+              <div className="catalog-record-grid">
+                {catalogPageRows.length ? catalogPageRows.map((wine) => {
+                  const col = COLOR_MAP[wine.color]?.dot ?? "#aaa";
+                  const sourceLabel = wine.source === "seed" ? "seed" : (getSourceLabels(wine)[0] || "custom");
+                  const inventoryCount = inventoryByWine.get(wine.id) ?? 0;
+                  return (
+                    <button
+                      key={wine.id}
+                      type="button"
+                      className="catalog-record-card"
+                      onClick={() => openWineDetail(wine, "catalog")}
+                    >
+                      <div className="catalog-record-top">
+                        <span className="catalog-record-source">{sourceLabel}</span>
+                        <span className="catalog-record-inventory">qty {formatNumber(inventoryCount, "0")}</span>
+                      </div>
+                      <div className="catalog-record-title" style={{ color: col }}>{wine.name}</div>
+                      <div className="catalog-record-subtitle">{wine.producer}</div>
+                      <div className="catalog-record-meta">
+                        <span>{FLAG_MAP[wine.country] ?? wine.country}</span>
+                        <span>{wine.region || "Unknown region"}</span>
+                        <span style={{ color: col }}>{COLOR_MAP[wine.color]?.label ?? wine.color}</span>
+                      </div>
+                      <div className="catalog-record-facts">
+                        <span>SO2 {formatNumber(wine.so2)}</span>
+                        <span>{Number.isFinite(wine.price) ? `€${wine.price}` : formatNumber(wine.price)}</span>
+                        <span>Intervention {formatNumber(wine.intervention)}</span>
+                      </div>
+                    </button>
+                  );
+                }) : (
+                  <div className="empty-card">No records match current filters.</div>
+                )}
               </div>
 
               <div className="catalog-pager">
@@ -2243,38 +2169,6 @@ export default function App() {
               </div>
             </section>
           </div>
-
-          <aside className="catalog-browser-detail">
-            <section className="detail-panel">
-              <div className="panel-head">
-                <div className="section-label">SELECTED RECORD</div>
-                <div className="micro-copy">
-                  {selected ? `ID: ${selected.id}` : "Click a row to inspect full metadata"}
-                </div>
-              </div>
-              <WineDetail wine={selected} />
-              {selected ? (
-                <div className="catalog-meta">
-                  <div>
-                    <div className="micro-copy">DATABASE SOURCE</div>
-                    <div>{selected.source || "custom"}</div>
-                  </div>
-                  <div>
-                    <div className="micro-copy">SOURCE TAGS</div>
-                    <div>{getSourceLabels(selected).join(", ") || "none"}</div>
-                  </div>
-                  <div>
-                    <div className="micro-copy">INVENTORY LINKS</div>
-                    <div>{selectedInventoryQty} bottles</div>
-                  </div>
-                  <div>
-                    <div className="micro-copy">ALTERNATE LABEL HINTS</div>
-                    <div>{selected.aliases?.length ? `${selected.aliases.length} entries` : "none"}</div>
-                  </div>
-                </div>
-              ) : null}
-            </section>
-          </aside>
         </section>
       </div>
     );
@@ -2449,13 +2343,13 @@ export default function App() {
           <RecommendationColumn
             title="GLOBAL CATALOG PICKS"
             items={contextRecommendations?.catalog}
-            onSelect={setSelected}
+            onSelect={openWineDetail}
             emptyLabel="Save live context or press run to generate catalog suggestions."
           />
           <RecommendationColumn
             title="CELLAR INVENTORY PICKS"
             items={contextRecommendations?.inventory}
-            onSelect={setSelected}
+            onSelect={openWineDetail}
             emptyLabel="Link inventory items to catalog wines to prioritize cellar stock."
           />
         </section>
@@ -2478,8 +2372,8 @@ export default function App() {
           ) : null}
           <div className="inventory-grid">
             {topInventory.length ? topInventory.map((item) => (
-              <button key={item.id} type="button" className="inventory-card" onClick={() => item.wine && setSelected(item.wine)}>
-                {item.imagePath ? <img src={item.imagePath} alt={item.customLabel || item.wine?.name || "Inventory bottle"} className="inventory-image" /> : null}
+              <button key={item.id} type="button" className="inventory-card" onClick={() => openWineDetail(item.wine)}>
+                {item.imagePath ? <img src={item.imagePath} alt={item.customLabel || item.wine?.name || "Inventory bottle"} className="inventory-image" loading="lazy" decoding="async" /> : null}
                 <div className="inventory-body">
                   <div className="inventory-title">{item.wine?.name || item.customLabel || "Unmatched bottle"}</div>
                   <div className="inventory-subtitle">{item.wine?.producer || "Needs catalog match"}</div>
@@ -2968,13 +2862,13 @@ export default function App() {
               <RecommendationColumn
                 title="CATALOG PICKS"
                 items={manualRecommendations?.catalog}
-                onSelect={setSelected}
+                onSelect={openWineDetail}
                 emptyLabel="Set your taste filters to score the unified catalog."
               />
               <RecommendationColumn
                 title="INVENTORY PICKS"
                 items={manualRecommendations?.inventory}
-                onSelect={setSelected}
+                onSelect={openWineDetail}
                 emptyLabel="Inventory-linked wines will appear here after OCR registration."
               />
             </div>
@@ -3060,13 +2954,13 @@ export default function App() {
               <RecommendationColumn
                 title="AUTO CATALOG PICKS"
                 items={contextRecommendations?.catalog}
-                onSelect={setSelected}
+                onSelect={openWineDetail}
                 emptyLabel="Weather, headlines, and DJ cues will score the unified catalog here."
               />
               <RecommendationColumn
                 title="AUTO INVENTORY PICKS"
                 items={contextRecommendations?.inventory}
-                onSelect={setSelected}
+                onSelect={openWineDetail}
                 emptyLabel="Inventory stock will be prioritized here when linked wines exist."
               />
             </div>
@@ -3092,8 +2986,8 @@ export default function App() {
         ) : null}
         <div className="inventory-grid">
           {topInventory.length ? topInventory.map((item) => (
-            <button key={item.id} type="button" className="inventory-card" onClick={() => item.wine && setSelected(item.wine)}>
-              {item.imagePath ? <img src={item.imagePath} alt={item.customLabel || item.wine?.name || "Inventory bottle"} className="inventory-image" /> : null}
+            <button key={item.id} type="button" className="inventory-card" onClick={() => openWineDetail(item.wine)}>
+              {item.imagePath ? <img src={item.imagePath} alt={item.customLabel || item.wine?.name || "Inventory bottle"} className="inventory-image" loading="lazy" decoding="async" /> : null}
               <div className="inventory-body">
                 <div className="inventory-title">{item.wine?.name || item.customLabel || "Unmatched bottle"}</div>
                 <div className="inventory-subtitle">{item.wine?.producer || "Needs catalog match"}</div>
@@ -3191,12 +3085,10 @@ export default function App() {
               <tbody>
                 {researchListSorted.map((wine) => {
                   const col = COLOR_MAP[wine.color]?.dot ?? "#aaa";
-                  const isSelected = selected?.id === wine.id;
                   return (
                     <tr
                       key={wine.id}
-                      onClick={() => setSelected(isSelected ? null : wine)}
-                      className={isSelected ? "selected-row" : ""}
+                      onClick={() => openWineDetail(wine)}
                     >
                       <td>{getSourceLabels(wine).join(", ") || "Unknown"}</td>
                       <td style={{ color: col }}>{wine.name}</td>
@@ -3217,7 +3109,7 @@ export default function App() {
         )}
       </section>
 
-      <main className="content-grid">
+      <main className="content-grid content-grid-full">
         <section className="main-panel">
           <div className="panel-head">
             <div className="section-label">5. VISUALIZATION: SO₂ × INTERVENTION</div>
@@ -3230,7 +3122,7 @@ export default function App() {
           </div>
 
           <div className="chart-wrap">
-            <ScatterPlot wines={plottable} selected={selected} onSelect={setSelected} />
+            <ScatterPlot wines={plottable} selected={selected} onSelect={openWineDetail} />
           </div>
 
           <div className="region-panel">
@@ -3243,10 +3135,6 @@ export default function App() {
           </div>
         </section>
 
-        <aside className="detail-panel">
-          <div className="section-label">WINE DETAIL</div>
-          <WineDetail wine={selected} />
-        </aside>
       </main>
 
       <section className="table-panel">
@@ -3265,10 +3153,8 @@ export default function App() {
             <tbody>
               {filtered.map((wine) => {
                 const col = COLOR_MAP[wine.color]?.dot ?? "#aaa";
-                const isSelected = selected?.id === wine.id;
-
                 return (
-                  <tr key={wine.id} onClick={() => setSelected(isSelected ? null : wine)} className={isSelected ? "selected-row" : ""}>
+                  <tr key={wine.id} onClick={() => openWineDetail(wine)}>
                     <td>{wine.producer}</td>
                     <td style={{ color: col }}>{wine.name}</td>
                     <td>{FLAG_MAP[wine.country] ?? wine.country}</td>
